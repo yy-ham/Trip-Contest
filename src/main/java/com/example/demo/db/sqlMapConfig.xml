@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <properties resource="com/example/demo/db/db.properties"/>
+    <typeAliases>
+        <typeAlias type="com.example.demo.day.entity.Day" alias="day"/>
+        <typeAlias type="com.example.demo.plan.entity.Plan" alias="plan"/>
+        <typeAlias type="com.example.demo.recoment.entity.Recoment" alias="recoment"/>
+    </typeAliases>
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <mapper resource="com/example/demo/day/db/DayMapper.xml"/>
+        <mapper resource="com/example/demo/plan/db/PlanMapper.xml"/>
+        <mapper resource="com/example/demo/recoment/db/RecomentMapper.xml"/>
+    </mappers>
+</configuration>
