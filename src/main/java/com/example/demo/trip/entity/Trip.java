@@ -25,7 +25,7 @@ public class Trip {
     @JoinColumn(name = "code")
     private Korea korea;
 
-    @Column(name = "trip_title")
+    @Column(name = "trip_addr")
     private String tripAddr;
 
     private String lat;

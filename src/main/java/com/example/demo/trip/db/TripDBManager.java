@@ -11,12 +11,12 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 
-public class DBManager {
+public class TripDBManager {
     private static SqlSessionFactory sqlSessionFactory;
 
     static {
         try {
-            String resource = "com/example/demo/trip/db/sqlMapConfig.xml";
+            String resource = "com/example/demo/db/sqlMapConfig.xml";
             InputStream inputStream = Resources.getResourceAsStream(resource);
             sqlSessionFactory=
                     new SqlSessionFactoryBuilder().build(inputStream);
@@ -70,7 +70,7 @@ public class DBManager {
     }
 
     // 나머지 이미지들 저장
-    public static int insert(ImgVO imgVO){
+    public static int insertTripImg(ImgVO imgVO){
         int re = -1;
         SqlSession session = sqlSessionFactory.openSession(true);
         re = session.insert("trip.insertTripImg", imgVO);
