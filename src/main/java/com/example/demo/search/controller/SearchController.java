@@ -39,17 +39,17 @@ public class SearchController {
     @GetMapping("/search/result")
     @ResponseBody
     public List<TripVO> searchResult(String keyword,
-                             @RequestParam(value = "column", defaultValue = "0") int region,
+                             @RequestParam(value = "region", defaultValue = "0") int region,
                              @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                              String orderColumn
                             ) {
         
         log.info("keyword ={}",keyword);
-        log.info("column ={}",region);
+        log.info("region ={}",region);
         log.info("pageNum ={}",pageNum);
-        log.info("sortColumn ={}",orderColumn);
+        log.info("orderColumn ={}",orderColumn);
 
-        List<TripVO> list = searchService.getSearchedTrip(keyword,region, pageNum, orderColumn);
+        List<TripVO> list = searchService.getSearchedTrip(keyword, region, pageNum, orderColumn);
 
         return list;
     }
