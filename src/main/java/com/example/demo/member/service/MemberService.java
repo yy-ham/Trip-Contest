@@ -11,4 +11,5 @@ import lombok.Setter;
 
 @Service
 public interface MemberService extends MemberDAO {
+	
 }
