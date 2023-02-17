@@ -6,5 +6,12 @@
 </head>
 <body>
 <h1 th:text="test">기능 테스트</h1>
+<form action="/search/result" method="get">
+    <input type="text" name="keyword" id="keyword">
+    <input type="text" name="column" id="column">
+    <input type="text" name="pageNum" id="pageNum">
+    <input type="text" name="sortColumn" id="sortColumn">
+    <input type="submit" value="검색">
+</form>
 </body>
 </html>

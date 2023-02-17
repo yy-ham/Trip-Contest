@@ -1,5 +1,7 @@
 package com.example.demo.search.service;
 
+import com.example.demo.trip.service.TripService;
+import com.example.demo.trip.vo.TripVO;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,21 +26,19 @@ public class SearchService {
 //    @Autowired
     // 전체 레코드 가져올 planDAO
 
-//    @Autowired
-    // 전체 레코드 가져올 tripDAO
+    @Autowired
+    private TripService tripService;
 
     //keyword(검색한 단어) pageNum(페이징에 처리) column(지역), sortColumn(정렬기준), region(지역)
-    public List getSearchedPlan(String keyword, int column, int pageNum, String sortColumn, String region){
+    public List getSearchedTrip(String keyword, int region, int pageNum, String orderColumn){
 
 
         map.put("keyword", keyword);
-        map.put("column", column);
         map.put("region", region);
 
-//        totalRecord = planDAO.getTotal(map);
+        totalRecord = tripService.getTotal((HashMap<String, Object>) map);
 
-        map.put("pageNum", pageNum);
-        map.put("sortColumn", sortColumn);
+        map.put("orderColumn", orderColumn);
 
 
         if(totalRecord%pageSize==0){
@@ -55,10 +55,8 @@ public class SearchService {
 
 
         //dao 통해 가져온 값을 넣는 리스트
-//        ArrayList list = planDAO.searchPlan(map);
-        // searchPlan()은 mybatis도 jpa도 될 수 있는 친구이다.
+        List<TripVO> list = tripService.findAll(map);
         //임시 리스트
-        ArrayList list = new ArrayList();
         return list;
     }
 }

@@ -5,9 +5,8 @@
 <configuration>
     <properties resource="com/example/demo/db/db.properties"/>
     <typeAliases>
-        <typeAlias type="com.example.demo.day.entity.Day" alias="day"/>
-        <typeAlias type="com.example.demo.plan.entity.Plan" alias="plan"/>
-        <typeAlias type="com.example.demo.recoment.entity.Recoment" alias="recoment"/>
+        <typeAlias type="com.example.demo.trip.vo.TripVO" alias="tripVO"/>
+        <typeAlias type="com.example.demo.trip.vo.ImgVO" alias="imgVO"/>
     </typeAliases>
     <environments default="development">
         <environment id="development">
@@ -21,8 +20,6 @@
         </environment>
     </environments>
     <mappers>
-        <mapper resource="com/example/demo/day/db/DayMapper.xml"/>
-        <mapper resource="com/example/demo/plan/db/PlanMapper.xml"/>
-        <mapper resource="com/example/demo/recoment/db/RecomentMapper.xml"/>
+        <mapper resource="com/example/demo/trip/db/TripMapper.xml"/>
     </mappers>
 </configuration>
