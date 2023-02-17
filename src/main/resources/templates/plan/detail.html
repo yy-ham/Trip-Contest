@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h2>Detail</h2>
+	<hr>
+	<input type="text" th:value="${detail.planNo}">
+
+	<table border="1" width="80%">
+		<tr>
+			<td>글사진</td>
+			<td>글제목</td>
+			<td>작성자</td>
+			<td>등록일</td>
+		</tr>
+			
+		<tr th:each="d:${detail}">
+			<td th:text="${d.plan_img}"></td>
+			<td th:text="${d.plan_title}"></td>
+			<td th:text="${d.member_id}"></td>
+			<td th:text="${d.plan_date}"></td>
+		</tr>
+	</table>
+
+</body>
+</html>

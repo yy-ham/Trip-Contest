@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h2>List</h2>
+	<hr>
+
+	<table border="1" width="80%">
+		<tr>
+			<td>글사진</td>
+			<td>글제목</td>
+			<td>작성자</td>
+			<td>등록일</td>
+		</tr>
+			
+		<tr th:each="p:${list}">
+			<td th:text="${p.plan_img}"></td>
+			<td th:text="${p.plan_title}"></td>
+			<td th:text="${p.member_id}"></td>
+			<td th:text="${p.plan_date}"></td>
+		</tr>
+	</table>
+
+</body>
+</html>
