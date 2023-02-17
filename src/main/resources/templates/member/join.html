@@ -1,10 +1,49 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
-<title>Insert title here</title>
+	<meta charset="UTF-8">
+	<title>회원가입</title>
 </head>
 <body>
-<h2>ȸ������</h2>
+	<h1>회원가입</h1>
+	<form method="post" action="/join">
+		<label for="id">ID:</label>
+		<input type="text" name="id" id="id" required><br>
+
+		<label for="pwd">Password:</label>
+		<input type="password" name="pwd" id="pwd" required><br>
+
+		<label for="jumin">주민번호:</label>
+		<input type="text" name="jumin" id="jumin" required><br>
+
+		<label for="name">이름:</label>
+		<input type="text" name="name" id="name" required><br>
+
+		<label for="addr">주소:</label>
+		<input type="text" name="addr" id="addr" required><br>
+
+		<label for="tel">전화번호:</label>
+		<input type="tel" name="tel" id="tel" required><br>
+
+		<label for="mail">이메일:</label>
+		<input type="email" name="mail" id="mail" required><br>
+
+		<label for="gender">성별:</label>
+		<input type="radio" name="gender" id="male" value="M" required>
+		<label for="male">남성</label>
+		<input type="radio" name="gender" id="female" value="F" required>
+		<label for="female">여성</label><br>
+
+		<label for="grade">등급:</label>
+		<select name="grade" id="grade" required>
+			<option value="bronze">일반회원</option>
+			<option value="vip">관리자</option>
+		</select><br>
+
+		<label for="member_img">사진:</label>
+		<input type="file" name="member_img" id="member_img"><br>
+
+		<input type="submit" value="Create">
+	</form>
 </body>
 </html>

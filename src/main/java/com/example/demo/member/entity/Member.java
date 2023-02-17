@@ -6,12 +6,13 @@ import lombok.Data;
 
 @Entity
 @Data
-public class Member {
+public class Member{
 	@Id
 	private String id;
 	
 	private String pwd;
 	private String jumin;
+	private String name;
 	private String addr;
 	private String tel;
 	private String mail;
