@@ -109,4 +109,14 @@ public class TripDBManager {
 
         return re;
     }
+    
+   // tripNo로 지역명 찾기
+//    public static String getRegionByTripNo(int tripNo) {
+//    	SqlSession session = sqlSessionFactory.openSession();
+//    	String region = "";
+//    	region = session.selectOne("trip.getRegionByTripNo", tripNo);
+//        session.close();
+//
+//    	return region;
+//    }
 }

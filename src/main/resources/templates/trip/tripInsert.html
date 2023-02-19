@@ -6,42 +6,46 @@
 </head>
 <body>
     <h1>여행지 등록</h1>
-    <form action="/trip/tripInsert" method="post">
+    <form action="/trip/tripInsert" method="post" enctype="multipart/form-data">
         <div>
             <label th:for="tripTitle">관광지명 : </label>
             <input type="text" name="tripTitle">
         </div>
         <div>
-            <label th:for="tripTitle">지역명 : </label>
-            <input type="text" name="koreaCode">
+            <label th:for="region">지역명 : </label>
+            <input type="text" name="korea.code">
         </div>
         <div>
-            <label th:for="tripTitle">전화번호 : </label>
+            <label th:for="tripTel">전화번호 : </label>
             <input type="text" name="tripTel">
         </div>
         <div>
-            <label th:for="tripTitle">웹사이트 : </label>
+            <label th:for="site">웹사이트 : </label>
             <input type="text" name="site">
         </div>
         <div>
-            <label th:for="tripTitle">주소 : </label>
+            <label th:for="tripAddr">주소 : </label>
             <input type="text" name="tripAddr">
         </div>
         <div>
-            <label th:for="tripTitle">휴무일 : </label>
+            <label th:for="closed">휴무일 : </label>
             <input type="text" name="closed">
         </div>
         <div>
-            <label th:for="tripTitle">이용시간 : </label>
-            <input type="text" name="opened">
+            <label th:for="opened">이용시간 : </label><br>
+            <textarea rows="5" cols="80" name="opened"></textarea><br>
         </div>
         <div>
-            <label th:for="tripTitle">이용요금 : </label>
-            <input type="text" name="fare">
+            <label th:for="fare">이용요금 : </label><br>
+            <textarea rows="5" cols="80" name="fare"></textarea><br>
         </div>
         <div>
-            <label th:for="tripTitle">상세정보 : </label>
-            <input type="text" name="tripDetail">
+            <label th:for="tripDetail">상세정보 : </label><br>
+            <textarea rows="10" cols="80" name="tripDetail"></textarea><br>
+        </div>
+        <div>
+            <label th:for="tripImg">이미지 : </label>
+            <input multiple="multiple" type="file" name="uploadFile">
         </div>
         <div>
             <button>임시저장</button>

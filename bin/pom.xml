@@ -87,6 +87,27 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<!-- Intellij - Maven Project 사용시 .xml등 파일 찾지 못할때 해결방법		-->
+<!--		<resources>-->
+<!--			<resource>-->
+<!--				&lt;!&ndash; src/main/java 폴더의 xml파일들을 빌드에 포함 &ndash;&gt;-->
+<!--				<directory>src/main/java</directory>-->
+<!--				<includes>-->
+<!--					<include>**/*.xml</include>-->
+<!--					<include>**/*.properties</include>-->
+<!--				</includes>-->
+<!--			</resource>-->
+<!--			<resource>-->
+<!--				&lt;!&ndash;/main/resources 폴더의 xml, properties, yml, setting파일들을 빌드에 포함&ndash;&gt;-->
+<!--				<directory>src/main/resources</directory>-->
+<!--				<includes>-->
+<!--					<include>**/*.xml</include>-->
+<!--					<include>**/*.properties</include>-->
+<!--					<include>**/*.yml</include>-->
+<!--					&lt;!&ndash; <include>**/*.setting</include>&ndash;&gt;-->
+<!--				</includes>-->
+<!--			</resource>-->
+<!--		</resources>-->
 	</build>
 
 </project>

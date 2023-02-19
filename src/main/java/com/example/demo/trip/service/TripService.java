@@ -1,5 +1,6 @@
 package com.example.demo.trip.service;
 
+import com.example.demo.korea.vo.KoreaVO;
 import com.example.demo.trip.dao.TripDAO;
 import com.example.demo.trip.db.TripDBManager;
 import com.example.demo.trip.entity.Trip;
@@ -71,4 +72,9 @@ public class TripService {
     public int updateTripNoLiked(int tripNo){
         return TripDBManager.updateTripNoLiked(tripNo);
     }
+    
+//    public String getRegionByTripNo(int tripNo) {
+//    	return TripDBManager.getRegionByTripNo(tripNo);
+//    }
+    
 }

@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="trip">
-    <!--  여행지 전체 레코드 수 -->
+    // 여행지 전체 레코드 수
     <select id="getTotalRecord" resultType="java.lang.Integer">
         select count(*) from trip where state = 'Y'
         <if test="keyword != null and keyword != ''">
@@ -11,7 +11,7 @@
         </if>
     </select>
 
-    <!-- 임시저장된 여행지 레코드 수 - 관리자용 -->
+    // 임시저장된 여행지 레코드 수 - 관리자용
     <select id="getTotalPreSavedRecord" resultType="java.lang.Integer">
         select count(*) from trip where state = 'N'
         <if test="keyword != null and keyword != ''">
@@ -19,7 +19,7 @@
         </if>
     </select>
 
-    <!-- 여행지 목록 업데이트순/조회순/좋아요순 출력 -->
+    // 여행지 목록 업데이트순/조회순/좋아요순 출력
     <select id="findAll" resultType="tripVO">
         select * from (select a.*, rownum n from (select * from trip where state = 'Y'
         <if test="keyword != null and keyword != ''">
@@ -31,7 +31,7 @@
         ) a) where n between #{start} and #{end}
     </select>
 
-    <!-- 임시저장된 여행지 목록 업데이트순/조회순/좋아요순 출력 - 관리자용 -->
+    // 임시저장된 여행지 목록 업데이트순/조회순/좋아요순 출력 - 관리자용
     <select id="findAllByAdmin" resultType="tripVO">
         select * from (select a.*, rownum n from (select * from trip where state = 'N'
         <if test="keyword != null and keyword != ''">
@@ -43,34 +43,28 @@
         ) a )where n between #{start} and #{end}
     </select>
 
-    <!-- 대표 이미지 외 나머지 이미지들 가져오기 -->
+    // 대표 이미지 외 나머지 이미지들 가져오기
     <select id="findTripImg" resultType="imgVO">
         select * from img where no = #{no} and type = 'trip'
     </select>
 
-    <!-- 나머지 이미지들 저장 -->
+    // 나머지 이미지들 저장
     <insert id="insertTripImg" parameterType="imgVO">
         insert into img(img_no,fname,no,type) values(seq_img.nextval,#{fname},#{no},'trip')
     </insert>
 
-    <!-- 나머지 이미지들 삭제 -->
+    // 나머지 이미지들 삭제
     <delete id="deleteTripImg">
         delete img where no=#{no} and type = 'trip'
     </delete>
 
-    <!-- 찜하기 -->
+    // 찜하기
     <update id="updateTripLiked" parameterType="java.lang.Integer">
         update trip set trip_liked = trip_liked + 1 where trip_no = #{tripNo}
     </update>
 
-    <!-- 찜 취소 -->
+    // 찜 취소
     <update id="updateTripNoLiked" parameterType="java.lang.Integer">
         update trip set trip_liked = trip_liked - 1 where trip_no = #{tripNo}
     </update>
-    
-    <!-- tripNo로 지역명 찾기 -->
-    <select id="getRegionByTripNo" parameterType="java.lang.Integer" resultType="String">
-    	select distinct a.region from korea a, trip b where a.code = b.korea_code and b.trip_no = #{tripNo}
-    </select>
-    
 </mapper>
