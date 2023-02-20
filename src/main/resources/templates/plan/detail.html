@@ -7,23 +7,53 @@
 <body>
 	<h2>Detail</h2>
 	<hr>
-	<input type="text" th:value="${detail.planNo}">
+	
+	<!-- 여행계획 기본 정보 -->
+	글번호: <input type="text" th:value="${plan.planNo}">
+	여행일수 : <input type="text" th:value="${cnt}">
 
 	<table border="1" width="80%">
 		<tr>
-			<td>글사진</td>
-			<td>글제목</td>
-			<td>작성자</td>
-			<td>등록일</td>
+			<th>제목</th>
+			<th>지역</th>
+			<th>작성자</th>
+			<th>작성일</th>
+			<th>조회수</th>
+			<th>사진</th>
+			<th>여행시작일</th>
+			<th>여행종료일</th>
 		</tr>
 			
-		<tr th:each="d:${detail}">
-			<td th:text="${d.plan_img}"></td>
-			<td th:text="${d.plan_title}"></td>
-			<td th:text="${d.member_id}"></td>
-			<td th:text="${d.plan_date}"></td>
+		<tr th:each="p:${plan}">
+			<td th:text="${p.plan_title}"></td>
+			<td th:text="${p.korea_code}"></td>
+			<td th:text="${p.member_id}"></td>
+			<td th:text="${p.plan_date}"></td>
+			<td th:text="${p.plan_hit}"></td>
+			<td th:text="${p.plan_img}"></td>
+			<td th:text="${p.plan_start}"></td>
+			<td th:text="${p.plan_end}"></td>
 		</tr>
 	</table>
+	
+	<button id="btnUpdate">수정</button>
+	<button id="btnDelete">삭제</button>
+
+	
+	<hr>
+	<!-- 날짜별 일정 -->
+	<div th:each="day:${#numbers.sequence(1, cnt)}">
+		<div>
+			<h2 th:text="'DAY'+${day}"></h2>
+		</div>
+		
+	</div>
+	<hr>
+	
+	<div id="recoment">
+		<h2>댓글</h2>
+	</div>
+	
 
 </body>
 </html>

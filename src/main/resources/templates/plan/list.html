@@ -7,20 +7,24 @@
 <body>
 	<h2>List</h2>
 	<hr>
+	<button id="btnInsert">
+		<a href="/plan/insert">여행계획 작성</a>
+	</button>
+	<hr>
 
 	<table border="1" width="80%">
 		<tr>
-			<td>글사진</td>
-			<td>글제목</td>
-			<td>작성자</td>
-			<td>등록일</td>
+			<th>번호</th>
+			<th>사진</th>
+			<th>제목</th>
+			<th>작성자</th>
 		</tr>
 			
 		<tr th:each="p:${list}">
+			<td th:text="${p.planNo}"></td>
 			<td th:text="${p.plan_img}"></td>
 			<td th:text="${p.plan_title}"></td>
 			<td th:text="${p.member_id}"></td>
-			<td th:text="${p.plan_date}"></td>
 		</tr>
 	</table>
 

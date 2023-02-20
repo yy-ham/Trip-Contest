@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="plandetail">
+  <insert id="insertPlanDetail" parameterType="plandetail">
+  	insert into plandetail(pd_no, plan_no, day, trip_no) 
+  	values(seq_days.nextval, #{plan_no}, #{day}, #{trip_no})
+  </insert>
+  
+  <update id="updatePlanDetail" parameterType="plandetail">
+  	update plandetail set trip_no = #{trip_no} where pd_np = #{pd_no}
+  </update>
+  <!-- 
+  <select id="findPlandetailByPlanNo" resultType="">
+  	SELECT trip_title, trip_img FROM TRIP
+	WHERE trip_no IN (SELECT trip_no FROM PLANDETAIL WHERE plan_no = #{plan_no}
+	AND DAY = #{day})
+  </select>
+  -->
+  
+  
+  
+  
+</mapper>
