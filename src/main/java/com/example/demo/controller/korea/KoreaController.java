@@ -1,4 +1,4 @@
-package com.example.demo.korea.controller;
+package com.example.demo.controller.korea;
 
 import org.springframework.stereotype.Controller;
 

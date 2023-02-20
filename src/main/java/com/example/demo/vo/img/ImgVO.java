@@ -1,4 +1,4 @@
-package com.example.demo.trip.vo;
+package com.example.demo.vo.img;
 
 import lombok.Data;
 

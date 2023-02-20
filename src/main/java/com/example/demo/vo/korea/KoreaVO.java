@@ -1,4 +1,4 @@
-package com.example.demo.korea.vo;
+package com.example.demo.vo.korea;
 
 import lombok.Data;
 

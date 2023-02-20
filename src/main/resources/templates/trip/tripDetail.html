@@ -8,43 +8,48 @@
 	<h1>여행지 상세</h1>
 	<div>
 		<label th:for="tripTitle">관광지명 : </label> 
-		<span th:text="${trip.tripTitle}">
+		<span th:text="${trip.tripTitle}"></span>
 	</div>
 	<div>
-		<label th:for="tripTitle">지역명 : </label> 
-		<div th:text="${region}">
+		<label th:for="region">지역명 : </label> 
+		<span th:text="${region}"></span>
 	</div> 
 	<div>
 		<label th:for="tripTel">전화번호 : </label> 
-		<span th:text="${trip.tripTel}">
+		<span th:text="${trip.tripTel}"></span>
 	</div>
 	<div>
 		<label th:for="site">웹사이트 : </label> 
-		<span th:text="${trip.site}">
+		<span th:text="${trip.site}"></span>
 	</div>
 	<div>
 		<label th:for="tripAddr">주소 : </label> 
-		<span th:text="${trip.tripAddr}">
+		<span th:text="${trip.tripAddr}"></span>
 	</div>
 	<div>
 		<label th:for="closed">휴무일 : </label> 
-		<span th:text="${trip.closed}">
+		<span th:text="${trip.closed}"></span>
 	</div>
 	<div>
 		<label th:for="opened">이용시간 : </label>
-		<span th:text="${trip.opened}">
+		<span th:text="${trip.opened}"></span>
 	</div>
 	<div>
 		<label th:for="fare">이용요금 : </label>
-		<span th:text="${trip.fare}">
+		<span th:text="${trip.fare}"></span>
 	</div>
 	<div>
 		<label th:for="tripDetail">상세정보 : </label>
-		<span th:text="${trip.tripDetail}">
+		<span th:text="${trip.tripDetail}"></span>
 	</div>
 	<div>
 		<label th:for="tripImg">이미지 : </label>
-		<div th:text="${trip.tripImg}">
+		<div th:text="${trip.tripImg}"></div>
+		<img th:src="@{'/images/'+${trip.tripImg}}" width="100" height="100"/>
+		<div th:each="img:${imgList}">
+			<div th:text="${img.fname}"></div>
+			<img th:src="@{'/images/'+${img.fname}}" width="100" height="100"/>
+		</div>
 	</div>
 </body>
 </html>

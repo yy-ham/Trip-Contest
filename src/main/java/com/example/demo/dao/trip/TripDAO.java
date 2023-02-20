@@ -1,9 +1,10 @@
-package com.example.demo.trip.dao;
+package com.example.demo.dao.trip;
 
-import com.example.demo.trip.entity.Trip;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import com.example.demo.entity.trip.Trip;
 
 import java.util.List;
 

@@ -1,11 +1,12 @@
-package com.example.demo.korea.entity;
+package com.example.demo.entity.korea;
 
-import com.example.demo.trip.entity.Trip;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.example.demo.entity.trip.Trip;
 
 @Entity
 @Data

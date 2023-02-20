@@ -1,7 +1,8 @@
-package com.example.demo.trip.db;
+package com.example.demo.db.trip;
 
-import com.example.demo.trip.vo.ImgVO;
-import com.example.demo.trip.vo.TripVO;
+import com.example.demo.vo.img.ImgVO;
+import com.example.demo.vo.trip.TripVO;
+
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -111,12 +112,12 @@ public class TripDBManager {
     }
     
    // tripNo로 지역명 찾기
-//    public static String getRegionByTripNo(int tripNo) {
-//    	SqlSession session = sqlSessionFactory.openSession();
-//    	String region = "";
-//    	region = session.selectOne("trip.getRegionByTripNo", tripNo);
-//        session.close();
-//
-//    	return region;
-//    }
+    public static String getRegionByTripNo(int tripNo) {
+    	SqlSession session = sqlSessionFactory.openSession();
+    	String region = "";
+    	region = session.selectOne("trip.getRegionByTripNo", tripNo);
+        session.close();
+
+    	return region;
+    }
 }

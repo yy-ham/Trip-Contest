@@ -1,11 +1,11 @@
-package com.example.demo.trip.service;
+package com.example.demo.service.trip;
 
-import com.example.demo.korea.vo.KoreaVO;
-import com.example.demo.trip.dao.TripDAO;
-import com.example.demo.trip.db.TripDBManager;
-import com.example.demo.trip.entity.Trip;
-import com.example.demo.trip.vo.ImgVO;
-import com.example.demo.trip.vo.TripVO;
+import com.example.demo.dao.trip.TripDAO;
+import com.example.demo.db.trip.TripDBManager;
+import com.example.demo.entity.trip.Trip;
+import com.example.demo.vo.img.ImgVO;
+import com.example.demo.vo.trip.TripVO;
+
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -73,8 +73,8 @@ public class TripService {
         return TripDBManager.updateTripNoLiked(tripNo);
     }
     
-//    public String getRegionByTripNo(int tripNo) {
-//    	return TripDBManager.getRegionByTripNo(tripNo);
-//    }
+    public String getRegionByTripNo(int tripNo) {
+    	return TripDBManager.getRegionByTripNo(tripNo);
+    }
     
 }

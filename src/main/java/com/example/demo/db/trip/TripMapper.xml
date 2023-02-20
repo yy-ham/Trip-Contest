@@ -70,7 +70,7 @@
     
     <!-- tripNo로 지역명 찾기 -->
     <select id="getRegionByTripNo" parameterType="java.lang.Integer" resultType="String">
-    	select distinct a.region from korea a, trip b where a.code = b.korea_code and b.trip_no = #{tripNo}
+    	select a.region from korea a, trip b where a.code = b.korea_code and b.trip_no = #{tripNo}
     </select>
     
 </mapper>

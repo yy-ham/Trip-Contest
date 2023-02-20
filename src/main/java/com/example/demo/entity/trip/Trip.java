@@ -1,9 +1,10 @@
-package com.example.demo.trip.entity;
+package com.example.demo.entity.trip;
 
-import com.example.demo.korea.entity.Korea;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.example.demo.entity.korea.Korea;
 
 import java.time.LocalDateTime;
 
