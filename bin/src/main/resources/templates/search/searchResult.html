@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymelaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>검색 결과</title>
+</head>
+<body>
+    <header>
+
+    </header>
+
+    <article>
+        <table>
+            <thead>
+                <tr>
+                    <th>관광지 이름</th>
+                    <th>관광지 주소</th>
+                    <th>관광지 번호</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="t:${list}">
+                    <td th:text="${t.trip_title}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </article>
+
+    <footer>
+
+    </footer>
+</body>
+</html>

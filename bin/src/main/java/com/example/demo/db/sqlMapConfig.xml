@@ -5,9 +5,8 @@
 <configuration>
     <properties resource="com/example/demo/db/db.properties"/>
     <typeAliases>
-        <typeAlias type="com.example.demo.vo.trip.TripVO" alias="tripVO"/>
-        <typeAlias type="com.example.demo.vo.trip.ImgVO" alias="imgVO"/>
-        <typeAlias type="com.example.demo.vo.plan.PlanVO" alias="planVO"/>
+        <typeAlias type="com.example.demo.trip.vo.TripVO" alias="tripVO"/>
+        <typeAlias type="com.example.demo.trip.vo.ImgVO" alias="imgVO"/>
     </typeAliases>
     <environments default="development">
         <environment id="development">
@@ -22,6 +21,5 @@
     </environments>
     <mappers>
         <mapper resource="com/example/demo/trip/db/TripMapper.xml"/>
-        <mapper resource="com/example/demo/plan/db/PlanMapper.xml"/>
     </mappers>
 </configuration>

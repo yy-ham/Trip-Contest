@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="days">
+  <insert id="insertDays" parameterType="days">
+  	insert into days values(seq_days.nextval, #{plan_no}, #{day},
+  	#{plan1}, #{plan2}, #{plan3}, #{plan4}, #{plan5})
+  </insert>
+  
+  <update id="updateDays" parameterType="days">
+  	update day1 set plan1 = #{plan1}, plan2 = #{plan2}, plan3 = #{plan3}, 
+  	plan4 = #{plan4}, plan5 = #{plan5} where plan_no = #{plan_no} and day = #{day};
+  </update>
+  
+  
+  
+  
+</mapper>

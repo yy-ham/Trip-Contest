@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="trip">
+
+    <select id="getTotalRecord" resultType="java.lang.Integer">
+        select count(*) from trip where state = 'Y'
+        <if test="keyword != null and keyword != ''">
+            and (trip_addr like '%' || #{keyword} || '%' or trip_addr like '%' || #{keyword} || '%')
+        </if>
+        <if test="region != null and region != '' and region != 0">
+            AND korea_code = #{region}
+        </if>
+    </select>
+
+
+    <select id="getTotalPreSavedRecord" resultType="java.lang.Integer">
+        select count(*) from trip where state = 'N'
+        <if test="keyword != null and keyword != ''">
+            and (trip_addr like '%' || #{keyword} || '%' or trip_addr like '%' || #{keyword} || '%')
+        </if>
+    </select>
+
+
+    <select id="findAll" resultType="tripVO">
+        select * from (select a.*, rownum n from (select * from trip where state = 'Y'
+        <if test="keyword != null and keyword != ''">
+            and (trip_addr like '%' || #{keyword} || '%' or trip_addr like '%' || #{keyword} || '%')
+        </if>
+        <if test="region != null and region != '' and region != 0 ">
+            AND korea_code = #{region}
+        </if>
+        <if test="orderColumn != null and orderColumn != ''">
+            order by ${orderColumn} desc
+        </if>
+        ) a) where n between #{start} and #{end}
+    </select>
+
+
+    <select id="findAllByAdmin" resultType="tripVO">
+        select * from (select a.*, rownum n from (select * from trip where state = 'N'
+        <if test="keyword != null and keyword != ''">
+            and (trip_addr like '%' || #{keyword} || '%' or trip_addr like '%' || #{keyword} || '%')
+        </if>
+        <if test="orderColumn != null and orderColumn != ''">
+            order by ${orderColumn} desc
+        </if>
+        ) a )where n between #{start} and #{end}
+    </select>
+
+
+    <select id="findTripImg" resultType="imgVO">
+        select * from img where no = #{no} and type = 'trip'
+    </select>
+
+
+    <insert id="insertTripImg" parameterType="imgVO">
+        insert into img(img_no,fname,no,type) values(seq_img.nextval,#{fname},#{no},'trip')
+    </insert>
+
+
+    <delete id="deleteTripImg">
+        delete img where no=#{no} and type = 'trip'
+    </delete>
+
+
+    <update id="updateTripLiked" parameterType="java.lang.Integer">
+        update trip set trip_liked = trip_liked + 1 where trip_no = #{tripNo}
+    </update>
+
+
+    <update id="updateTripNoLiked" parameterType="java.lang.Integer">
+        update trip set trip_liked = trip_liked - 1 where trip_no = #{tripNo}
+    </update>
+</mapper>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="recoment">
+	<insert id="insertRecoment" parameterType="recoment">
+		insert recoment into(rec_no, id, rec_content, no, type) 
+		values(seq_rec.nextval, #{id}, #{rec_content}, #{no}, #{type});
+	</insert>
+	
+	
+</mapper>
