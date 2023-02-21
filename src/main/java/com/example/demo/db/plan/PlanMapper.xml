@@ -17,7 +17,7 @@
         <if test="orderColumn != null and orderColumn != ''">
             order by ${orderColumn} desc
         </if>
-        ) a) where n between #{start} and #{end}
+         )a) where n between #{start} and #{end}
     </select>
   
   <select id="findByRegion" resultType="planVO">

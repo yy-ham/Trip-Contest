@@ -10,4 +10,5 @@ public class TripVO {
     private String state;
     private String trip_addr;
     private String trip_tel;
+    private String region;
 }

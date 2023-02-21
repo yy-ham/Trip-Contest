@@ -4,18 +4,23 @@ import com.example.demo.service.search.SearchService;
 import com.example.demo.vo.plan.PlanVO;
 import com.example.demo.vo.trip.TripVO;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @Getter @Setter
@@ -45,6 +50,8 @@ public class SearchController {
                              @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                              String orderColumn
                             ) {
+
+
         ModelAndView mav = new ModelAndView();
         mav.setViewName("/search/searchResult");
         
@@ -52,14 +59,24 @@ public class SearchController {
         log.info("region ={}",region);
         log.info("pageNum ={}",pageNum);
         log.info("orderColumn ={}",orderColumn);
+        
+        int tripStartPage = searchService.getStartTripPage(pageNum);
+        int planStartPage = searchService.getStartPlanPage(pageNum);
+        
+        mav.addObject("keyword", keyword);
+        mav.addObject("region", region);
+        mav.addObject("pageNum", pageNum);
+        mav.addObject("orderColumn", orderColumn);
 
         mav.addObject("planList",searchService.getSearchedPlan(keyword, region, pageNum, orderColumn));
         mav.addObject("tripList",searchService.getSearchedTrip(keyword, region, pageNum, orderColumn));
         
         mav.addObject("planPage", searchService.getTotalPlanPage());
         mav.addObject("tripPage", searchService.getTotalTripPage());
+        
 
         return mav;
     }
+    
 
 }

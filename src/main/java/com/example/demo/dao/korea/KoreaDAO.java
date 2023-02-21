@@ -7,5 +7,5 @@ import com.example.demo.entity.korea.Korea;
 
 @Repository
 public interface KoreaDAO extends JpaRepository<Korea, Integer> {
-
+	
 }

@@ -17,10 +17,59 @@
     </header>
 
     <article>
+    	<div>
+    		<form method="get" action="/search/result">
+    			<select name = "region">
+    				<option value="0">전국</option>
+    				<option value="1">서울</option>
+    				<option value="2">경기</option>
+    				<option value="3">인천</option>
+    				<option value="4">강원</option>
+    				<option value="5">충남</option>
+    				<option value="6">세종</option>
+    				<option value="7">대전</option>
+    				<option value="8">충북</option>
+    				<option value="9">경북</option>
+    				<option value="10">대구</option>
+    				<option value="11">울산</option>
+    				<option value="12">경남</option>
+    				<option value="13">부산</option>
+    				<option value="14">전북</option>
+    				<option value="15">전남</option>
+    				<option value="16">광주</option>
+    				<option value="17">제주</option>
+    			</select>
+    			<input type="text" name="keyword">
+    			<input type="submit" value="검색">
+    		</form>
+    	</div>
        <div>
        	<span id="planInfo">
        		<!-- 카드로 들어갈 것들 -->
        		<div th:if="${planList} == null">
+       			죄송합니다. 정보가 없습니다.
+       		</div>
+       		<div class="card" style="width: 18rem;" th:each="trip:${tripList}">
+			  <img src="..." class="card-img-top" alt="...">
+			  <div class="card-body">
+			    <h5 class="card-title" th:text="${trip.trip_title}">Card title</h5>
+			    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+			    <a href="#" class="btn btn-primary">Go somewhere</a>
+			  </div>
+			</div>
+       		
+       	</span>
+      	 <button>더보기</button>
+      	 <br>
+      	 <span th:each="t : ${#numbers.sequence(1,tripPage)}">
+      	 	<a th:text="${t}" th:href="@{|/search/result?keyword=${keyword}&amp;region=${region}&orderColumn=${orderColumn}&pageNum=${t}|}"></a>
+      	 </span>
+       </div>
+       <hr>
+       <div>
+       	<span id="tripInfo">
+       		<!-- 카드로 들어갈 것들 -->
+       		<div th:if="${tripList} == null">
        			죄송합니다. 정보가 없습니다.
        		</div>
        		<div class="card" style="width: 18rem;" th:each="plan:${planList}">
@@ -32,17 +81,11 @@
 			  </div>
 			</div>
        	</span>
-      	 <button>더보기</button>
-       </div>
-       <hr>
-       <div>
-       	<span id="tripInfo">
-       		<!-- 카드로 들어갈 것들 -->
-       		<div th:if="${tripList} == null">
-       			죄송합니다. 정보가 없습니다.
-       		</div>
-       	</span>
     	 <button>더보기</button>
+    	  <br>
+      	 <span th:each="t : ${#numbers.sequence(1,tripPage)}">
+      	 	<a th:text="${t}" th:href="@{|/search/result?keyword=${keyword}&amp;region=${region}&orderColumn=${orderColumn}&pageNum=${t}|}"></a>
+      	 </span>
        </div>
     </article>
 
