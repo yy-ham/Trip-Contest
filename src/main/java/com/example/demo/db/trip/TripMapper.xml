@@ -7,7 +7,7 @@
     <select id="getTotalRecord" resultType="java.lang.Integer">
         select count(*) from trip where state = 'Y'
         <if test="keyword != null and keyword != ''">
-            and (trip_addr like '%' || #{keyword} || '%' or trip_addr like '%' || #{keyword} || '%')
+            and (trip_addr like '%' || #{keyword} || '%' or trip_title like '%' || #{keyword} || '%')
         </if>
     </select>
 
@@ -15,7 +15,7 @@
     <select id="getTotalPreSavedRecord" resultType="java.lang.Integer">
         select count(*) from trip where state = 'N'
         <if test="keyword != null and keyword != ''">
-            and (trip_addr like '%' || #{keyword} || '%' or trip_addr like '%' || #{keyword} || '%')
+            and (trip_addr like '%' || #{keyword} || '%' or trip_title like '%' || #{keyword} || '%')
         </if>
     </select>
 
@@ -23,7 +23,7 @@
     <select id="findAll" resultType="tripVO">
         select * from (select a.*, rownum n from (select * from trip where state = 'Y'
         <if test="keyword != null and keyword != ''">
-            and (trip_addr like '%' || #{keyword} || '%' or trip_addr like '%' || #{keyword} || '%')
+            and (trip_addr like '%' || #{keyword} || '%' or trip_title like '%' || #{keyword} || '%')
         </if>
         <if test="orderColumn != null and orderColumn != ''">
             order by ${orderColumn} desc
@@ -35,7 +35,7 @@
     <select id="findAllByAdmin" resultType="tripVO">
         select * from (select a.*, rownum n from (select * from trip where state = 'N'
         <if test="keyword != null and keyword != ''">
-            and (trip_addr like '%' || #{keyword} || '%' or trip_addr like '%' || #{keyword} || '%')
+            and (trip_addr like '%' || #{keyword} || '%' or trip_title like '%' || #{keyword} || '%')
         </if>
         <if test="orderColumn != null and orderColumn != ''">
             order by ${orderColumn} desc
@@ -44,7 +44,7 @@
     </select>
 
     <!-- 대표 이미지 외 나머지 이미지들 가져오기 -->
-    <select id="findTripImg" resultType="imgVO">
+    <select id="findTripImg" resultType="imgVO" parameterType="java.lang.Integer">
         select * from img where no = #{no} and type = 'trip'
     </select>
 
@@ -54,8 +54,13 @@
     </insert>
 
     <!-- 나머지 이미지들 삭제 -->
-    <delete id="deleteTripImg">
+    <delete id="deleteTripImg" parameterType="java.lang.Integer">
         delete img where no=#{no} and type = 'trip'
+    </delete>
+    
+    <!-- 파일명으로 이미지 테이블의 이미지들 삭제 -->
+    <delete id="deleteTripImgByFname" parameterType="String">
+    	delete img where fname=#{fname, jdbcType=VARCHAR} and type ='trip'
     </delete>
 
     <!-- 찜하기 -->
@@ -73,4 +78,8 @@
     	select a.region from korea a, trip b where a.code = b.korea_code and b.trip_no = #{tripNo}
     </select>
     
+    <!-- 지역명으로 koreaCode 찾기 -->
+    <select id="getKoreaCodeByRegion" parameterType="String" resultType="java.lang.Integer">
+    	select code from korea where region = #{region}
+    </select>
 </mapper>

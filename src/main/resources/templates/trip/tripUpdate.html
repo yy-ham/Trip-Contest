@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>여행지 등록</title>
+    <title>여행지 수정</title>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
 <script type="text/javascript">
 	$(function(){
@@ -15,16 +15,18 @@
 </script>
 </head>
 <body>
-    <h1>여행지 등록</h1>
-    <form action="/trip/tripInsert" method="post" enctype="multipart/form-data">
+    <h1>여행지 수정</h1>
+    <form action="/trip/tripUpdate" method="post" enctype="multipart/form-data">
+    	<input type="hidden" name="tripNo" th:value="${trip.tripNo}">
         <div>
             <label th:for="tripTitle">관광지명 : </label>
-            <input type="text" name="tripTitle">
+            <input type="text" name="tripTitle" th:value="${trip.tripTitle}">
         </div>
         <div>
             <label th:for="region">지역명 : </label>
-            <!-- <input type="text" name="korea.code"> -->
-            <select name="korea.code" id="koreaCode">
+            <label th:text="${region}"/>
+            <!-- <select name="korea.code" id="koreaCode">
+            	<option th:value="${koreaCode}" th:text="${region}"></option>
             	<option value="1">서울</option>
             	<option value="2">경기</option>
             	<option value="3">인천</option>
@@ -42,7 +44,7 @@
             	<option value="15">전남</option>
             	<option value="16">광주</option>
             	<option value="17">제주</option>
-            </select>
+            </select> -->
         </div>
         <div>
             <label th:for="tripTel">전화번호 : </label>
@@ -50,43 +52,45 @@
             	<option value="1">02</option>
             	<option value="2">031</option>
             	<option value="3">051</option>
-            </select>
-            <input type="hidden" name="tripTel"> -->
-            <input type="text" name="tripTel">
+            </select> -->
+            <!-- <input type="hidden" name="tripTel" th:value="${trip.tripTel}"> -->
+            <input type="text" name="tripTel" th:value="${trip.tripTel}">
         </div>
         <div>
             <label th:for="site">웹사이트 : </label>
-            <input type="text" name="site">
+            <input type="text" name="site" th:value="${trip.site}">
         </div>
         <div>
             <label th:for="tripAddr">주소 : </label>
-            <input type="text" name="tripAddr">
+            <input type="text" name="tripAddr" th:value="${trip.tripAddr}">
         </div>
         <div>
             <label th:for="closed">휴무일 : </label>
-            <input type="text" name="closed">
+            <input type="text" name="closed" th:value="${trip.closed}">
         </div>
         <div>
             <label th:for="opened">이용시간 : </label><br>
-            <textarea rows="5" cols="80" name="opened"></textarea><br>
+            <textarea rows="5" cols="80" name="opened" th:text="${trip.opened}"></textarea><br>
         </div>
         <div>
             <label th:for="fare">이용요금 : </label><br>
-            <textarea rows="5" cols="80" name="fare"></textarea><br>
+            <textarea rows="5" cols="80" name="fare" th:text="${trip.fare}"></textarea><br>
         </div>
         <div>
             <label th:for="tripDetail">상세정보 : </label><br>
-            <textarea rows="10" cols="80" name="tripDetail"></textarea><br>
+            <textarea rows="10" cols="80" name="tripDetail" th:text="${trip.tripDetail}"></textarea><br>
         </div>
         <div>
             <label th:for="tripImg">이미지 : </label>
+            <span th:text="${trip.tripImg}"></span>
+            <span th:each="img:${imgList}">
+            	<span th:text="${img.fname}"></span>
+            </span>
+            <input type="hidden" th:value="${imgList}">
             <input multiple="multiple" type="file" name="uploadFile">
         </div>
         <div>
-            <button>임시저장</button>
-        </div>
-        <div>
-            <button type="submit">저장</button>
+            <button type="submit">수정</button>
         </div>
     </form>
 </body>

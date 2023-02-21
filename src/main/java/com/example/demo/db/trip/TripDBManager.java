@@ -89,6 +89,16 @@ public class TripDBManager {
 
         return re;
     }
+    
+    // 파일명으로 이미지 테이블의 이미지들 삭제
+    public static int deleteTripImgByFname(String fname){
+        int re = -1;
+        SqlSession session = sqlSessionFactory.openSession(true);
+        re = session.delete("trip.deleteTripImgByFname", fname);
+        session.close();
+
+        return re;
+    }
 
 
     // 찜하기
@@ -119,5 +129,15 @@ public class TripDBManager {
         session.close();
 
     	return region;
+    }
+    
+    // 지역명으로 koreaCode 찾기
+    public static int getKoreaCodeByRegion(String region) {
+    	SqlSession session = sqlSessionFactory.openSession();
+    	int koreaCode = 0;
+    	koreaCode = session.selectOne("trip.getKoreaCodeByRegion", region);
+    	session.close();
+    	
+    	return koreaCode;
     }
 }

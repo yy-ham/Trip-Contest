@@ -64,6 +64,10 @@ public class TripService {
     public int deleteTripImg(int tripNo){
         return TripDBManager.deleteTripImg(tripNo);
     }
+    
+    public int deleteTripImgByFname(String fname) {
+    	return TripDBManager.deleteTripImgByFname(fname);
+    }
 
     public int updateTripLiked(int tripNo){
         return TripDBManager.updateTripLiked(tripNo);
@@ -75,6 +79,10 @@ public class TripService {
     
     public String getRegionByTripNo(int tripNo) {
     	return TripDBManager.getRegionByTripNo(tripNo);
+    }
+    
+    public int getKoreaCodeByRegion(String region) {
+    	return TripDBManager.getKoreaCodeByRegion(region);
     }
     
 }
