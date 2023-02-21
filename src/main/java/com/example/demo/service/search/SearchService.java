@@ -34,6 +34,30 @@ public class SearchService {
     
     @Autowired
     private PlanService planService;
+    
+    public int getTotalPlanPage() {
+    	 totalRecord = planService.getTotalRecord((HashMap<String, Object>) map);
+
+         if(totalRecord%pageSize==0){
+             totalPage = totalRecord / pageSize;
+         }else {
+             totalPage = (totalRecord / pageSize) + 1;
+         }
+         
+         return totalPage;
+    }
+    
+    public int getTotalTripPage() {
+   	 totalRecord = tripService.getTotalRecord((HashMap<String, Object>) map);
+
+        if(totalRecord%pageSize==0){
+            totalPage = totalRecord / pageSize;
+        }else {
+            totalPage = (totalRecord / pageSize) + 1;
+        }
+        
+        return totalPage;
+   }
 
     //keyword(검색한 단어) pageNum(페이징에 처리) region(지역), orderColumn(정렬기준)
     public List getSearchedTrip(String keyword, int regionInt, int pageNum, String orderColumn){
@@ -45,17 +69,7 @@ public class SearchService {
 
         map.put("keyword", keyword);
         map.put("region", region);
-
-        totalRecord = tripService.getTotal((HashMap<String, Object>) map);
-
         map.put("orderColumn", orderColumn);
-
-
-        if(totalRecord%pageSize==0){
-            totalPage = totalRecord / pageSize;
-        }else {
-            totalPage = (totalRecord / pageSize) + 1;
-        }
 
         int start = (pageNum-1)*pageSize + 1;
         int end = start +  pageSize - 1;
@@ -70,22 +84,18 @@ public class SearchService {
         return list;
     }
     
-    public List getSearchedPlan(String keyword, int region, int pageNum, String orderColumn){
+    public List getSearchedPlan(String keyword, int regionInt, int pageNum, String orderColumn){
 
+    	String region = null;
+    	if (regionInt != 0) {
+    		region = regionInt+"";
+    	}
 
         map.put("keyword", keyword);
         map.put("region", region);
-
-        totalRecord = planService.getTotalRecord((HashMap<String, Object>) map);
-
         map.put("orderColumn", orderColumn);
 
-
-        if(totalRecord%pageSize==0){
-            totalPage = totalRecord / pageSize;
-        }else {
-            totalPage = (totalRecord / pageSize) + 1;
-        }
+       
 
         int start = (pageNum-1)*pageSize + 1;
         int end = start +  pageSize - 1;
@@ -95,7 +105,30 @@ public class SearchService {
 
 
         //dao 통해 가져온 값을 넣는 리스트
-        List<PlanVO> list = planService.findAll((HashMap<String, Object>) map);
+        List<PlanVO> prelist = planService.findAll((HashMap<String, Object>) map);
+        List<PlanVO> list = new ArrayList<>();
+        for (PlanVO planVO : prelist) {
+			switch(planVO.getKorea_code()) {
+				case 1: planVO.setPlan_region("서울"); break;
+				case 2: planVO.setPlan_region("경기"); break;
+				case 3: planVO.setPlan_region("인천"); break;
+				case 4: planVO.setPlan_region("강원"); break;
+				case 5: planVO.setPlan_region("충남"); break;
+				case 6: planVO.setPlan_region("세종"); break;
+				case 7: planVO.setPlan_region("대전"); break;
+				case 8: planVO.setPlan_region("충북"); break;
+				case 9: planVO.setPlan_region("경북"); break;
+				case 10: planVO.setPlan_region("대구"); break;
+				case 11: planVO.setPlan_region("울산"); break;
+				case 12: planVO.setPlan_region("경남"); break;
+				case 13: planVO.setPlan_region("부산"); break;
+				case 14: planVO.setPlan_region("전북"); break;
+				case 15: planVO.setPlan_region("전남"); break;
+				case 16: planVO.setPlan_region("광주"); break;
+				case 17: planVO.setPlan_region("제주"); break;
+			}
+			list.add(planVO);
+		}
         //임시 리스트
         return list;
     }

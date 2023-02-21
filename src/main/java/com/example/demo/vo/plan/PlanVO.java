@@ -18,5 +18,6 @@ public class PlanVO {
 	private String plan_img;
 	private String type;
 	private int korea_code;
+	private String plan_region;
 
 }

@@ -55,6 +55,9 @@ public class SearchController {
 
         mav.addObject("planList",searchService.getSearchedPlan(keyword, region, pageNum, orderColumn));
         mav.addObject("tripList",searchService.getSearchedTrip(keyword, region, pageNum, orderColumn));
+        
+        mav.addObject("planPage", searchService.getTotalPlanPage());
+        mav.addObject("tripPage", searchService.getTotalTripPage());
 
         return mav;
     }

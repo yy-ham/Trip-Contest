@@ -21,7 +21,7 @@
         </environment>
     </environments>
     <mappers>
-        <mapper resource="com/example/demo/trip/db/TripMapper.xml"/>
-        <mapper resource="com/example/demo/plan/db/PlanMapper.xml"/>
+        <mapper resource="com/example/demo/db/trip/TripMapper.xml"/>
+        <mapper resource="com/example/demo/db/plan/PlanMapper.xml"/>
     </mappers>
 </configuration>

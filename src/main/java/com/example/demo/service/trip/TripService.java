@@ -34,7 +34,7 @@ public class TripService {
     }
     
     // 여행지의 전체 레코드 갯수를 가져온다.
-    public int getTotal(HashMap<String, Object> map){
+    public int getTotalRecord(HashMap<String, Object> map){
         return TripDBManager.getTotalRecord(map);
     }
 }
