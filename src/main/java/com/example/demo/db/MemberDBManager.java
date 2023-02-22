@@ -1,12 +1,14 @@
 package com.example.demo.db;
 
 import java.io.InputStream;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
-import com.example.demo.member.entity.Member;
+import com.example.demo.entity.Member;
+import com.example.demo.vo.member.MemberVO;
 
 import jakarta.annotation.Resources;
 
@@ -14,7 +16,7 @@ public class MemberDBManager {
 	public static SqlSessionFactory sqlSessionFactory;
 	static {
 		try {
-			String resource = "com/example/demo/member/db/sqlMapConfig.xml";
+			String resource = "com/example/demo/db/sqlMapConfig.xml";
 			InputStream inputStream = org.apache.ibatis.io.Resources.getResourceAsStream(resource);
 			sqlSessionFactory =
 			  new SqlSessionFactoryBuilder().build(inputStream);
@@ -49,10 +51,16 @@ public class MemberDBManager {
 			return re;
 		}
 		//id찾기
-//		public static Member findByNo(int no) {
-//			Member m = null;
-//			SqlSession session = sqlSessionFactory.openSession(true);
-//			g = session.selectOne("member.findById",no);
-//			return g;
-//		}
+		public static MemberVO findByNameAndPhone(HashMap<String, Object> map) {
+			
+			SqlSession session = sqlSessionFactory.openSession();
+			MemberVO member = session.selectOne("member.findByNameAndPhone",map);
+			return member;
+		}
+		//pw찾기
+		public static MemberVO findByIdAndNameAndPhone(HashMap<String, Object> map) {
+			SqlSession session = sqlSessionFactory.openSession();
+			MemberVO member = session.selectOne("member.findByIdAndNameAndPhone",map);
+			return member;
+		}
 }

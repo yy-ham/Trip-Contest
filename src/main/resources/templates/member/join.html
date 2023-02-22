@@ -1,17 +1,60 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8">
 	<title>회원가입</title>
 </head>
+<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script type="text/javascript"> 
+
+	$(function(){
+	    $(document).ready(function() {
+	        $("#check-duplicate").on("click", function() {
+	            var id = $("#id").val();
+	
+	            $.ajax({
+	                url: "/checkId",
+	                data: {id: id},
+	                success: function(data) {
+	                    if (data == true) {
+	                        alert("중복된 ID입니다.");
+	                        $("#id").attr("readonly", true);
+	                    } else {
+	                        alert("사용 가능한 아이디입니다.");
+	                    }
+	                }
+	            });
+	        });
+	    });
+	    
+	    $(document).ready(function() {
+	        $("#pwd-confirm").on("keyup", function() {
+	            var pwd = $("#pwd").val();
+	            var pwdConfirm = $("#pwd-confirm").val();
+	
+	            if (pwd === pwdConfirm) {
+	                $("#pwd-confirm-message").text("비밀번호가 일치합니다.").css("color", "green");
+	            } else {
+	                $("#pwd-confirm-message").text("비밀번호가 일치하지 않습니다.").css("color", "red");
+	            }
+	        });
+	    });
+	
+	})
+    </script>
 <body>
 	<h1>회원가입</h1>
-	<form method="post" action="/join">
+	<form method="post" action="/join" enctype="multipart/form-data">
 		<label for="id">ID:</label>
-		<input type="text" name="id" id="id" required><br>
-
-		<label for="pwd">Password:</label>
+		<input type="text" name="id" id="id" required th:value="${id}" th:readonly="${id != null}"><br>
+		<button type="button" id="check-duplicate">ID 중복 체크</button><br>
+		
+		<label for="pwd">비밀번호:</label>
 		<input type="password" name="pwd" id="pwd" required><br>
+		
+		<label for="pwd-confirm">비밀번호 확인:</label>
+		<input type="password" id="pwd-confirm" required><br>
+		<span id="pwd-confirm-message"></span><br>
 
 		<label for="jumin">주민번호:</label>
 		<input type="text" name="jumin" id="jumin" required><br>
@@ -23,7 +66,7 @@
 		<input type="text" name="addr" id="addr" required><br>
 
 		<label for="tel">전화번호:</label>
-		<input type="tel" name="tel" id="tel" required><br>
+		<input type="tel" name="phone" id="tel" required><br>
 
 		<label for="mail">이메일:</label>
 		<input type="email" name="mail" id="mail" required><br>
@@ -42,8 +85,9 @@
 
 		<label for="member_img">사진:</label>
 		<input type="file" name="member_img" id="member_img"><br>
+		
 
-		<input type="submit" value="Create">
+		<input type="submit" value="create">
 	</form>
 </body>
 </html>

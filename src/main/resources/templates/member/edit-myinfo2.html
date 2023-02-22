@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>내 정보 수정</title>
+</head>
+<script>
+function deleteConfirm() {
+  if (confirm('정말로 탈퇴하시겠습니까?')) {
+    document.getElementById('delete-form').submit();
+  }
+}
+</script>
+<body>
+	<h1>내 정보 수정</h1>
+	<form method="post" th:action="@{/myinfo/edit}" enctype="multipart/form-data">
+		<table>
+			<tr>
+				<th>ID</th>
+				<td th:text="${member.id}"></td>
+			</tr>
+			<tr>
+				<th>이름</th>
+				<td><input type="text" name="name" th:value="${member.name}"></td>
+			</tr>
+			<tr>
+				<th>주소</th>
+				<td><input type="text" name="addr" th:value="${member.addr}"></td>
+			</tr>
+			<tr>
+				<th>전화번호</th>
+				<td><input type="text" name="phone" th:value="${member.phone}"></td>
+			</tr>
+			<tr>
+				<th>이메일</th>
+				<td><input type="text" name="mail" th:value="${member.mail}"></td>
+			</tr>
+			<tr>
+				<th>성별</th>
+				<td><input type="radio" name="gender" value="M"
+					th:checked="${member.gender == 'M'}">남성 <input type="radio"
+					name="gender" value="F" th:checked="${member.gender == 'F'}">여성
+				</td>
+			</tr>
+			<tr>
+				<th>등급</th>
+				<td><input type="radio" name="grade" value="member"
+					th:checked="${member.grade == 'member'}">일반회원 <input
+					type="radio" name="grade" value="vip"
+					th:checked="${member.grade == 'vip'}">관리자</td>
+			</tr>
+			<tr>
+				<th>프로필</th>
+				<td><img th:src="@{/images/profile1.jpg}" width=100 height=100/><br>
+					<input type="file" name="memberImg">
+				</td>
+			</tr>
+		</table>
+		<input type="submit" value="수정">
+	</form>
+	<form id="delete-form" method="post" th:action="@{/myinfo/delete}">
+  		<input type="hidden" name="id" th:value="${member.id}">
+	</form>
+	<button onclick="deleteConfirm()">회원 탈퇴</button>
+</body>
+</html>

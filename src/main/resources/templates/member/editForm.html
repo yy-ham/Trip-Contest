@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>정보 수정</title>
+</head>
+<body>
+    <h1>비밀번호 입력</h1>
+    <form method="post" th:action="@{/myinfo/edit}">
+        <div>
+            <label for="password">비밀번호:</label>
+            <input type="password" id="password" name="password" />
+        </div>
+        <input type="hidden" th:field="*{id}" />
+        <input type="hidden" th:field="*{name}" />
+        <input type="hidden" th:field="*{addr}" />
+        <input type="hidden" th:field="*{phone}" />
+        <input type="hidden" th:field="*{mail}" />
+        <input type="hidden" th:field="*{gender}" />
+        <input type="hidden" th:field="*{grade}" />
+        <input type="hidden" th:field="*{memberImg}" />
+        <input type="submit" value="확인" />
+    </form>
+</body>
+</html>

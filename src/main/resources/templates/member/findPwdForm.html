@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>아이디 찾기</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<script type="text/javascript">
+$(function(){
+	var code;
+	// 아이디 있는지 확인
+	
+	$('#btn_phone').click(function(){
+		$.ajax({
+			url : "/checkMemberPwd",
+			data : {"id": $('#id').val(),"name": $('#name').val(), "phone": $('#phone').val()},
+			success : function(res){
+				if(res == 1){
+					$.ajax({
+						url : "/sendAuthCode",
+						data : {"phone": $('#phone').val() },
+						success : function(innerCode){
+							if(innerCode != null){
+								alert("코드 전송했습니다.")
+								code = innerCode;
+								console.log(code);
+								// 세션에 코드 저장
+								sessionStorage.setItem("code", code);
+							}
+						}
+					})
+					alert("계정이 존재합니다.")
+				}else{
+					alert("해당 아이디를 보유한 회원이 존재하지 않습니다. 다시 시도해 주세요.")
+				}
+			}
+		})
+	})
+	
+	$('#btn_authCode').click(function(){
+		var inputCode = $('#authCode').val();
+		// 세션에서 코드 값을 가져옴
+		var sessionCode = sessionStorage.getItem("code");
+		if(inputCode == sessionCode){
+			$.ajax({
+				url : "/authSuccess",
+				data : {"inputCode": inputCode},
+				success : function(){
+					$('input[name=result]').val('success');
+					alert("인증성공")
+					$('#authResult').text('인증 성공');
+				}
+			})
+		} else {
+			alert("인증번호가 일치하지 않습니다. 다시 시도해 주세요.")
+		}
+	});
+})
+
+</script>
+<body>
+    <form method="get" action="/findPwdResult">
+   	    <label for="id">ID:</label>
+        <input type="text" id="id" name="id"><br>
+        
+        <label for="name">이름:</label>
+        <input type="text" id="name" name="name"><br>
+
+        <label for="phone">휴대폰 번호:</label>
+        <input type="text" id="phone" name="phone"><br>
+
+        <input type="button" value="휴대폰 인증" id='btn_phone'>
+        <br>
+        <label for="authCode">인증번호:</label>
+        <input type="text" id="authCode" name="authCode"><br>
+        
+        <input type="button" value="인증" id='btn_authCode'>
+        <span id="authResult"></span>
+        
+        <input type="hidden" name="result">
+        <input type="submit" value="패스워드 찾기">
+    </form>
+
+    
+</body>
+</html>
