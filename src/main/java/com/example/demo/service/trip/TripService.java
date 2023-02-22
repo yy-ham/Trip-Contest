@@ -10,6 +10,7 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -37,8 +38,8 @@ public class TripService {
         tripDAO.deleteById(tripNo);
     }
 
-    public int getTotalRecord(String keyword){
-        return TripDBManager.getTotalRecord(keyword);
+    public int getTotalRecord(HashMap<String, Object> map){
+        return TripDBManager.getTotalRecord(map);
     }
 
     public int getTotalPreSavedRecord(String keyword){
@@ -46,7 +47,32 @@ public class TripService {
     }
 
     public List<TripVO> findAll(HashMap<String, Object> map){
-        return TripDBManager.findAll(map);
+    	List<TripVO> preTripList = TripDBManager.findAll(map);
+    	List<TripVO> tripList = new ArrayList<>();
+    	for(TripVO tripVO:preTripList) {
+    		switch(tripVO.getKorea_code()) {
+				case 1: tripVO.setRegion("서울"); break;
+				case 2: tripVO.setRegion("경기"); break;
+				case 3: tripVO.setRegion("인천"); break;
+				case 4: tripVO.setRegion("강원"); break;
+				case 5: tripVO.setRegion("충남"); break;
+				case 6: tripVO.setRegion("세종"); break;
+				case 7: tripVO.setRegion("대전"); break;
+				case 8: tripVO.setRegion("충북"); break;
+				case 9: tripVO.setRegion("경북"); break;
+				case 10: tripVO.setRegion("대구"); break;
+				case 11: tripVO.setRegion("울산"); break;
+				case 12: tripVO.setRegion("경남"); break;
+				case 13: tripVO.setRegion("부산"); break;
+				case 14: tripVO.setRegion("전북"); break;
+				case 15: tripVO.setRegion("전남"); break;
+				case 16: tripVO.setRegion("광주"); break;
+				case 17: tripVO.setRegion("제주"); break;
+		}
+    		tripList.add(tripVO);
+    	}
+    	
+        return tripList;
     }
 
     public List<TripVO> findAllByAdmin(HashMap<String, Object> map){

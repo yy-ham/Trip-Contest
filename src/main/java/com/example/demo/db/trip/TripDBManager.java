@@ -26,9 +26,9 @@ public class TripDBManager {
         }
     }
     // 여행지 전체 레코드 수
-    public static int getTotalRecord(String keyword){
+    public static int getTotalRecord(HashMap<String, Object> map){
         SqlSession session = sqlSessionFactory.openSession();
-        int totalRecord = session.selectOne("trip.getTotalRecord", keyword);
+        int totalRecord = session.selectOne("trip.getTotalRecord", map);
         session.close();
 
         return totalRecord;

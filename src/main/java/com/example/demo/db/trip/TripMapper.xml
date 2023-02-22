@@ -9,6 +9,9 @@
         <if test="keyword != null and keyword != ''">
             and (trip_addr like '%' || #{keyword} || '%' or trip_title like '%' || #{keyword} || '%')
         </if>
+        <if test="region != null and region != '' and region != 0">
+            and korea_code = #{region}
+        </if>
     </select>
 
     <!-- 임시저장된 여행지 레코드 수 - 관리자용 -->
@@ -24,6 +27,9 @@
         select * from (select a.*, rownum n from (select * from trip where state = 'Y'
         <if test="keyword != null and keyword != ''">
             and (trip_addr like '%' || #{keyword} || '%' or trip_title like '%' || #{keyword} || '%')
+        </if>
+        <if test="region != null and region != '' and region != 0 ">
+            and korea_code = #{region}
         </if>
         <if test="orderColumn != null and orderColumn != ''">
             order by ${orderColumn} desc

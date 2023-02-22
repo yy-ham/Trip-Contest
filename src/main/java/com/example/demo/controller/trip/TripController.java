@@ -1,8 +1,11 @@
 package com.example.demo.controller.trip;
 
+import com.example.demo.db.trip.TripDBManager;
 import com.example.demo.entity.trip.Trip;
 import com.example.demo.service.trip.TripService;
 import com.example.demo.vo.img.ImgVO;
+import com.example.demo.vo.trip.RegionVO;
+import com.example.demo.vo.trip.TripVO;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Setter;
@@ -11,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +22,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
@@ -33,6 +38,47 @@ public class TripController {
     @Autowired
     private TripService tripService;
 
+    @GetMapping("/trip/tripList")
+    public ModelAndView findAll(String keyword, @RequestParam(defaultValue = "writedate") String orderColumn, @RequestParam(defaultValue = "0") int region, @RequestParam(value = "pageNum",defaultValue = "1") int pageNUM) {
+    	HashMap<String, Object> map = new HashMap<>();  
+    	map.put("keyword", keyword);
+    	map.put("region", region);
+    	
+    	totalRecord = TripDBManager.getTotalRecord(map);
+    	totalPage = (int) Math.ceil(totalRecord / (double)pageSIZE);
+    	
+    	int start = (pageNUM - 1) * pageSIZE + 1;
+    	int end = start + pageSIZE - 1;
+    	System.out.println(start);
+    	System.out.println(end);
+    	ModelAndView mav = new ModelAndView();
+    		
+    	map.put("orderColumn", orderColumn);
+    	map.put("start", start);
+    	map.put("end", end);
+    	
+    	String[] regionList = {"전국","서울","경기","인천","강원","충남","세종","대전","충북",
+    			"경북","대구","울산","경남","부산","전북","전남","광주","제주"};
+    	int[] koreaCodeList = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17};
+    	List<RegionVO> koreaList = new ArrayList<>();
+    	for(int i=0; i<regionList.length; i++) {
+    		RegionVO regionVO = new RegionVO();
+    		regionVO.setRegion(regionList[i]);
+    		regionVO.setCode(koreaCodeList[i]);
+    		koreaList.add(regionVO);
+    	}
+    	
+    	// 상태유지
+    	mav.addObject("totalPage", totalPage);
+    	mav.addObject("keyword", keyword);
+    	mav.addObject("orderColumn", orderColumn);
+    	mav.addObject("region", region);
+    	mav.addObject("tripList", TripDBManager.findAll(map));
+    	mav.addObject("koreaList", koreaList);
+    	
+    	return mav;
+    }
+    
     @GetMapping("/trip/tripInsert")
     public ModelAndView insertForm(){
         ModelAndView mav = new ModelAndView("/trip/tripInsert");
@@ -41,17 +87,17 @@ public class TripController {
 
     @PostMapping("/trip/tripInsert")
     public ModelAndView insertSubmit(Trip trip, HttpServletRequest request, MultipartHttpServletRequest mtfRequest){
-        ModelAndView mav = new ModelAndView("/trip/tripList");
+        ModelAndView mav = new ModelAndView("redirect:/trip/tripList");
         int tripNo = tripService.getNextTripNo();
         int hit = 0;
         int tripLiked = 0;
         trip.setTripNo(tripNo);
-        trip.setLat("11");
-        trip.setLng("22");
         trip.setType("trip");
         trip.setHit(hit);
         trip.setTripLiked(tripLiked);
-        trip.setState("Y");
+        if(trip.getState() == null || trip.getState().equals("")) {
+        	trip.setState("Y");
+        }
         
         // 다중 파일 업로드
         List<MultipartFile> fileList = mtfRequest.getFiles("uploadFile");
@@ -80,7 +126,7 @@ public class TripController {
         }
         trip.setTripImg(fnameList.get(0));
         System.out.println("첫번째 사진 이름: "+fnameList.get(0));
-        System.out.println("다음 사진 이름: "+fnameList.get(1));
+        
         if(fnameList.size()>1) {
         	for(int i=1; i<fnameList.size(); i++) {
 	        	ImgVO imgVO = new ImgVO();
@@ -89,6 +135,7 @@ public class TripController {
 	        	imgVO.setNo(tripNo);
 	        	imgVO.setType("trip");
 	        	tripService.insertTripImg(imgVO);
+	        	System.out.println("다음 사진 이름: "+fnameList.get(1));
 	        }
         }
         

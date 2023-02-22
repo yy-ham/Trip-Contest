@@ -6,6 +6,31 @@
 </head>
 <body>
 	<h1>여행지 목록</h1>
+	<hr>
+	<span th:each="k:${koreaList}">
+		<button th:text="${k.region}" th:value="${k.code}" 
+			th:onclick="|location.href='@{|/trip/tripList?region=${k.code}|}'|"></button>
+	</span>
+	<hr>
+	<form method="get" action="/trip/tripList">
+		<input type="text" name="keyword">
+		<input type="submit" value="검색">
+	</form>
+	<hr>
 	
+	<div class="card" style="width: 18rem;" th:each="trip:${tripList}">
+		<img th:src="@{|/images/${trip.trip_img}|}" class="card-img-top" alt="...">
+		<div class="card-body">
+			<h5 class="card-title" th:text="${trip.trip_title}">Card title</h5>
+			<p class="card-text" th:text="${trip.region}">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+			<a href="#" class="btn btn-primary">Go somewhere</a>
+		</div>
+	</div>
+	<span th:each="page : ${#numbers.sequence(1,totalPage)}" th:if="${keyword != null } ">
+		<a th:text="${page}" th:href="@{|/trip/tripList?keyword=${keyword}&amp;region=${region}&orderColumn=${orderColumn}&pageNum=${page}|}"></a>
+	</span>
+	<span th:each="page : ${#numbers.sequence(1,totalPage)}" th:if="${keyword == null} ">
+		<a th:text="${page}" th:href="@{|/trip/tripList?region=${region}&orderColumn=${orderColumn}&pageNum=${page}|}"></a>
+	</span>
 </body>
 </html>

@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>여행지 등록</title>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f12cedc04a3b71edb51a90ae7835e50f&libraries=services"></script>
 <script type="text/javascript">
 	$(function(){
 		var koreaCode = $("#koreaCode option:selected").val();
@@ -11,20 +13,101 @@
 			$("#telPrefix").val("1").trigger("selected");
 		});
 		
+		// 도로명 주소
+		var geocoder = new kakao.maps.services.Geocoder();
+		 $("#tripAddr").click(function(){
+		     new daum.Postcode({
+		         oncomplete: function(data) {
+		             $("#tripAddr").val(data.address);
+		             $("#tripAddr").prop("readonly",true);
+		             $("input[name=place]").val(data.sido);
+		             var juso =  $("#tripAddr").val();
+		         	geocoder.addressSearch(juso, callback);  
+		         }
+		     }).open()
+		 });
+		
+		// 위도, 경도 값 지정
+		 var callback = function(result, status) {
+		 	if (status === kakao.maps.services.Status.OK) {
+		 		var lat = $("input[name=lng]").val(result[0].x);
+		 		var lng = $("input[name=lat]").val(result[0].y);
+		 	}
+		 };
+		 
+		 // 지역에 따른 지역번호를 전화번호 첫번째 빈칸에 넣기
+		 $("#koreaCode").change(function(){
+			 switch($("#koreaCode").val()){
+			 	case "1": $("#tel1").val("02");
+			 		break;
+			 	case "2": $("#tel1").val("031");
+			 		break;
+			 	case "3": $("#tel1").val("032");
+			 		break;
+			 	case "4": $("#tel1").val("033");
+			 		break;
+			 	case "5": $("#tel1").val("041");
+			 		break;
+			 	case "6": $("#tel1").val("044");
+			 		break;
+			 	case "7": $("#tel1").val("042");
+			 		break;
+			 	case "8": $("#tel1").val("043");
+			 		break;
+			 	case "9": $("#tel1").val("054");
+			 		break;
+			 	case "10": $("#tel1").val("053");
+			 		break;
+			 	case "11": $("#tel1").val("052");
+			 		break;
+			 	case "12": $("#tel1").val("055");
+			 		break;
+			 	case "13": $("#tel1").val("051");
+			 		break;
+			 	case "14": $("#tel1").val("063");
+			 		break;
+			 	case "15": $("#tel1").val("061");
+			 		break;
+			 	case "16": $("#tel1").val("062");
+			 		break;
+			 	case "17": $("#tel1").val("064");
+			 		break;		
+			 }
+		 });
+		 
+		 // 전화번호 합쳐서 저장
+		 $("#save").click(function(){
+			 $("#tripTel").val($("#tel1").val()+"-"+$("#tel2").val()+"-"+$("#tel3").val());
+		 });
+		 
+		 // 임시저장 - state: N
+		 $("#preSaved").click(function(){
+			 $("#state").val("N");
+			 var data = $("#tripForm").serializeArray();
+			 
+			 $.ajax({
+				 url:"/trip/tripInsert",
+				 type:"POST",
+				 data:data,
+				 success:function(){
+					 location.href="trip/tripList";
+				 }
+			 });
+		 });
 	})
 </script>
 </head>
 <body>
     <h1>여행지 등록</h1>
-    <form action="/trip/tripInsert" method="post" enctype="multipart/form-data">
+    <form action="/trip/tripInsert" method="post" enctype="multipart/form-data" id="tripForm">
         <div>
             <label th:for="tripTitle">관광지명 : </label>
             <input type="text" name="tripTitle">
         </div>
         <div>
             <label th:for="region">지역명 : </label>
-            <!-- <input type="text" name="korea.code"> -->
             <select name="korea.code" id="koreaCode">
+            	<option>==지역명==</option>
             	<option value="1">서울</option>
             	<option value="2">경기</option>
             	<option value="3">인천</option>
@@ -46,13 +129,12 @@
         </div>
         <div>
             <label th:for="tripTel">전화번호 : </label>
-            <!-- <select id="telPrefix">
-            	<option value="1">02</option>
-            	<option value="2">031</option>
-            	<option value="3">051</option>
-            </select>
-            <input type="hidden" name="tripTel"> -->
-            <input type="text" name="tripTel">
+            <input type="tel" id="tel1" >
+            <label th:for="tel2"> - </label>
+            <input type="tel" id="tel2">
+            <label th:for="tel3"> - </label>
+            <input type="tel" id="tel3">
+            <input type="hidden" name="tripTel" id="tripTel"> 
         </div>
         <div>
             <label th:for="site">웹사이트 : </label>
@@ -60,7 +142,10 @@
         </div>
         <div>
             <label th:for="tripAddr">주소 : </label>
-            <input type="text" name="tripAddr">
+            <input type="hidden" name="place">
+			<input type="text" size="40" name="tripAddr" id="tripAddr" class="essential" value="">
+			<input type="hidden" name='lat' value="" id="lat">
+			<input type="hidden" name='lng' value="" id="lng">
         </div>
         <div>
             <label th:for="closed">휴무일 : </label>
@@ -83,10 +168,11 @@
             <input multiple="multiple" type="file" name="uploadFile">
         </div>
         <div>
-            <button>임시저장</button>
+            <button id="preSaved">임시저장</button>
+            <input type="hidden" name="state" id="state">
         </div>
         <div>
-            <button type="submit">저장</button>
+            <button type="submit" id="save">저장</button>
         </div>
     </form>
 </body>
