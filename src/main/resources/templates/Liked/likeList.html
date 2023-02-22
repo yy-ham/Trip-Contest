@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>찜목록</title>
+<style type="text/css">
+	.like_no{
+		visibility:hidden;
+	}
+</style>
+</head>
+ <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+<body>
+
+	
+	<div id = main>
+	<ul>
+ <li>
+  <div class="allCheck">
+   <input type="checkbox" name="allCheck" id="allCheck" /><label for="allCheck">모두 선택</label> 
+  </div>
+  
+  <div class="delBtn">
+   <button type="button" class="selectDelete_btn">선택 삭제</button> 
+  </div>
+  
+ </li>
+	
+	<div class="card" style="width: 18rem;">
+	  <div class="card-body">
+	  <div>
+	  <input class="form-check-input" type="checkbox" id="checkboxNoLabel" value="" aria-label="...">
+	</div>
+	   <tr th:each="lp:${likedListPlan}">
+	   				<img th:src="@{|/images/${lp.like_img}|}" class="card-img-top" alt="...">
+					<td class="like_no" th:text=${lp.like_no}> </td>
+					<td class="card_text" th:text="${lp.liked_title}" ></td>
+					<a class="delete" th:href="@{'/Liked/deleteLiked/'+${lp.like_no}}" th:text="삭제"></a>
+		</tr>
+	  </div>
+	</div>
+	
+	<!-- <div class="planlist">
+		<div>
+			<h2>여행플랜♥</h2>
+			<table>
+			
+				<tr th:each="lp:${likedListPlan}">
+					<td id="like_no" th:text=${lp.like_no}> </td>
+					<td><img th:src="@{|/images/${lp.like_img}|}"/></td>
+					<td th:text="${lp.liked_title}" ></td>
+					 <a class="delete" th:href="@{'/Liked/deleteLiked/'+${lp.like_no}}" th:text="삭제"></a>
+				</tr>
+			</table>
+		</div>
+	
+	</div> -->
+	
+	<div class="triplist">
+		<div>
+			<h2>여행지♥</h2>
+			<table>
+			
+			<!-- <tr th:each="lt:${likedListTrip}"></tr>
+			<td th:text=${lt.like_no}>
+			<td><img src="resources/templates/image/충남_예산시장.jpg"></td> 
+			<td th:text="${lt.liked_title}" ></td>
+			</tr>  -->
+			</table>
+		</div>
+	</div>
+	
+	</div>
+	
+	
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+  </body>
+</body>
+</html>
