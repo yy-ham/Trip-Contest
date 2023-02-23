@@ -19,10 +19,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
@@ -46,12 +48,15 @@ public class TripController {
     	
     	totalRecord = TripDBManager.getTotalRecord(map);
     	totalPage = (int) Math.ceil(totalRecord / (double)pageSIZE);
+    	if(totalPage == 0) {
+    		totalPage = 1;
+    	}
     	
     	int start = (pageNUM - 1) * pageSIZE + 1;
     	int end = start + pageSIZE - 1;
     	System.out.println(start);
     	System.out.println(end);
-    	ModelAndView mav = new ModelAndView();
+    	ModelAndView mav = new ModelAndView("trip/tripList");
     		
     	map.put("orderColumn", orderColumn);
     	map.put("start", start);
@@ -75,6 +80,41 @@ public class TripController {
     	mav.addObject("region", region);
     	mav.addObject("tripList", TripDBManager.findAll(map));
     	mav.addObject("koreaList", koreaList);
+    	// 회원 등급
+    	mav.addObject("grade","admin");
+//    	mav.addObject("grade","users");
+    	
+    	return mav;
+    }
+    
+    @GetMapping("/trip/tripListAdmin")
+    public ModelAndView findAllByAdmin(String keyword, @RequestParam(defaultValue = "writedate") String orderColumn,  @RequestParam(value = "pageNum",defaultValue = "1") int pageNUM) {
+    	HashMap<String, Object> map = new HashMap<>();  
+    	map.put("keyword", keyword);
+    	
+    	totalRecord = TripDBManager.getTotalPreSavedRecord(keyword);
+    	totalPage = (int) Math.ceil(totalRecord / (double)pageSIZE);
+    	if(totalPage == 0) {
+    		totalPage = 1;
+    	}
+    	
+    	int start = (pageNUM - 1) * pageSIZE + 1;
+    	int end = start + pageSIZE - 1;
+    	System.out.println(start);
+    	System.out.println(end);
+    	ModelAndView mav = new ModelAndView();
+    		
+    	map.put("orderColumn", orderColumn);
+    	map.put("start", start);
+    	map.put("end", end);
+    	
+    	// 상태유지
+    	mav.addObject("totalPage", totalPage);
+    	mav.addObject("keyword", keyword);
+    	mav.addObject("orderColumn", orderColumn);
+    	mav.addObject("tripList", TripDBManager.findAllByAdmin(map));
+    	// 회원 등급
+    	mav.addObject("grade","admin");
     	
     	return mav;
     }
@@ -157,12 +197,17 @@ public class TripController {
     	Trip trip = tripService.findByTripNo(tripNo);
     	String region = "";
     	region = tripService.getRegionByTripNo(tripNo);
-    	mav.addObject("trip",trip);
     	mav.addObject("region",region);
+    	trip.setHit(trip.getHit()+1);
+    	tripService.save(trip);
+    	mav.addObject("trip",trip);
     	
     	// 다중 파일
     	List<ImgVO> imgList = tripService.findTripImg(tripNo);
     	mav.addObject("imgList",imgList);
+    	// 회원 등급
+    	mav.addObject("grade","admin");
+//    	mav.addObject("grade","users");
     	
     	return mav;
     }
@@ -217,7 +262,7 @@ public class TripController {
 	        }
         }
         
-        String fname = "";       
+        String fname = "";
         // 다중 파일 업로드
         List<MultipartFile> fileList = mtfRequest.getFiles("uploadFile");
         for (MultipartFile multipartFile : fileList) {

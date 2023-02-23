@@ -31,6 +31,10 @@
 <body>
 	<h1>여행지 상세</h1>
 	<div>
+		<label th:for="hit">조회수 : </label> 
+		<span th:text="${trip.hit}"></span>
+	</div>
+	<div>
 		<label th:for="tripTitle">관광지명 : </label> 
 		<span th:text="${trip.tripTitle}"></span>
 	</div>
@@ -79,7 +83,9 @@
 	<input type="hidden" th:value="${trip.lat}" id="lat">
 	<input type="hidden" th:value="${trip.lng}" id="lng">
 	
-	<div>
+	<!-- 관리자일 때, 수정, 삭제 버튼 보이게 -->
+	<div th:if="${grade} == 'admin'">
+		<a th:text="수정" th:href="@{|/trip/tripUpdate/${trip.tripNo}|}"></a>
 		<a th:text="삭제" th:href="@{|/trip/tripDelete/${trip.tripNo}|}"></a>
 	</div>
 </body>

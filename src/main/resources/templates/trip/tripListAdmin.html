@@ -26,15 +26,16 @@
 		<input type="submit" value="검색">
 	</form>
 	<span>
-		<a th:text="업데이트순" th:href="@{|/trip/tripList?region=${region}&orderColumn=writedate|}"></a>
-		<a th:text="조회순" th:href="@{|/trip/tripList?region=${region}&orderColumn=hit|}"></a>
-		<a th:text="좋아요순" th:href="@{|/trip/tripList?region=${region}&orderColumn=trip_liked|}"></a>
+		<a th:text="업데이트순" th:href="@{|/trip/tripListAdmin?orderColumn=writedate|}"></a>
+		<a th:text="조회순" th:href="@{|/trip/tripListAdmin?orderColumn=hit|}"></a>
+		<a th:text="좋아요순" th:href="@{|/trip/tripListAdmin?orderColumn=trip_liked|}"></a>
 	</span>
 	<hr>
 	<br>
 	<!-- 관리자일 때, 임시저장 목록 보이게 -->
 	<div th:if="${grade} == 'admin'">
-		<a th:href="@{/trip/tripListAdmin}">임시저장 목록</a>
+		<a th:text="전체" th:href="@{|/trip/tripList|}"></a>
+		<!-- <a th:text="임시저장" th:href="@{|/trip/tripListAdmin|}"></a> -->
 	</div>
 	<br>
 	<div class="card" style="width: 18rem;" th:each="trip:${tripList}">
@@ -46,10 +47,10 @@
 		</div>
 	</div>
 	<span th:each="page : ${#numbers.sequence(1,totalPage)}" th:if="${keyword != null } ">
-		<a th:text="${page}" th:href="@{|/trip/tripList?keyword=${keyword}&amp;region=${region}&orderColumn=${orderColumn}&pageNum=${page}|}"></a>
+		<a th:text="${page}" th:href="@{|/trip/tripListAdmin?keyword=${keyword}&orderColumn=${orderColumn}&pageNum=${page}|}"></a>
 	</span>
 	<span th:each="page : ${#numbers.sequence(1,totalPage)}" th:if="${keyword == null} ">
-		<a th:text="${page}" th:href="@{|/trip/tripList?region=${region}&orderColumn=${orderColumn}&pageNum=${page}|}"></a>
+		<a th:text="${page}" th:href="@{|/trip/tripListAdmin?orderColumn=${orderColumn}&pageNum=${page}|}"></a>
 	</span>
 </body>
 </html>
