@@ -20,8 +20,6 @@ public class PlanDetail {
 	@Column(name = "plan_no")
 	private int planNo;
 
-
-	
 	private int day;
 	
 	@Column(name = "trip_no")

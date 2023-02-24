@@ -11,6 +11,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.entity.plan.Plan;
+import com.example.demo.vo.plan.PlanVO;
 @Repository
 public class PlanDBManager {
 	public static SqlSessionFactory sqlSessionFactory;
@@ -34,6 +35,7 @@ public class PlanDBManager {
 		return list;
 	}
 	
+
 	//여행계획 목록 (지역별)
 	public static List<Plan> findByRegion(HashMap<String, Object> map){
 		List<Plan> list = null;
@@ -44,10 +46,10 @@ public class PlanDBManager {
 	}
 	
 	//여행계획 목록 전체 레코드 수 가져오기
-	public static int getTotalRecord() {
+	public static int getTotalRecord(HashMap<String, Object> map) {
 		int total = -1;
 		SqlSession session = sqlSessionFactory.openSession();
-		total = session.selectOne("plan.TotalRecord");
+		total = session.selectOne("plan.totalRecord", map);
 		session.close();
 		return total;
 	}
@@ -106,6 +108,32 @@ public class PlanDBManager {
 //		session.close();
 //		return list;
 //	}
+	
+	public static int insert(PlanVO plan) {
+		int re = -1;
+		SqlSession session = sqlSessionFactory.openSession();
+		re = session.insert("plan.insertPlan", plan);
+		session.commit();
+		session.close();
+		return re;
+	}
+	
+	public static int updatePlan(PlanVO p) {
+		int re = -1;
+		SqlSession session = sqlSessionFactory.openSession();
+		re = session.update("plan.updatePlan", p);
+		session.commit();
+		session.close();
+		return re;
+	}
+	
+	public static int count(HashMap<String, Object> map) {
+		int re = -1;
+		SqlSession session = sqlSessionFactory.openSession();
+		re = session.selectOne("plan.count", map);
+		session.close();
+		return re;
+	}
 
 	
 }

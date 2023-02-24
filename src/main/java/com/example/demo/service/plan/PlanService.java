@@ -1,5 +1,6 @@
 package com.example.demo.service.plan;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.dao.plan.PlanDAO;
 import com.example.demo.db.plan.PlanDBManager;
 import com.example.demo.entity.plan.Plan;
+import com.example.demo.vo.plan.PlanVO;
 
 import lombok.Setter;
 
@@ -27,6 +29,10 @@ public class PlanService {
 		dao.save(p);
 	}
 	
+//	public int insertPlan(Plan p) {
+//		return dao.insertPlan(p);
+//	}
+	
 	//여행계획 삭제
 	public void deleteByPlanNo(int plan_no) {
 		dao.deleteById(plan_no);
@@ -37,12 +43,20 @@ public class PlanService {
 		return dao.findByPlanNo(plan_no);
 	}
 	
+	public String getRegion(int plan_no) {
+		return dao.getRegion(plan_no);
+	}
+	
+	public int updateHit(int plan_no) {
+		return dao.updateHit(plan_no);
+	}
+	
 	
 	//mybatis
 
 	//여행계획 목록
 	public List<Plan> findAll(HashMap<String, Object> map){
-		return dao.findAll();
+		return PlanDBManager.findAll(map);
 	}
 	//여행계획 목록 (지역별)
 	public List<Plan> findByRegion(HashMap<String, Object> map){
@@ -50,8 +64,8 @@ public class PlanService {
 	}
 	
 	//여행계획 목록 전체 레코드 수 가져오기
-	public int getTotalRecord() {
-		return PlanDBManager.getTotalRecord();
+	public int getTotalRecord(HashMap<String, Object> map) {
+		return PlanDBManager.getTotalRecord(map);
 	}
 	
 	//여행계획글 다음 번호 가져오기
@@ -64,10 +78,7 @@ public class PlanService {
 		return PlanDBManager.likedFindByMemberId(member_id);
 	}
 	
-	//여행일수 계산
-//	public int countDaysByPlanNo(int plan_no) {
-//		return PlanDBManager.countDaysByPlanNo(plan_no);
-//	}
+
 	
 	public int countDaysByPlanNo(int plan_no) {
 		return dao.countDaysByPlanNo(plan_no);
@@ -76,6 +87,18 @@ public class PlanService {
 	//여행계획 검색
 	public List<Plan> searchPlan(HashMap<String, Object> map){
 		return PlanDBManager.searchPlan(map);
+	}
+	
+	public int insert(PlanVO p) {
+		return PlanDBManager.insert(p);
+	}
+	
+	public int updatePlan(PlanVO p) {
+		return PlanDBManager.updatePlan(p);
+	}
+	
+	public int count(HashMap<String, Object> map) {
+		return PlanDBManager.count(map);
 	}
 	
 	

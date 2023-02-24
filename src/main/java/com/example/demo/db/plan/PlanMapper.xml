@@ -3,17 +3,45 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="plan"> 
-  <select id="findByRegion" resultType="plan">
-    select plan_no, plan_title, plan_img, member_id, korea_code
-	from (select rownum n, a.* 
-	from (select * from plan where korea_code = #{region} order by ${sort_col} desc) a)
-	where n between #{start} and #{end}
+  <!-- 여행계획 목록 페이지 -->
+	<select id="findAll" resultType="planVO">
+        select * from(select rownum n, a.* from(select * from plan p 
+        <if test="keyword != null and keyword != ''">
+            where (plan_title like '%' || #{keyword} || '%' or (select distinct  k.code  from plan p, korea k 
+            where p.korea_code = k.code 
+			and k.region like '%' || #{keyword} || '%') = p.korea_code)
+	        <if test="region != null and region != '' and region != 0">
+	            AND p.korea_code = #{region}
+	        </if>
+        </if>
+        <if test="keyword == null or keyword == ''">
+	        <if test="region != null and region != '' and region != 0">
+	            where p.korea_code = #{region}
+	        </if>
+        </if>
+        <if test="orderColumn != null and orderColumn != ''">
+            order by ${orderColumn} desc
+        </if>
+         )a) where n between #{start} and #{end}
+    </select>
+  
+
+ <select id="totalRecord" resultType="java.lang.Integer">
+  	select count(*) from plan 
+        <if test="keyword != null and keyword != ''">
+            where (plan_title like '%' || #{keyword} || '%' or (select distinct  k.code  from plan p , korea k where p.korea_code = k.code 
+			and k.region like '%' || #{keyword} || '%') = korea_code)
+	        <if test="region != null and region != '' and region != 0">
+	            AND korea_code = #{region}
+	        </if>
+        </if>
+        <if test="keyword == null or keyword == ''">
+	        <if test="region != null and region != '' and region != 0">
+	            where korea_code = #{region}
+	        </if>
+        </if>
   </select>
   
-  <select id="TotalRecord" resultType="java.lang.Integer">
-  	select count(*) from plan
-  </select>
-
   <select id="likedFindByMemberId" resultType="plan">
 	select p.* from plan p, liked l
 	where p.plan_no = l.NO
@@ -23,34 +51,30 @@
   <select id="NextNo" resultType="java.lang.Integer">
   	select nvl(max(plan_no), 0) + 1 from plan;
   </select>
-  
-  <!-- 
-    <select id="countDays" parameterType="java.lang.Integer">
-	select plan_end - plan_start + 1 from plan where plan_no = #{plan_no};
-  </select>
-  -->
-  
-  <select id="searchPlan" resultType="plan">
-  	select * from plan where korea_code = #{region}
-	and plan_title like '%#{search_keyword}%' order by ${sort_col} desc;
-  </select>
-  
+   
   <update id="insertLiked" parameterType="plan">
   	update plan set plan_liked = plan_liked + 1 where plan_no = #{plan_no};
   </update>
   
   <update id="deleteLiked" parameterType="plan">
-  	update plan set plan_liked = plan_liked - 1 where plan_no = #{plan_no};
+  	update plan set plan_liked = plan_liked - 1 where plan_no = #{plan_no}
   </update>
-  
-  <!-- 
-  - 찜하기
-
-insert liked into(like_no, id, no, type) values(seq_liked.nextval, ?, ?, 'plan');
-- 찜 취소하기
-update plan set plan_liked = plan_liked - 1 where plan_no = ?;
-delete liked where id = ? and no = ? and type = ?;
-  
-   -->
+   
+   <insert id="insertPlan" parameterType="planVO">
+	insert into Plan(plan_no, member_id, plan_title, plan_date, plan_start, plan_end, 
+	plan_hit, plan_liked, plan_img, korea_code)
+	values(#{plan_no}, #{member_id}, #{plan_title}, sysdate, #{plan_start}, #{plan_end}, 
+	0, 0, #{plan_img}, #{korea_code})
+   </insert>
+   
+   <update id="updatePlan" parameterType="planVO">
+   	update plan set plan_title = #{plan_title}, plan_date = sysdate, plan_start = #{plan_start},
+   	plan_end = #{plan_end}, plan_img = #{plan_img}, korea_code = #{korea_code}
+   	where plan_no = #{plan_no}
+   </update>
+   
+   <select id="count" resultType="java.lang.Integer">
+   	SELECT TO_DATE(#{plan_end}, 'YYYY-MM-DD') - TO_DATE(#{plan_start}, 'YYYY-MM-DD') + 1 FROM dual
+   </select>
   
 </mapper>

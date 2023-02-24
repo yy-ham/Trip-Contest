@@ -1,14 +1,197 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>여행계획 작성</title>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<style type="text/css">
+	#day2 {display: none}
+	#day3 {display: none}
+	#day4 {display: none}
+</style>
+<script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script type="text/javascript">
+	$(function(){
+		
+		$("#plan_start").datepicker({
+			dateFormat: "yy-mm-dd",
+		});
+		$('#plan_start').datepicker("option", "maxDate", $("#plan_end").val());
+	    $('#plan_start').datepicker("option", "onClose", function ( selectedDate ) {
+	        $("#plan_end").datepicker( "option", "minDate", selectedDate );
+	        $("#plan_end").datepicker( "option", "maxDate", new Date(new Date(selectedDate).getTime() + 3*24*60*60*1000) );
+	    });
+	    
+		$("#plan_end").datepicker({
+			dateFormat: "yy-mm-dd"
+		});
+		$('#plan_end').datepicker("option", "minDate", $("#plan_start").val());
+	    $('#plan_end').datepicker("option", "onClose", function ( selectedDate ) {
+	        //$("#plan_start").datepicker( "option", "maxDate", selectedDate );
+	    });
+	    		
+		$("#plan_start").change(function(){
+			var plan_start = new Date($("#plan_start").val()).getTime();
+		});
+		
+		$("#plan_end").change(function(){
+			var plan_start = $.datepicker.formatDate("yy-mm-dd", $("#plan_start").datepicker("getDate"));
+			var plan_end = $.datepicker.formatDate("yy-mm-dd", $("#plan_end").datepicker("getDate"));
+
+			$("#day2").css("display", "none");
+			$("#day3").css("display", "none");
+			$("#day4").css("display", "none");
+			
+			//여행일수 가져오기
+			$.ajax({
+				url: "/plan/insert/count",
+				data: {
+					plan_start: plan_start,
+					plan_end: plan_end
+				},
+				success: function(cnt){
+					$("#count").val(cnt);
+					for(i = 1; i <= cnt; i++){
+						console.log(i);
+						$("#day"+i).css("display", "inline-block");
+					}
+				}
+			}); //end ajax	
+			
+			
+			/* $("#addDay").on("click", function(e){
+				e.preventDefault();
+				var count = $("#count").val();
+				console.log(count);
+				
+				if(count == ""){
+					alert("여행시작일과 여행종료일을 지정하세요.");
+				}else if(count == 1){
+					alert("여행일수가 1일입니다. 더 추가할 수 없습니다.");
+				}else if(count >= 2){
+					$("#day2").css("display", "inline-block");
+					
+					$("#addDay").on("click", function(e){
+						e.preventDefault();
+						e.stopPropagation();
+						//e.stopImmediatePropagation();
+						if(count >= 3){
+							$("#day3").css("display", "inline-block");
+							
+							$("#addDay").on("click", function(e){
+								e.preventDefault();
+								e.stopPropagation();
+								//e.stopImmediatePropagation();
+								if(count == 4){
+									$("#day4").css("display", "inline-block");
+									
+								}
+							});
+						}
+					});
+				}
+				
+			}); //end addDay click */
+		}); //end plan_end change()
+	
+	//이미지 가져오기
+	$("#day1_1").keyup(function(){
+		var trip_no = $("#day1_1").val();
+		console.log(trip_no);
+		$.ajax({
+			url: "/plan/detail/getImg",
+			data: {
+				trip_no: trip_no
+			},
+			success: function(img){
+				$("#plan_img").val(img);
+			}
+		});
+	});
+
+	
+	});
+</script>
 </head>
 <body>
-	<h2>Plan insert</h2>
+	<h2>Plan Insert</h2>
+	<a href="/plan/list">목록</a>
 	
-	<form action="">
-	
+	<form action="/plan/insert" method="post" id="insert">
+		일정번호 : <input type="text" name="plan_no" th:value="${nextNo}"><br>
+		일정제목 : <input type="text" name="plan_title"><br>
+		작성자 : <input type="text" name="member_id"><br>
+		지역 :
+		
+		<select id="region" name="korea_code">
+			<option value="" selected>지역선택</option>
+			<option th:each="r:${region}" th:text="${r.region}" th:value="${r.code}"></option>
+		</select>
+		
+		<br>
+		여행시작일 : <input type="text" name="plan_start" id="plan_start" placeholder="날짜를 선택하세요.">
+		&nbsp;&nbsp;&nbsp;
+		여행종료일 : <input type="text" name="plan_end" id="plan_end" placeholder="날짜를 선택하세요."><br>
+		<br>
+		이미지 : <input type="text" name="plan_img" id="plan_img"><br>
+		
+		여행일수 : <input type="text" id="count"><br>
+		
+		<!-- <button id="reset">전체다시선택</button> -->
+		<button id="addDay">DAY +</button>
+		
+		<div id="day">
+			<div id="day1">
+				<h3>DAY 1</h3>
+				<input type="text" name="day1_1" id="day1_1">
+				<input type="text" name="day1_2" id="day1_2">
+				<input type="text" name="day1_3" id="day1_3">
+				<input type="text" name="day1_4" id="day1_4">
+				<input type="text" name="day1_5" id="day1_5"><br>
+			</div>
+			
+			<div id="day2">
+				<h3>DAY 2</h3>
+				<input type="text" name="day2_1" id="day2_1">
+				<input type="text" name="day2_2" id="day2_2">
+				<input type="text" name="day2_3" id="day2_3">
+				<input type="text" name="day2_4" id="day2_4">
+				<input type="text" name="day2_5" id="day2_5"><br>
+			</div>
+			
+			<div id="day3">
+				<h3>DAY 3</h3>
+				<input type="text" name="day3_1" id="day3_1">
+				<input type="text" name="day3_2" id="day3_2">
+				<input type="text" name="day3_3" id="day3_3">
+				<input type="text" name="day3_4" id="day3_4">
+				<input type="text" name="day3_5" id="day3_5"><br>
+			</div>
+			
+			<div id="day4">
+				<h3>DAY 4</h3>
+				<input type="text" name="day4_1" id="day4_1">
+				<input type="text" name="day4_2" id="day4_2">
+				<input type="text" name="day4_3" id="day4_3">
+				<input type="text" name="day4_4" id="day4_4">
+				<input type="text" name="day4_5" id="day4_5"><br>
+			</div>
+		</div>
+		
+		
+		
+		<input type="submit" value="등록">
+		<input type="reset" value="다시입력" id="reset">
 	</form>
+	
+	<!-- 여행지 목록 -->
+	<div id="trip_list" th:each="t:${trip_list}">
+		<div id="${t.tripNo}">
+			<div th:text="${t.trip_img}"></div>
+			<div th:text="${t.trip_title}"></div>
+		</div>
+	</div>
 </body>
 </html>

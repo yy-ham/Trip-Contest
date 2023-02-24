@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>여행계획 목록</title>
 </head>
 <body>
 	<h2>List</h2>
@@ -10,6 +10,19 @@
 	<button id="btnInsert">
 		<a href="/plan/insert">여행계획 작성</a>
 	</button>
+	<hr>
+	<form action="/plan/list" method="get">
+		<select id="region" name="region">
+				<option value="" selected>지역선택</option>
+				<option th:each="r:${regionlist}" th:text="${r.region}" th:value="${r.code}"></option>
+		</select>
+		<input type="search" id="keyword" name="keyword">
+		<input type="submit" value="검색">
+	</form>
+	<hr>
+	<a th:href="@{|/plan/list?orderColumn=plan_date&pageNUM=${pageNUM}|}" th:text="업데이트순"></a>&nbsp;&nbsp;
+ 	<a th:href="@{|/plan/list?orderColumn=plan_hit&pageNUM=${pageNUM}|}" th:text="조회순"></a>&nbsp;&nbsp;
+	<a th:href="@{|/plan/list?orderColumn=plan_liked&pageNUM=${pageNUM}|}" th:text="좋아요순"></a>
 	<hr>
 
 	<table border="1" width="80%">
@@ -21,12 +34,44 @@
 		</tr>
 			
 		<tr th:each="p:${list}">
-			<td th:text="${p.planNo}"></td>
+			<td th:text="${p.plan_no}"></td>
 			<td th:text="${p.plan_img}"></td>
-			<td th:text="${p.plan_title}"></td>
+			<td>
+				<a th:text="${p.plan_title}" th:href="@{'/plan/detail/'+${p.plan_no}}"></a>
+			</td>
 			<td th:text="${p.member_id}"></td>
 		</tr>
 	</table>
+	
 
+
+	<!-- <span th:if="${startPage} > 1 ">
+		<a th:href="@{'/plan/list/'+${startPage-1}}" th:text="<"></a>
+	</span>
+	&nbsp;
+	<span th:each="i:${#numbers.sequence(startPage, endPage)}">
+		<a th:href="@{'/plan/list/'+${i}}" th:text="${i}"></a>&nbsp;
+	</span>
+	&nbsp;
+	<span th:if="${endPage} < ${totalPage }">
+		<a th:href="@{'/plan/list/'+${endPage+1}}" th:text=">"></a>
+	</span> -->
+	
+ 	<div id="page">
+	 	<span th:if="${startPage} > 1 ">
+			<a th:href="@{'/plan/list/'+${startPage-1}}" th:text="<"></a>
+		</span>
+		<span th:each="page : ${#numbers.sequence(startPage,endPage)}" th:if="${keyword != null } ">
+			<a th:text="${page}" th:href="@{|/plan/list?keyword=${keyword}&amp;region=${region}&orderColumn=${orderColumn}&pageNUM=${page}|}"></a>
+		</span>
+		<span th:each="page : ${#numbers.sequence(startPage,endPage)}" th:if="${keyword == null} ">
+			<a th:text="${page}" th:href="@{|/plan/list?region=${region}&orderColumn=${orderColumn}&pageNUM=${page}|}"></a>
+		</span>
+		<span th:if="${endPage} < ${totalPage }">
+			<a th:href="@{'/plan/list/'+${endPage+1}}" th:text=">"></a>
+		</span>
+	</div> 
+	
+	
 </body>
 </html>

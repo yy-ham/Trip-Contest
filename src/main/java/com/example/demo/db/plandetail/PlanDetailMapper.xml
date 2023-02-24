@@ -9,17 +9,21 @@
   </insert>
   
   <update id="updatePlanDetail" parameterType="plandetail">
-  	update plandetail set trip_no = #{trip_no} where pd_np = #{pd_no}
+  	update plandetail set trip_no = #{trip_no} where pd_no = #{pd_no}
   </update>
-  <!-- 
-  <select id="findPlandetailByPlanNo" resultType="">
-  	SELECT trip_title, trip_img FROM TRIP
-	WHERE trip_no IN (SELECT trip_no FROM PLANDETAIL WHERE plan_no = #{plan_no}
-	AND DAY = #{day})
+  
+  <select id="getPlanDetail" resultType="tripVO">
+  	SELECT * FROM TRIP t WHERE t.trip_no IN
+	(SELECT trip_no FROM PLANDETAIL pd WHERE plan_no = #{plan_no} AND DAY = #{day})
   </select>
-  -->
   
+  <select id="findTripImg">
+  	select trip_img from trip where trip_no = #{trip_no}
+  </select>
   
+  <select id="getPdNo">
+  	select pd_no from plandetail where plan_no = #{plan_no}
+  </select>
   
   
 </mapper>
