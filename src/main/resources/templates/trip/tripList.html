@@ -5,7 +5,59 @@
 	<title>여행지 목록</title>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
 <script type="text/javascript">
-	
+	$(function(){
+		$(".tripLiked").click(function(){
+			if($(this).is(":checked")){
+				$.ajax({
+					url:"/trip/tripLiked",
+					data:{
+						"memberId":"hong",
+						"type":"trip",
+						"no": $(this).val(),
+						"likeImg":$(this).attr("likeImg"),
+						"likedTitle": $(this).attr("likedTitle")
+					},
+					success:function(re){
+						if(re == 1){
+							alert("찜!!");
+						}
+					}
+				});
+			}
+			
+			if($(this).is(":checked")==false){
+				$.ajax({
+					url:"/trip/tripUnliked",
+					data:{
+						"memberId":"hong",
+						"type":"trip",
+						"no": $(this).val(),
+						"likeImg":$(this).attr("likeImg"),
+						"likedTitle": $(this).attr("likedTitle")
+					},
+					success:function(re){
+						if(re == 1){
+							alert("찜취소!!");
+						}
+					}
+				});
+			}
+		});
+		
+		function userLiked(){
+			$.ajax({
+				url:"",
+				data:{
+					
+				},
+				success:function(re){
+					if(re == 1){
+						$(".tripLiked").prop("checked",true);
+					}
+				}
+			});
+		}
+	});
 </script>
 </head>
 <body>
@@ -43,6 +95,8 @@
 			<h5 class="card-title" th:text="${trip.trip_title}">Card title</h5>
 			<p class="card-text" th:text="${trip.region}">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
 			<a href="#" class="btn btn-primary">Go somewhere</a>
+			<input type="checkbox" class="tripLiked" th:value="${trip.trip_no}" th:attr="likedTitle=${trip.trip_title},likeImg=${trip.trip_img}">
+			<label for="liked">찜</label>
 		</div>
 	</div>
 	<span th:each="page : ${#numbers.sequence(1,totalPage)}" th:if="${keyword != null } ">

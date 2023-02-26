@@ -68,16 +68,21 @@
     <delete id="deleteTripImgByFname" parameterType="String">
     	delete img where fname=#{fname, jdbcType=VARCHAR} and type ='trip'
     </delete>
+    
+    <!-- 해당 회원의 찜 여부 확인 -->
+    <select id="findLiked" parameterType="String">
+    	select * from liked where member_id= #{member_id}
+    </select>
 
     <!-- 찜하기 -->
-    <update id="updateTripLiked" parameterType="java.lang.Integer">
+    <!-- <update id="updateTripLiked" parameterType="java.lang.Integer">
         update trip set trip_liked = trip_liked + 1 where trip_no = #{tripNo}
-    </update>
+    </update> -->
 
     <!-- 찜 취소 -->
-    <update id="updateTripNoLiked" parameterType="java.lang.Integer">
+    <!-- <update id="updateTripNoLiked" parameterType="java.lang.Integer">
         update trip set trip_liked = trip_liked - 1 where trip_no = #{tripNo}
-    </update>
+    </update> -->
     
     <!-- tripNo로 지역명 찾기 -->
     <select id="getRegionByTripNo" parameterType="java.lang.Integer" resultType="String">

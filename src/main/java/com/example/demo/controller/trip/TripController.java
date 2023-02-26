@@ -1,7 +1,9 @@
 package com.example.demo.controller.trip;
 
 import com.example.demo.db.trip.TripDBManager;
+import com.example.demo.entity.liked.Liked;
 import com.example.demo.entity.trip.Trip;
+import com.example.demo.service.liked.LikedService;
 import com.example.demo.service.trip.TripService;
 import com.example.demo.vo.img.ImgVO;
 import com.example.demo.vo.trip.RegionVO;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
@@ -39,6 +42,9 @@ public class TripController {
 
     @Autowired
     private TripService tripService;
+    
+    @Autowired
+    private LikedService likedService;
 
     @GetMapping("/trip/tripList")
     public ModelAndView findAll(String keyword, @RequestParam(defaultValue = "writedate") String orderColumn, @RequestParam(defaultValue = "0") int region, @RequestParam(value = "pageNum",defaultValue = "1") int pageNUM) {
@@ -359,5 +365,47 @@ public class TripController {
     	}
     	
     	return mav;
+    }
+    
+    @ResponseBody
+    @GetMapping("/trip/tripLiked")
+    public int tripLiked(Liked liked) {
+    	int re = -1;
+    	Liked checkLiked = likedService.save(liked);
+    	if(checkLiked != null) {
+    		re = 1;
+    	}else {
+    		re = 0;
+    	}
+    	
+    	return re;
+    }
+    
+    @ResponseBody
+    @GetMapping("/trip/tripUnliked")
+    public int tripUnliked(Liked liked) {
+    	int re = -1;
+    	int likeNo = liked.getLikeNo();
+    	likedService.delete(liked);
+    	if(likedService.findByLikeNo(likeNo).isEmpty()) {
+    		re = 1; // 성공
+    	}else {
+    		re = 0;
+    	}
+    	
+    	return re;
+    }
+    
+
+    @GetMapping("/trip/findAllTripLiked/{memberId}")
+    public List<Integer> findAllTripLiked(@PathVariable String memberId) {
+    	List<Liked> tripLikedList = likedService.findByMemberId(memberId);
+    	List<Integer> likedNo = new ArrayList<>();
+    	for(int i=0; i<tripLikedList.size(); i++) {
+    		int no = tripLikedList.get(i).getNo();
+    		likedNo.add(no);
+    	}
+    	
+    	return likedNo;
     }
 }
