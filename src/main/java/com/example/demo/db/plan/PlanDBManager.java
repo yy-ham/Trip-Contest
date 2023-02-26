@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo.entity.plan.Plan;
 import com.example.demo.vo.plan.PlanVO;
+import com.example.demo.vo.trip.TripVO;
 @Repository
 public class PlanDBManager {
 	public static SqlSessionFactory sqlSessionFactory;
@@ -133,6 +134,22 @@ public class PlanDBManager {
 		re = session.selectOne("plan.count", map);
 		session.close();
 		return re;
+	}
+	
+	public static int getTotalRecordInInsert(int region) {
+		int re = -1;
+		SqlSession session = sqlSessionFactory.openSession();
+		re = session.selectOne("plan.getTotalRecordInInsert", region);
+		session.close();
+		return re;
+	}
+	
+	public static List<TripVO> findAllInInsert(HashMap<String, Object> map){
+		List<TripVO> list = null;
+		SqlSession session = sqlSessionFactory.openSession();
+		list = session.selectList("plan.findAllInInsert", map);
+		session.close();
+		return list;
 	}
 
 	

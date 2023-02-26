@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -22,7 +23,6 @@ import com.example.demo.service.korea.KoreaService;
 import com.example.demo.service.plan.PlanService;
 import com.example.demo.service.plandetail.PlanDetailService;
 import com.example.demo.service.recoment.RecomentService;
-import com.example.demo.service.trip.TripService;
 import com.example.demo.vo.plan.PlanVO;
 import com.example.demo.vo.trip.TripVO;
 
@@ -45,8 +45,7 @@ public class PlanController {
 	@Autowired
 	private KoreaService koreaService;
 	
-	@Autowired
-	private TripService tripService;
+	
 	
 	public int pageSIZE = 8;
 	public int totalRecord = 0;
@@ -57,7 +56,7 @@ public class PlanController {
 	@GetMapping("/plan/list")
 	public String list(Model model, @RequestParam(defaultValue = "1") int pageNUM, 
 			@RequestParam(defaultValue = "plan_date") String orderColumn, String keyword, 
-			@RequestParam(defaultValue = "0") int region, HttpSession session) {
+			@RequestParam(defaultValue = "0") int region) {
 		
 		System.out.println("pageNUM:" + pageNUM);
 		
@@ -143,18 +142,64 @@ public class PlanController {
 	
 	//여행계획 작성
 	@GetMapping("/plan/insert")
-	public void insertForm(Model model) {
-		int nextNo = planService.getNextNo();
-		model.addAttribute("nextNo", nextNo);
-		model.addAttribute("region", koreaService.findAll());
+	public void insertForm(Model model, @RequestParam(defaultValue = "1") int pageNUM,
+			@RequestParam(defaultValue = "0") int region) {
 		
-		model.addAttribute("trip_list", tripService.findAll());
+		System.out.println("pageNUM:" + pageNUM);
+		System.out.println("region:" + region);
+		
+		int nextNo = planService.getNextNo();
 		System.out.println("nextNo:" + nextNo);
+		
+		model.addAttribute("nextNo", nextNo);
+		model.addAttribute("regionlist", koreaService.findAll());
 	}
 	
+	//여행계획 작성 페이지 - 여행지 목록
+	@ResponseBody
+	@GetMapping("/plan/insert/list")
+	public List<TripVO> getTripList(@RequestParam(defaultValue = "1") int pageNUM, 
+			@RequestParam(defaultValue = "0") int region){
+		System.out.println("pageNUM:" + pageNUM);
+		
+		List<TripVO> list = null;
+		
+		totalRecord = planService.getTotalRecordInInsert(region);
+		totalPage = (int) Math.ceil(totalRecord / (double)pageSIZE);
+		
+		System.out.println("totalRecord:" + totalRecord);
+		System.out.println("totalPage:" + totalPage);
+		
+		int start = (pageNUM-1)*pageSIZE + 1;
+		int end = start +  pageSIZE - 1;
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("region", region);
+		map.put("start", start);
+		map.put("end", end);
+		
+		list = planService.findAllInInsert(map);
+		
+		return list;
+	}
+	
+	//여행계획 작성 페이지 - 전체 레코드 수
+	@ResponseBody
+	@GetMapping("/plan/insert/list/record")
+	public int getTotalTripList(@RequestParam(defaultValue = "0") int region){
+		int re = -1;
+		System.out.println("region:" + region);
+		re = planService.getTotalRecordInInsert(region);
+		totalPage = (int) Math.ceil(totalRecord / (double)pageSIZE);
+	
+
+		return re;
+	}
+	
+	//여행계획 작성
 	@PostMapping("/plan/insert")
 	public ModelAndView insertSubmmit(PlanVO p, HttpServletRequest request) {
-		ModelAndView mav = new ModelAndView("redirect:/plan/list/1");	
+		ModelAndView mav = new ModelAndView("redirect:/plan/list");	
 		
 		//insert plan
 		int re = -1;
@@ -165,8 +210,8 @@ public class PlanController {
 		for(int i = 1; i <= 4; i++) {
 			for(int j = 1; j <= 5; j++) {
 				String name = "day" + i + "_" + j;
-				
 				if(request.getParameter(name) != null && !request.getParameter(name).equals("")) {
+					System.out.println("name: " + name);
 					int trip_no = Integer.parseInt(request.getParameter(name));
 					System.out.println("trip_no:" + trip_no);
 					planDetailService.insertPlanDetail(p.getPlan_no(), i, trip_no);
@@ -198,6 +243,8 @@ public class PlanController {
 			List<TripVO> list = planDetailService.getPlanDetail(map);
 			for(int j = 0; j < list.size(); j++) {
 				int trip_no = list.get(j).getTrip_no() ;
+				System.out.println("day" + i + "_" + (j+1));
+				System.out.println("update list:" + trip_no);
 				mav.addObject("day" + i + "_" + (j+1), trip_no);
 			}
 		}	
@@ -227,12 +274,6 @@ public class PlanController {
 				}
 			}
 		}
-		
-		
-		
-		
-		
-		
 		return mav;
 	}
 	
@@ -247,20 +288,6 @@ public class PlanController {
 	}
 	
 
-//	@GetMapping("/plan/insert/count")
-//	public int count(String plan_start) {
-////		System.out.println(plan_end);
-//		System.out.println(plan_start);
-//		
-//		HashMap<String, Object> map = new HashMap<String, Object>();
-//		map.put("plan_start", plan_start);
-////		map.put("plan_end", plan_end);
-//		
-//		System.out.println("map:" + map);
-//		int re = planService.count(map);
-//		
-//		return re;
-//	}
-	
+
 	
 }

@@ -13,6 +13,7 @@ import com.example.demo.dao.plan.PlanDAO;
 import com.example.demo.db.plan.PlanDBManager;
 import com.example.demo.entity.plan.Plan;
 import com.example.demo.vo.plan.PlanVO;
+import com.example.demo.vo.trip.TripVO;
 
 import lombok.Setter;
 
@@ -101,5 +102,12 @@ public class PlanService {
 		return PlanDBManager.count(map);
 	}
 	
+	public int getTotalRecordInInsert(int region) {
+		return PlanDBManager.getTotalRecordInInsert(region);
+	}
+	
+	public List<TripVO> findAllInInsert(HashMap<String, Object> map){
+		return PlanDBManager.findAllInInsert(map);
+	}
 	
 }
