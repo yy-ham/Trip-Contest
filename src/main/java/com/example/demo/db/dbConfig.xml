@@ -12,6 +12,7 @@
   	<typeAlias type="com.example.demo.vo.plan.PlanVO" alias="planVO"/>
   	<typeAlias type="com.example.demo.vo.trip.TripVO" alias="tripVO"/>
   	<typeAlias type="com.example.demo.vo.recoment.RecomentVO" alias="recomentVO"/>
+  	<typeAlias type="com.example.demo.vo.plandetail.PlanDetailVO" alias="plandetailVO"/>
   </typeAliases>
   <environments default="development">
     <environment id="development">

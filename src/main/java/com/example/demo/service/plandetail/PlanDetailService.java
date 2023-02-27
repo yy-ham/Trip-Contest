@@ -11,6 +11,7 @@ import com.example.demo.db.plandetail.PlanDetailDBManager;
 import com.example.demo.entity.plan.Plan;
 import com.example.demo.entity.plandetail.PlanDetail;
 import com.example.demo.entity.trip.Trip;
+import com.example.demo.vo.plandetail.PlanDetailVO;
 import com.example.demo.vo.trip.TripVO;
 
 import lombok.Setter;
@@ -86,4 +87,6 @@ public class PlanDetailService {
 	public String getImg(int trip_no) {
 		return dao.getImg(trip_no);
 	}
+	
+	
 }

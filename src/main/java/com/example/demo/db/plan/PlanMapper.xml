@@ -95,4 +95,9 @@
         order by trip_no) a) where n between #{start} and #{end}
     </select>
   
+  <!-- 여행계획 수정 시 이미 선택한 목록 불러오기 -->
+  <select id="findByTripNoInUpdate" resultType="tripVO">
+  	select * from trip where trip_no = #{trip_no}
+  
+  </select>
 </mapper>

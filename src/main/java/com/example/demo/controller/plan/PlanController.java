@@ -24,6 +24,7 @@ import com.example.demo.service.plan.PlanService;
 import com.example.demo.service.plandetail.PlanDetailService;
 import com.example.demo.service.recoment.RecomentService;
 import com.example.demo.vo.plan.PlanVO;
+import com.example.demo.vo.plandetail.PlanDetailVO;
 import com.example.demo.vo.trip.TripVO;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -86,8 +87,6 @@ public class PlanController {
 //		map.put("totalRecord", totalRecord);
 //		map.put("pageNum", pageNUM);
 		
-		System.out.println("orderColumn:" + orderColumn);
-		
 		model.addAttribute("totalPage", totalPage);
 		
 		int startPage = (pageNUM-1)/pageGROUP*pageGROUP+1;
@@ -126,7 +125,7 @@ public class PlanController {
 		model.addAttribute("region", planService.getRegion(plan_no));
 		int cnt = planService.countDaysByPlanNo(plan_no);
 		model.addAttribute("cnt", cnt);
-		
+	
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("plan_no", plan_no);
 		for(int i = 1; i <= cnt; i++) {
@@ -134,8 +133,6 @@ public class PlanController {
 			model.addAttribute("detail"+i, planDetailService.getPlanDetail(map));
 		}
 
-//		model.addAttribute("recoment", recomentService.findByNoAndType(plan_no, "plan"));
-		
 		return "/plan/detail";
 	}
 	
@@ -231,6 +228,7 @@ public class PlanController {
 		mav.addObject("p", planService.findByPlanNo(plan_no));
 		mav.addObject("region", planService.getRegion(plan_no));
 		mav.addObject("regionlist", koreaService.findAll());
+		
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("plan_no", plan_no);
 		int cnt = planService.countDaysByPlanNo(plan_no);
@@ -246,8 +244,11 @@ public class PlanController {
 				System.out.println("day" + i + "_" + (j+1));
 				System.out.println("update list:" + trip_no);
 				mav.addObject("day" + i + "_" + (j+1), trip_no);
+				System.out.println("map:" + map);
 			}
-		}	
+		}
+		
+		
 		return mav;
 	}
 	
@@ -277,10 +278,10 @@ public class PlanController {
 		return mav;
 	}
 	
-	//삭제
+	//여행계획 삭제
 	@GetMapping("/plan/delete/{plan_no}")
 	public ModelAndView delete(@PathVariable int plan_no) {
-		ModelAndView mav = new ModelAndView("redirect:/plan/list/1");
+		ModelAndView mav = new ModelAndView("redirect:/plan/list");
 		int re = planDetailService.deleteByPlanNo(plan_no);
 		System.out.println("re:" + re);
 		planService.deleteByPlanNo(plan_no);
@@ -288,6 +289,18 @@ public class PlanController {
 	}
 	
 
+	//여행계획 수정 - 이미 선택된 목록 불러오기
+	@ResponseBody
+	@GetMapping("/plan/update/list")
+	public List<TripVO> findByTripNoInUpdate(int plan_no, int day) {
+		List<TripVO> list = null;
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("plan_no", plan_no);
+		map.put("day", day);
+		list = planDetailService.getPlanDetail(map);
+		return list;
+		//return trip;
+	}
 
 	
 }

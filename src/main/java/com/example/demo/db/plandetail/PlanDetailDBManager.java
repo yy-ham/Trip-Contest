@@ -12,6 +12,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import com.example.demo.entity.plan.Plan;
 import com.example.demo.entity.plandetail.PlanDetail;
 import com.example.demo.entity.trip.Trip;
+import com.example.demo.vo.plandetail.PlanDetailVO;
 import com.example.demo.vo.trip.TripVO;
 
 public class PlanDetailDBManager {
@@ -70,5 +71,4 @@ public class PlanDetailDBManager {
 		return list;
 	}
 	
-		
 }

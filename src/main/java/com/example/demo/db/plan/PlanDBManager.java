@@ -152,5 +152,12 @@ public class PlanDBManager {
 		return list;
 	}
 
+	public static TripVO findByTripNoInUpdate(int trip_no) {
+		TripVO trip = null;
+		SqlSession session = sqlSessionFactory.openSession();
+		trip = session.selectOne("plan.findByTripNoInUpdate", trip_no);
+		session.close();
+		return trip;
+	}
 	
 }

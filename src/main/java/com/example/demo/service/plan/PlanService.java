@@ -110,4 +110,7 @@ public class PlanService {
 		return PlanDBManager.findAllInInsert(map);
 	}
 	
+	public TripVO findByTripNoInUpdate(int trip_no) {
+		return PlanDBManager.findByTripNoInUpdate(trip_no);
+	}
 }

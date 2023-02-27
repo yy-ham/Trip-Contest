@@ -13,8 +13,9 @@
   </update>
   
   <select id="getPlanDetail" resultType="tripVO">
-  	SELECT * FROM TRIP t WHERE t.trip_no IN
-	(SELECT trip_no FROM PLANDETAIL pd WHERE plan_no = #{plan_no} AND DAY = #{day})
+  	SELECT t.*, p.PD_NO FROM TRIP t, PLANDETAIL p WHERE t.trip_no = p.trip_no and
+	(t.trip_no, p.PD_NO) IN (SELECT trip_no, pd_no FROM PLANDETAIL pd 
+	WHERE pd.plan_no = #{plan_no} AND pd.day = #{day}) ORDER BY p.pd_no
   </select>
   
   <select id="findTripImg">
@@ -24,6 +25,4 @@
   <select id="getPdNo">
   	select pd_no from plandetail where plan_no = #{plan_no}
   </select>
-  
-  
 </mapper>

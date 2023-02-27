@@ -40,7 +40,7 @@
 		$("#plan_start").datepicker({
 			dateFormat: "yy-mm-dd",
 		});
-		$('#plan_start').datepicker("option", "maxDate", $("#plan_end").val());
+		//$('#plan_start').datepicker("option", "maxDate", $("#plan_end").val());
 	    $('#plan_start').datepicker("option", "onClose", function ( selectedDate ) {
 	        $("#plan_end").datepicker( "option", "minDate", selectedDate );
 	        $("#plan_end").datepicker( "option", "maxDate", new Date(new Date(selectedDate).getTime() + 3*24*60*60*1000) );
@@ -87,17 +87,17 @@
 		var region = 0;
 		var pageNUM = 1;
 
-		getTotalRecord(region);
+		getTotalRecord(region, pageNUM);
 		getTripList(pageNUM, region)
 		
 		$("#trip_region").change(function(){
 			region = $("#trip_region").val();
-			getTotalRecord(region);
+			getTotalRecord(region, pageNUM);
 			getTripList(pageNUM, region);
 		});
 
 		//페이징 - 전체 레코드 수 가져오기
-		function getTotalRecord(region){
+		function getTotalRecord(region, pageNUM){
 			$.ajax({
 				url: "/plan/insert/list/record",
 				data: {
@@ -106,15 +106,60 @@
 				success: function(total){
 					$("#page").empty();
 					var totalPage = Math.ceil(total / 8);
-				
-					for(i = 1; i <= totalPage; i++){
-						var num = $("<a></a>").html(i).attr({
-							"href": "#",
-							"pageNUM": i
-						}).addClass("link");
+					var pageGROUP = 5;
+					if(totalPage > pageGROUP){
+						console.log("pageNUM:" + pageNUM);
 						
-						$("#page").append(num);
-						$("#page").append("&nbsp;&nbsp;");
+						var startPage = (pageNUM-1)/pageGROUP*pageGROUP+1;
+						var endPage = startPage+pageGROUP-1;
+						if(totalPage < endPage) {
+							endPage = totalPage;
+						}
+						
+						console.log("sta:" + startPage);
+						console.log("end:" + endPage);
+						
+						if(startPage > 1){
+							var pre = $("<a></a>").html("<").attr({
+								"href": "#",
+								"pageNUM": startPage - 1
+							}).addClass("link").addClass("pre");
+							
+							$("#page").append(pre);
+							$("#page").append("&nbsp;&nbsp;");
+						}
+						
+						for(i = startPage; i <= endPage; i++){
+							var num = $("<a></a>").html(i).attr({
+								"href": "#",
+								"pageNUM": i
+							}).addClass("link");
+							
+							$("#page").append(num);
+							$("#page").append("&nbsp;&nbsp;");
+						}
+						
+						if(endPage < totalPage){
+							var next = $("<a></a>").html(">").attr({
+								"href": "#",
+								"pageNUM": endPage + 1
+							}).addClass("link").addClass("next");
+							$("#page").append(next);
+							$("#page").append("&nbsp;&nbsp;");
+						}
+						
+						
+					}else{
+						for(i = 1; i <= totalPage; i++){
+							var num = $("<a></a>").html(i).attr({
+								"href": "#",
+								"pageNUM": i
+							}).addClass("link");
+							
+							$("#page").append(num);
+							$("#page").append("&nbsp;&nbsp;");
+						}
+						
 					}
 				}
 			});
@@ -125,6 +170,19 @@
 		$(document).on("click", ".link", function(){
 			pageNUM = $(this).attr("pageNUM");
 			getTripList(pageNUM, region);
+		});
+		
+		// < 링크 클릭 이벤트
+		$(document).on("click", ".pre", function(){
+			pageNUM = $(this).attr("pageNUM");
+			getTotalRecord(region, pageNUM-4);
+		});
+		
+		// > 링크 클릭 이벤트
+		$(document).on("click", ".next", function(){
+			$("#page").empty();
+			pageNUM = $(this).attr("pageNUM");
+			getTotalRecord(region, pageNUM);
 		});
 		
 		//여행지 목록 가져오기
@@ -254,7 +312,6 @@
 					$("#submit").unbind('click').click();
 				}
 			});	
-			
 		}); //#submit 클릭
 		
 		
@@ -262,7 +319,7 @@
 </script>
 </head>
 <body>
-	<h2>Plan Insert</h2>
+	<h2>여행계획 작성</h2>
 	<a href="/plan/list">목록</a>
 	
 	<form action="/plan/insert" method="post" id="insert">
