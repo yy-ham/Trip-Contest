@@ -4,12 +4,16 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,11 +23,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.example.demo.dao.MemberDAO;
-import com.example.demo.entity.Member;
-import com.example.demo.service.MemberService;
+import com.example.demo.entity.member.Member;
+import com.example.demo.entity.plan.Plan;
+import com.example.demo.service.member.MemberService;
+import com.example.demo.service.plan.PlanService;
+import com.example.demo.vo.plan.PlanVO;
 import com.ibm.wsdl.util.IOUtils;
 
 import ch.qos.logback.core.model.Model;
@@ -37,60 +47,78 @@ import lombok.Setter;
 @Setter
 public class MemberController {
 	@Autowired
-	private MemberService service;
+	private MemberService memberService;
+	@Autowired
+	private PlanService planService;
+		//메인페이지 test
+	
 		//뷰를 보여주기 위한 mapping
 		@GetMapping("/join")
 		public String insertForm() {
 			return "member/join";
 		}
 		//회원가입 PostMapping
-//		@PostMapping("/join")
-//		public ModelAndView insertSubmit(Member m) {
-//		    ModelAndView mav = new ModelAndView("redirect:/member/login");
-//		    Member member = service.insertMember(m);
-//		    String id = member.getId();
-//		    Optional<Member> checkId = service.findById(id);
-//		    if (checkId.isPresent()) {
-//		        mav.setViewName("redirect:/join_success");
-//		    } else {
-//		        mav.setViewName("redirect:/login_fail");
-//		    }
-//		    return mav;
-//		}
 		@PostMapping("/join")
-		public ModelAndView insertSubmit(Member member, @RequestParam("member_img") MultipartFile file,HttpServletRequest request) throws Exception {
-		    // 파일을 저장할 경로를 설정합니다.
-		    String path = request.getServletContext().getRealPath("/src/main/resources/static/images");
-//			String path = "/Users/2jonghyun/git/FinalProject/src/main/resources/static/images";
+		public ModelAndView insertSubmit(org.springframework.ui.Model model,com.example.demo.entity.member.Member member, MultipartHttpServletRequest mtfRequest,HttpServletRequest request) throws Exception {
+			ModelAndView mav = new ModelAndView();
+			String id = member.getId();
+		    Optional<com.example.demo.entity.member.Member> checkId = memberService.findById(id);
 
-		    // 저장할 파일 이름을 설정합니다.
-		    String fileName = file.getOriginalFilename();
-		    // 저장할 파일 객체를 생성합니다.
-		    File uploadFile = new File(path + File.separator + fileName);
+			// 1. 전송받은 파일 및 파일설명 값 가져오기
+			List<MultipartFile> fileList = mtfRequest.getFiles("member_img");
+//			String path = request.getServletContext().getRealPath("/images");
+			String path = "C:/Users/jongchen/git/FinalProject/src/main/resources/static/images";
+			
+			//System.out.println("path:"+path);
+			
+	        String fname = "";
+	        
+	        List<String> fnameList = new ArrayList<>();
+	        //System.out.println("fileList:"+fileList);
+	        for(MultipartFile uploadFile : fileList) {
+	        	fname = uploadFile.getOriginalFilename();
+	        	//System.out.println("orginalFname:"+fname);
+	        	fnameList.add(fname);
+	        	
+	        	String safeFile = path + "/" +fname;
+	        	//System.out.println("safeFile: "+safeFile);
+	        	try {
+					uploadFile.transferTo(new File(safeFile));
+				} catch (IllegalStateException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
-		    try (OutputStream os = new FileOutputStream(uploadFile)) {
-		        // MultipartFile 객체에서 InputStream을 얻어 파일을 저장합니다.
-		        org.apache.commons.io.IOUtils.copy(file.getInputStream(), os);
+	        }
+	        member.setMemberImg(fnameList.get(0));
+	        //System.out.println("첫번째 사진 이름: "+fnameList.get(0));
+	        if(fnameList.size()>1) {
+	        	for(int i=1; i<fnameList.size(); i++) {
+		        	com.example.demo.entity.member.Member m1 = new com.example.demo.entity.member.Member();
+		        	m1.setMemberImg(fnameList.get(i));
+		        	//System.out.println("fnameList:"+fnameList.get(i));
+		        	memberService.insertMember(m1);
+		        }
+	        }else {
+	        	memberService.insertMember(member);
+	        }
+	        Optional<com.example.demo.entity.member.Member> insertedMember=memberService.findById(id);
+	        
+		    if (insertedMember.isPresent()) {
+		        mav.setViewName("redirect:/join_success");
+		    } else {
+		        mav.setViewName("redirect:/join_fail");
 		    }
-		    // 파일 이름을 Member 객체에 저장합니다.
-		    member.setMemberImg(fileName);
-
-		    // 회원 정보를 저장합니다.
-		    Member savedMember = service.insertMember(member);
-
-		    // 모델 객체를 생성합니다.
-		    ModelAndView mav = new ModelAndView();
-		    // 저장된 회원 정보를 모델에 추가합니다.
-		    mav.addObject("member", savedMember);
-		    // 회원 가입 완료 페이지로 이동합니다.
-		    mav.setViewName("redirect:/join_success");
-		    return mav;
+			return mav;
 		}
 		// 아이디 중복 체크 성공 뷰를 보여주는 매핑
 	    @GetMapping("/checkId")
 	    @ResponseBody
 	    public boolean checkId(String id) {
-	        Optional<Member> member = service.findById(id);
+	        Optional<com.example.demo.entity.member.Member> member = memberService.findById(id);
 	        return member.isPresent();
 	    }
 	    // 회원가입 성공 맵핑
@@ -98,106 +126,157 @@ public class MemberController {
 	    public String joinSuccess() {
 	    	return "member/join_success";
 	    }
+	    @GetMapping("/join_fail")
+	    public String joinFail() {
+	    	return "member/join_fail";
+	    }
 		// 아이디 중복 체크 실패 뷰를 보여주는 매핑
 	    @GetMapping("/id_fail")
 	    public void idFail() {
-	    	
 	    }
 		 // 로그인 뷰를 보여주는 매핑
 	    @GetMapping("/login")
 	    public String loginForm() {
 	    	return "member/login";
 	    }
-
 	    // 로그인을 처리하는 매핑
 	    @PostMapping("/login")
-	    public ModelAndView loginSubmit(Member m, HttpSession session) {
+	    public ModelAndView loginSubmit(Member m, HttpSession session,RedirectAttributes redirectAttributes,HttpServletRequest request) {
 	        ModelAndView mav = new ModelAndView();
 	        // 아이디와 비밀번호를 확인
 	        String id = m.getId();
 	        String pwd = m.getPwd();
-
-	        Optional<Member> member = service.findById(id);
+	        
+	        Optional<Member> member = memberService.findById(id);
+	        
 	        //id와 pwd가 모두 일치한다면
 	        if (member.isPresent() && member.get().getPwd().equals(pwd)) {
 	            // 로그인 성공 시, 로그인한 사용자 정보를 세션에 저장
-	            session.setAttribute("loggedInUser", member.get());
+	            session.setAttribute("id", member.get().getId());
+	            
+	            redirectAttributes.addAttribute("id", member.get().getId());
+	            redirectAttributes.addAttribute("status", true);
 	            mav.setViewName("redirect:/login_success");
 	        } else {
-	            mav.setViewName("redirect:/login_fail");
+//	        	mav.setViewName("redirect:/login");
 	        }
 	        return mav;
 	    }
-
-
+	 // 로그아웃을 처리하는 매핑
+	    @GetMapping("/logout")
+	    public ModelAndView logout(HttpSession session) {
+	        ModelAndView mav = new ModelAndView();
+	        // 로그아웃 시, 세션을 무효화
+	        session.invalidate();
+	        mav.setViewName("redirect:/login");
+	        return mav;
+	    }
 	    // 로그인 성공 뷰를 보여주는 매핑
 	    @GetMapping("/login_success")
-	    public String loginSuccess() {
-	    	return "member/id_success";
+	    public String loginSuccess(org.springframework.ui.Model model, HttpSession session) {
+	    	String result = "member/id_success";
+	    	model.addAttribute("id", (String)session.getAttribute("id"));
+	    	return result;
 	    }
-
 	    // 로그인 실패 뷰를 보여주는 매핑
 	    @GetMapping("/login_fail")
 	    public String loginFail() {
 	    	return "member/id_fail";
 	    }
+	 // 마이페이지 경로 매핑
+	    @GetMapping("/myPage")
+	    public String myPage() {
+	    	return "member/myPage";
+	    }
 	    // 회원 정보 조회
 	    @GetMapping("/myinfo")
 	    public String myInfo(HttpSession session, org.springframework.ui.Model model) {
-	        // 세션에서 로그인한 사용자 정보를 가져옴
-	        Member loggedInUser = (Member) session.getAttribute("loggedInUser");
-	        if (loggedInUser != null) {
-	            model.addAttribute("member", loggedInUser);
-	            
-	            return "member/myinfo";
-	        } else {
+	    	String id =(String)session.getAttribute("id");
+	    	Optional<Member> member = memberService.findById(id);
+	    	model.addAttribute("member",member.get());
+	         if(member!=null) {
+	        	 return "member/myinfo";
+	         }
+	         else {
 	            // 로그인하지 않은 사용자의 경우 로그인 페이지로 이동
-	            return "redirect:/login";
+	            return "member/login";
 	        }
 	    }
-	    
 	    // 정보 수정
 	    @GetMapping("/myinfo/edit")
 	    public String editMyInfo(HttpSession session, org.springframework.ui.Model model) {
 	    // 세션에서 로그인한 사용자 정보를 가져옴
-	    	Member loggedInUser = (Member) session.getAttribute("loggedInUser");
-	    	if (loggedInUser != null) {
-	    		model.addAttribute("member", loggedInUser);
+	    	String id =(String)session.getAttribute("id");
+	    	Optional<Member> member = memberService.findById(id);
+	    	model.addAttribute("member",member.get());
+	    	if (id!=null) {
 	    		return "member/edit-myinfo";
 	    	} else {
 	    		// 로그인하지 않은 사용자의 경우 로그인 페이지로 이동
 	    		return "redirect:/login";
 	    	}
 	    }
-	 // 정보 수정
+	    //정보 수정 post
 	    @PostMapping("/myinfo/edit")
-	    public String editMyInfoSubmit(Member editedMember, HttpSession session) {
-	    	// 세션에서 로그인한 사용자 정보를 가져옴
-	    	Member loggedInUser = (Member) session.getAttribute("loggedInUser");
-	    	if (loggedInUser != null) {
-		    	// 로그인한 사용자 정보를 수정함
-		    	loggedInUser.setName(editedMember.getName());
-	            loggedInUser.setAddr(editedMember.getAddr());
-	            loggedInUser.setPhone(editedMember.getPhone());
-	            loggedInUser.setMail(editedMember.getMail());
-	            loggedInUser.setGender(editedMember.getGender());
-	            loggedInUser.setGrade(editedMember.getGrade());
-	            loggedInUser.setMemberImg(editedMember.getMemberImg());
-	            // 수정된 정보를 데이터베이스에 저장함
-	            service.updateMember(loggedInUser);
-	            return "redirect:/myinfo";
-	    		} 
-	    else {
-	    // 로그인하지 않은 사용자의 경우 로그인 페이지로 이동
-	    	return "redirect:/login";
-	    	}
+	    public ModelAndView updateSubmit(org.springframework.ui.Model model,com.example.demo.entity.member.Member editedMember, MultipartHttpServletRequest mtfRequest,HttpServletRequest request,HttpSession session) {
+	    	ModelAndView mav = new ModelAndView("redirect:/myinfo");
+//	        // trip에 있는 이미지 파일명
+	        String oldFname = editedMember.getMemberImg();
+	        //System.out.println("oldFname:"+oldFname);
+	        if(mtfRequest !=null) {
+		        List<MultipartFile> fileList = mtfRequest.getFiles("member_img_edit");
+		        String path = "C:/Users/jongchen/git/FinalProject/src/main/resources/static/images";
+		        //System.out.println("path:"+path);
+		        String fname = "";
+		        String id =(String)session.getAttribute("id");
+		    	Optional<com.example.demo.entity.member.Member> member = memberService.findById(id);
+		    	model.addAttribute("member",member.get());
+		        //파일업로드
+		        List<String> fnameList = new ArrayList<>();
+		        //System.out.println("fileList:"+fileList);
+	//	        	// 삭제해야할 원래 있던 이미지들
+		            File file = new File(path+"/"+oldFname);
+		    		file.delete();
+		    		//System.out.println("수정 전 이미지 삭제!");
+		    		//System.out.println("수정 전 이미지파일이름");
+		        	//System.out.println("fileList:"+fileList.toString());
+		            for(MultipartFile uploadFile : fileList) {
+		            	fname = uploadFile.getOriginalFilename();
+		            	//System.out.println("orginalFname:"+fname);
+		            	fnameList.add(fname);
+		            	String safeFile = path + "/" +fname;
+		            	//System.out.println("safeFile: "+safeFile);
+		            	try {
+		    				uploadFile.transferTo(new File(safeFile));
+		    			} catch (IllegalStateException e) {
+		    				// TODO Auto-generated catch block
+		    				e.printStackTrace();
+		    			} catch (IOException e) {
+		    				// TODO Auto-generated catch block
+		    				e.printStackTrace();
+		    			}
+		            }
+		            editedMember.setMemberImg(fnameList.get(0));
+//		            System.out.println("수정, 첫번째 사진 이름: "+fnameList.get(0));
+	    }
+	        memberService.updateMember(editedMember);
+          return mav;
+	    }
+//	  나의 여행계획 정보 getmapping
+	    @RequestMapping(value = "/findMyPlan", method = RequestMethod.GET)
+	    public String findMyPlan(org.springframework.ui.Model model,HttpSession session) {
+	    	String id =(String)session.getAttribute("id");
+//	    	System.out.println(id);
+	    	planService.findMyPlanByMemberId(id);
+	    	List<PlanVO> plan =planService.findMyPlanByMemberId(id);
+	    	model.addAttribute("plan",plan);
+	        return "member/edit-myplan";
 	    }
 	    //id찾기
 	    @RequestMapping(value = "/findId", method = {RequestMethod.GET})
 	    public String findIdForm() {
 	        return "member/findIdForm";
-	    }
-	    
+	    } 
 	    //id찾기 결과값
 	    @RequestMapping(value = "/findIdResult", method = RequestMethod.GET)
 	    public String findIdResult(org.springframework.ui.Model model,HttpSession session) {
@@ -228,11 +307,10 @@ public class MemberController {
 	    public String findPwdForm() {
 	        return "member/findPwdForm";
 	    }
-	    
 	    // 회원 탈퇴
 	    @PostMapping("/myinfo/delete")
-	    public String deleteMyInfo(Member m, HttpSession session) {
-	      service.deleteMember(m);
+	    public String deleteMyInfo(com.example.demo.entity.member.Member m, HttpSession session) {
+	      memberService.deleteMember(m);
 	      session.invalidate();
 	      return "redirect:/login";
 	    }

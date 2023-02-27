@@ -4,8 +4,8 @@ import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
 
-import com.example.demo.entity.Member;
-import com.example.demo.service.MemberService;
+import com.example.demo.entity.member.*;
+import com.example.demo.service.member.MemberService;
 
 public class Test {
 

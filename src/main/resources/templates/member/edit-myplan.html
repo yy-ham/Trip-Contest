@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>내 정보 수정</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<script>
+</script>
+<body>
+	<h1>나의 여행계획</h1>
+	<!--  -->
+    <div th:each="p:${plan}">
+    	<p th:text="${p.plan_title}"></p>
+    </div>
+    <a href="/login_success">메인페이지</a>
+</body>
+</html>
+
+
+

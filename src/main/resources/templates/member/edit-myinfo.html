@@ -3,8 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <title>내 정보 수정</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <script>
+$(function(){
+	sessionStorage.setItem("id",$("#id").val());
+	//console.log(sessionStorage.getItem("id"))
+})
 function deleteConfirm() {
   if (confirm('정말로 탈퇴하시겠습니까?')) {
     document.getElementById('delete-form').submit();
@@ -14,13 +19,17 @@ function deleteConfirm() {
 <body>
 	<h1>내 정보 수정</h1>
 	
-	<form method="post" th:action="@{/myinfo/edit}">
+	<form method="post" th:action="@{/myinfo/edit}" enctype="multipart/form-data">
 		<table>
 			<tr>
 				<th>ID</th>
 				<td th:text="${member.id}"></td>
+				<td><input type="hidden" name="id" th:value="${member.id}" id="id">
+				
+				</td>
 			</tr>
 			<tr>
+			
 				<th>이름</th>
 				<td><input type="text" name="name" th:value="${member.name}"></td>
 			</tr>
@@ -49,6 +58,16 @@ function deleteConfirm() {
 					th:checked="${member.grade == 'member'}">일반회원 <input
 					type="radio" name="grade" value="vip"
 					th:checked="${member.grade == 'vip'}">관리자</td>
+			</tr>
+			<tr>
+			<th>사진:</th>
+			<td><input type="file" name="member_img_edit" id="member_img_edit"><br></td>
+			</tr>
+			<tr>
+			<th>hidden</th>
+			<td><input type="hidden" name="jumin" th:value="${member.jumin}"><br></td>
+			<td><input type="hidden" name="pwd" th:value="${member.pwd}"><br></td>
+			<td><input type="hidden" name="memberImg" th:value="${member.memberImg}"><br></td>
 			</tr>
 		</table>
 		<input type="submit" value="수정">

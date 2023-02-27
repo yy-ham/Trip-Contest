@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.example.demo.service.member;
 
 import java.util.HashMap;
 import java.util.Optional;
@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dao.MemberDAO;
-import com.example.demo.db.MemberDBManager;
-import com.example.demo.entity.Member;
+import com.example.demo.db.member.MemberDBManager;
+import com.example.demo.entity.member.*;
 import com.example.demo.vo.member.MemberVO;
 
 import lombok.Setter;

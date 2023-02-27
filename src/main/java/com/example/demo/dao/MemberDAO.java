@@ -3,17 +3,14 @@ package com.example.demo.dao;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import com.example.demo.entity.Member;
+import com.example.demo.entity.member.Member;
 
-import jakarta.transaction.Transactional;
 //memberRepository라고 생
 @Repository
 public interface MemberDAO extends JpaRepository<Member, String> {
-//	public Optional<Member> findByIdAndPwd(String id, String pwd);
 //	//id찾기
 	@Query(value="select * from member where name = ?1 and phone = ?2",nativeQuery = true)
 	public Optional<Member> findByNameAndPhone(String name, String phone);

@@ -6,6 +6,25 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <script type="text/javascript">
+$(document).ready(function() {
+	//휴대폰번호 입력시 다음으로 넘어감
+	  $("#phone1, #phone2, #phone3").on("input", function() {
+	    var $this = $(this);
+	    if ($this.val().length == $this.attr("maxlength")) {
+	      $this.next().focus();
+	    }
+	  });
+	});
+$(document).ready(function() {
+    // 각 필드에서 값이 변경될 때마다 hidden 요소의 value 속성에 전화번호를 할당합니다.
+    $('input[type="tel"]').on('input', function() {
+      var phone1 = $('#phone1').val();
+      var phone2 = $('#phone2').val();
+      var phone3 = $('#phone3').val();
+      var phone = phone1+"-"+ phone2+"-"+ phone3;
+      $('#phone').val(phone);
+    });
+  });
 $(function(){
 	var code;
 	// 아이디 있는지 확인
@@ -64,10 +83,12 @@ $(function(){
         <input type="text" id="name" name="name"><br>
 
         <label for="phone">휴대폰 번호:</label>
-        <input type="text" id="phone" name="phone"><br>
+        <input type="tel" id="phone1" maxlength="3" required>
+        <input type="tel" id="phone2" maxlength="4" required>
+        <input type="tel" id="phone3" maxlength="4" required><br>
+        <input type="hidden" name="phone" id="phone">
 
         <input type="button" value="휴대폰 인증" id='btn_phone'>
-        <br>
         <label for="authCode">인증번호:</label>
         <input type="text" id="authCode" name="authCode"><br>
         

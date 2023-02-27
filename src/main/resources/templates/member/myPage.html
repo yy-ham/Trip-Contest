@@ -8,19 +8,19 @@
 <script>
 	$(function(){
 		sessionStorage.setItem("id",$("#id").val());
-		//console.log(sessionStorage.getItem("id"))
-		var status = $("#status").val();
-		if(status !=null || status !=""){
-			//alert("로그인 성공");
-		} 
+		console.log(sessionStorage.getItem("id"))
+		
 	})
 </script>
 <body>
 	<input type="hidden" th:if="${param.status}" th:value="${id}" id="status">
-	<h1>로그인 성공(메인페이지)</h1>
-	<a href="/myPage">마이페이지 가기</a>
+	<h1>마이페이지</h1>
+	<a href="/myinfo">내 정보 보기</a>
+	<a href="/findMyPlan">내 여행계획</a>
 	<a href="/logout">로그아웃</a>
 	<input type="hidden" th:value="${id}" id="id">
-	<!--  <p th:text="${id}"></p>-->
+	<p th:text="${id}">
+	
+	</p>
 </body>
 </html>

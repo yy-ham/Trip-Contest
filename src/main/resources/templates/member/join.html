@@ -5,13 +5,33 @@
 	<title>회원가입</title>
 </head>
 <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <script type="text/javascript"> 
-
-	$(function(){
+<!-- 주소등록 시 주소 찾기=>카카오 -->
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>   
+<script> 
+$(function(){
+    $(document).ready(function() {
+    	//휴대폰번호 입력시 다음으로 넘어감
+    	  $("#phone1, #phone2, #phone3").on("input", function() {
+    	    var $this = $(this);
+    	    if ($this.val().length == $this.attr("maxlength")) {
+    	      $this.next().focus();
+    	    }
+    	  });
+    	});
+    $(document).ready(function() {
+        // 각 필드에서 값이 변경될 때마다 hidden 요소의 value 속성에 전화번호를 할당합니다.
+        $('input[type="tel"]').on('input', function() {
+          var phone1 = $('#phone1').val();
+          var phone2 = $('#phone2').val();
+          var phone3 = $('#phone3').val();
+          var phone = phone1+"-"+ phone2+"-"+ phone3;
+          $('#phone').val(phone);
+        });
+      });
+	
 	    $(document).ready(function() {
 	        $("#check-duplicate").on("click", function() {
 	            var id = $("#id").val();
-	
 	            $.ajax({
 	                url: "/checkId",
 	                data: {id: id},
@@ -27,6 +47,7 @@
 	        });
 	    });
 	    
+	    
 	    $(document).ready(function() {
 	        $("#pwd-confirm").on("keyup", function() {
 	            var pwd = $("#pwd").val();
@@ -39,8 +60,16 @@
 	            }
 	        });
 	    });
-	
-	})
+		// 주소 가져오기
+		$("#addr").on("click",function(){
+			new daum.Postcode({
+				oncomplete: function(data){
+					var roadAddr = data.roadAddress; // 도로명주소
+					document.getElementById("addr").value = roadAddr;
+				}
+			}).open();
+		});
+});
     </script>
 <body>
 	<h1>회원가입</h1>
@@ -63,10 +92,15 @@
 		<input type="text" name="name" id="name" required><br>
 
 		<label for="addr">주소:</label>
-		<input type="text" name="addr" id="addr" required><br>
-
-		<label for="tel">전화번호:</label>
-		<input type="tel" name="phone" id="tel" required><br>
+		<!--<input type="text" name="addr" id="addr" required><br>-->
+		<input type="text" name="addr" id="addr" readonly="readonly">
+		 <label for="phone">전화번호:</label>
+		<input type="tel" id="phone1" maxlength="3" required>
+		<input type="tel" id="phone2" maxlength="4" required>
+		<input type="tel" id="phone3" maxlength="4" required><br>
+		<input type="hidden" name="phone" id="phone">
+		<!--<label for="phone">전화번호:</label>
+		<input type="tel" name="phone" id="phone"><br>-->
 
 		<label for="mail">이메일:</label>
 		<input type="email" name="mail" id="mail" required><br>
@@ -87,7 +121,7 @@
 		<input type="file" name="member_img" id="member_img"><br>
 		
 
-		<input type="submit" value="create">
+		<input type="submit" value="create" id="btn_insertMember">
 	</form>
 </body>
 </html>

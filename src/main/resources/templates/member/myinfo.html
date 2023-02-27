@@ -3,13 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <title>내 정보</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
+
+<script>
+$(function(){
+	sessionStorage.setItem("id",$("#id").val());
+	//console.log(sessionStorage.getItem("id"))
+})
+function showPasswordPrompt() {
+    var pwd = prompt("비밀번호를 입력해주세요.");
+    if (pwd == $("#pwd").val()) { // 비밀번호 검증
+        location.href = '/myinfo/edit'; // 정보 수정 페이지로 이동
+    } else {
+        alert('비밀번호가 일치하지 않습니다.');
+    }
+}
+</script>
 <body>
     <h1>내 정보</h1>
     <table>
         <tr>
             <th>ID</th>
             <td th:text="${member.id}"></td>
+            <td><input type="hidden" th:value="${member.id}" id="id"></td>
+            
+            
         </tr>
         <tr>
             <th>이름</th>
@@ -37,9 +56,14 @@
         </tr>
         <tr>
             <th>프로필</th>
-            <td><img th:src="@{/images/profile1.jpg}" width=100 height=100/></td>
+            <td><img th:src="@{|/images/${member.memberImg}|}" width=100 height=100/></td>
+            
+        </tr>
+        <tr>
+        	<td><input type="hidden" name="pwd" id="pwd" th:value="${member.pwd}"></td>
+        	<td><input type="hidden" name="jumin" id="jumin" th:value="${member.jumin}"></td>
         </tr>
     </table>
-    <a href="/myinfo/edit">정보 수정</a>
+    <a href="#" onclick="showPasswordPrompt()">정보 수정</a>
 </body>
 </html>
