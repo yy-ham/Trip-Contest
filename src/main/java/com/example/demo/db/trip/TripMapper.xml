@@ -71,7 +71,7 @@
     
     <!-- 해당 회원의 찜 여부 확인 -->
     <select id="findLiked" parameterType="String">
-    	select * from liked where member_id= #{member_id}
+    	select * from liked where member_id= #{member_id} and type = #{type}
     </select>
 
     <!-- 찜하기 -->

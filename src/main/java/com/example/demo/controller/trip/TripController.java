@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -141,6 +142,10 @@ public class TripController {
         trip.setType("trip");
         trip.setHit(hit);
         trip.setTripLiked(tripLiked);
+        String tripTel = trip.getTripTel();
+        if(tripTel.length() < 11) {
+        	trip.setTripTel(tripTel.substring(0, tripTel.length()-1));
+        }
         if(trip.getState() == null || trip.getState().equals("")) {
         	trip.setState("Y");
         }
@@ -199,7 +204,7 @@ public class TripController {
     
     @GetMapping("/trip/tripDetail/{tripNo}")
     public ModelAndView tripDetail(@PathVariable int tripNo) {
-    	ModelAndView mav = new ModelAndView("/trip/tripDetail");
+    	ModelAndView mav = new ModelAndView("trip/tripDetail");
     	Trip trip = tripService.findByTripNo(tripNo);
     	String region = "";
     	region = tripService.getRegionByTripNo(tripNo);
@@ -384,28 +389,30 @@ public class TripController {
     @ResponseBody
     @GetMapping("/trip/tripUnliked")
     public int tripUnliked(Liked liked) {
+    	Optional<Liked> opt = likedService.findByNoAndTypeAndMemberId(liked.getNo(), liked.getType(), liked.getMemberId());
     	int re = -1;
-    	int likeNo = liked.getLikeNo();
-    	likedService.delete(liked);
-    	if(likedService.findByLikeNo(likeNo).isEmpty()) {
+    	likedService.delete(opt.get());
+    	Optional<Liked> opt2 = likedService.findByNoAndTypeAndMemberId(liked.getNo(), liked.getType(), liked.getMemberId());
+    	if(opt2.isEmpty()) {
     		re = 1; // 성공
     	}else {
     		re = 0;
     	}
-    	
+
     	return re;
     }
     
 
+    @ResponseBody
     @GetMapping("/trip/findAllTripLiked/{memberId}")
     public List<Integer> findAllTripLiked(@PathVariable String memberId) {
-    	List<Liked> tripLikedList = likedService.findByMemberId(memberId);
-    	List<Integer> likedNo = new ArrayList<>();
+    	List<Liked> tripLikedList = likedService.findByMemberIdAndType(memberId,"trip");
+    	List<Integer> tripLikedNoList = new ArrayList<>();
     	for(int i=0; i<tripLikedList.size(); i++) {
     		int no = tripLikedList.get(i).getNo();
-    		likedNo.add(no);
+    		tripLikedNoList.add(no);
     	}
     	
-    	return likedNo;
+    	return tripLikedNoList;
     }
 }

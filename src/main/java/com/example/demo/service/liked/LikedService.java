@@ -29,7 +29,12 @@ public class LikedService {
 		return likedDAO.findById(likeNo);
 	}
 	
-	public List<Liked> findByMemberId(String memberId){
-		return likedDAO.findByMemberId(memberId);
+	public Optional<Liked> findByNoAndTypeAndMemberId(int no, String type, String memberId) {
+		return likedDAO.findByNoAndTypeAndMemberId(no, type, memberId);
 	}
+	
+	public List<Liked> findByMemberIdAndType(String memberId, String type){
+		return likedDAO.findByMemberIdAndType(memberId, type);
+	}
+	
 }

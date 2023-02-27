@@ -95,13 +95,13 @@ public class TripService {
     	return TripDBManager.deleteTripImgByFname(fname);
     }
 
-    public int updateTripLiked(int tripNo){
-        return TripDBManager.updateTripLiked(tripNo);
-    }
-
-    public int updateTripNoLiked(int tripNo){
-        return TripDBManager.updateTripNoLiked(tripNo);
-    }
+//    public int updateTripLiked(int tripNo){
+//        return TripDBManager.updateTripLiked(tripNo);
+//    }
+//
+//    public int updateTripNoLiked(int tripNo){
+//        return TripDBManager.updateTripNoLiked(tripNo);
+//    }
     
     public String getRegionByTripNo(int tripNo) {
     	return TripDBManager.getRegionByTripNo(tripNo);

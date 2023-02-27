@@ -76,8 +76,14 @@
 		 });
 		 
 		 // 전화번호 합쳐서 저장
-		 $("#save").click(function(){
+		 $("#save").click(function(e){
 			 $("#tripTel").val($("#tel1").val()+"-"+$("#tel2").val()+"-"+$("#tel3").val());
+			 
+			 
+			 if(!$("#tripImg").val()){
+				 e.preventDefault();
+				 alert("대표 이미지를 넣어주세요");
+			 }
 		 });
 		 
 		 // 임시저장 - state: N
@@ -165,7 +171,7 @@
         </div>
         <div>
             <label th:for="tripImg">이미지 : </label>
-            <input multiple="multiple" type="file" name="uploadFile">
+            <input multiple="multiple" type="file" name="uploadFile" id="tripImg" >
         </div>
         <div>
             <button id="preSaved">임시저장</button>
