@@ -4,8 +4,14 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="TripSearchPage">
   <select id="TripSearch" resultType="TripVo">
-    select * from trip where korea_code = #{region} order by hit desc;
-  </select>
+    select * from (select * from trip where  korea_code = #{korea_code} order by writedate desc)where rownum<![CDATA[ <= ]]>6 order by writedate desc
+ </select>
+ <select id="TripSeoul" resultType="TripVo">
+    select * from (select * from trip where korea_code = #{1} order by writedate desc)where rownum<![CDATA[ <= ]]>6 order by writedate desc
+ </select>
+	<select id="PlanSearch" resultType="TripVo">
+    select * from (select * from plan where  korea_code = #{korea_code} order by plan_date desc)where rownum<![CDATA[ <= ]]>6 order by plan_date desc
+ </select>
 
 </mapper>
 

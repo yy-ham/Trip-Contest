@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.db.DBManager;
-import com.example.demo.entity.MainPage;
 import com.example.demo.vo.PlanVo;
 import com.example.demo.vo.TripVo;
 

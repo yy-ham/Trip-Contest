@@ -44,13 +44,20 @@ public static SqlSessionFactory sqlSessionFactory;
 		return tripbest;
 	}
 	
-	
-//	public static List<TripVo> TripSearch(){
-//		List<TripVo> tripsearch = null;
-//		SqlSession session = sqlSessionFactory.openSession();
-//		tripsearch = session.selectList("TripSearchPage.TripSearch",1);
-//		session.close();
-//		return tripsearch;
-//	}
+		public static List<TripVo> TripSearch(int korea_code){
+		List<TripVo> TripSearch = null;
+		SqlSession session = sqlSessionFactory.openSession();
+		TripSearch = session.selectList("TripSearchPage.TripSearch",korea_code);
+		session.close();
+		return TripSearch;
+	}
+		
+		public static List<TripVo> PlanSearch(int korea_code){
+			List<TripVo> PlanSearch = null;
+			SqlSession session = sqlSessionFactory.openSession();
+			PlanSearch = session.selectList("TripSearchPage.TripSearch",korea_code);
+			session.close();
+			return PlanSearch;
+		}
 
 }
