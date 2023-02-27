@@ -69,8 +69,8 @@ public class PlanDetailService {
 		return dao.getUserLiked(no, member_id);
 	}
 	
-	public int insertLiked(String member_id, int no, int trip_no, String liked_title) {
-		return dao.insertLiked(member_id, no, trip_no, liked_title);
+	public int insertLiked(String member_id, int no, String plan_img, String liked_title) {
+		return dao.insertLiked(member_id, no, plan_img, liked_title);
 	}
 	
 	public int deleteLiked(int no) {

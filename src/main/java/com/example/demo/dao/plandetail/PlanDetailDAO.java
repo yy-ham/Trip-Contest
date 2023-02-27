@@ -46,8 +46,8 @@ public interface PlanDetailDAO extends JpaRepository<PlanDetail, Integer> {
 	@Modifying
 	@Transactional
 	@Query(value = "insert into liked(like_no, member_id, no, type, like_img, liked_title) "
-			+ "values(seq_liked.nextval, ?1, ?2, 'plan', (select trip_img from trip where trip_no = ?3), ?4)", nativeQuery = true)
-	public int insertLiked(String member_id, int no, int trip_no, String liked_title);
+			+ "values(seq_liked.nextval, ?1, ?2, 'plan', ?3, ?4)", nativeQuery = true)
+	public int insertLiked(String member_id, int no, String plan_img, String liked_title);
 	
 	
 	//찜 삭제

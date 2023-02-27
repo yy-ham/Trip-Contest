@@ -70,9 +70,9 @@ public class PlanDetailController {
 	
 	//찜 등록
 	@GetMapping("/plan/detail/liked/insert")
-	public int insertLiked(String member_id, int no, int trip_no, String liked_title) {
+	public int insertLiked(String member_id, int no, String plan_img, String liked_title) {
 		int re = -1;
-		int re1 = planDetailService.insertLiked(member_id, no, trip_no, liked_title);
+		int re1 = planDetailService.insertLiked(member_id, no, plan_img, liked_title);
 		int re2 = planDetailService.addLikee(no);
 		
 		if(re1 == 1 && re2 == 1) {

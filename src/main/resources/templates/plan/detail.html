@@ -96,7 +96,7 @@
 		
 
 		
-		//등록
+		//댓글 등록
 		$("#insertRecoment").click(function(){
 			var data = $("#writeRecoment").serializeArray();
 			$.ajax({
@@ -108,7 +108,7 @@
 			});
 		});
 		
-		//삭제
+		//댓글 삭제
 		$(document).on("click","#btnDelete",function(){
 			var recNo = $(this).attr("recNo");
 			if(confirm("삭제하시겠습니까?")){
@@ -127,7 +127,6 @@
 		
 		
 		//좋아요
-		
 		//좋아요 수 가져오기
 		function getLiked(){
 			$.ajax({
@@ -152,7 +151,7 @@
 					data: {
 						member_id: login,
 						no: no,
-						trip_no: $("#trip_no").html(),
+						plan_img: $("#plan_img").html(),
 						liked_title: $('#plan_title').html()
 					},
 					success: function(re){
@@ -196,6 +195,7 @@
 		getUserLiked(login);
 		
 		
+		//여행계획 삭제
 		$("#deletePlan").click(function(e){
 			e.preventDefault();
 			var plan_no = $("#plan_no").val();
@@ -241,7 +241,7 @@
 			<td th:text="${p.member_id}"></td>
 			<td th:text="${p.plan_date}"></td>
 			<td th:text="${p.plan_hit}"></td>
-			<td th:text="${p.plan_img}"></td>
+			<td th:text="${p.plan_img}" id="plan_img"></td>
 			<td th:text="${p.plan_start}"></td>
 			<td th:text="${p.plan_end}"></td>
 		</tr>

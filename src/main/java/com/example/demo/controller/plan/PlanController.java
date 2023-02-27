@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.example.demo.entity.liked.Liked;
 import com.example.demo.entity.plan.Plan;
 import com.example.demo.entity.plandetail.PlanDetail;
 import com.example.demo.entity.trip.Trip;
 import com.example.demo.service.korea.KoreaService;
+import com.example.demo.service.liked.LikedService;
 import com.example.demo.service.plan.PlanService;
 import com.example.demo.service.plandetail.PlanDetailService;
 import com.example.demo.service.recoment.RecomentService;
@@ -45,7 +47,8 @@ public class PlanController {
 	
 	@Autowired
 	private KoreaService koreaService;
-	
+	@Autowired
+	private LikedService likedService;
 	
 	
 	public int pageSIZE = 8;
@@ -302,5 +305,17 @@ public class PlanController {
 		//return trip;
 	}
 
-	
+	//여행계획 목록 - 로그인한 유저가 찜한 목록
+	@ResponseBody
+    @GetMapping("/plan/list/liked/{memberId}")
+    public List<Integer> findAllPlanLiked(@PathVariable String memberId) {
+    	List<Liked> planLikedList = likedService.findByMemberIdAndType(memberId, "plan");
+    	List<Integer> planLikedNoList = new ArrayList<>();
+    	for(int i = 0; i < planLikedList.size(); i++) {
+    		int no = planLikedList.get(i).getNo();
+    		planLikedNoList.add(no);
+    	}
+    	System.out.println("planLikedNoList" + planLikedNoList);
+    	return planLikedNoList;
+    }
 }
