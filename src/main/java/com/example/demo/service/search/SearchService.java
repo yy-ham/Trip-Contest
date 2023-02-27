@@ -21,14 +21,13 @@ import java.util.Map;
 @Getter
 public class SearchService {
 
+	// 검색에 사용할 지역변수들
     private final int pageSize = 4;
     private int totalRecord = 0;
     private int totalPage = 1;
     private final int pageGroup = 5;
     private final Map<String,Object> map = new HashMap<>();
 
-//    @Autowired
-    // 전체 레코드 가져올 planDAO
 
     @Autowired
     private TripService tripService;
@@ -86,11 +85,13 @@ public class SearchService {
     //keyword(검색한 단어) pageNum(페이징에 처리) region(지역), orderColumn(정렬기준)
     public List<TripVO> getSearchedTrip(String keyword, int regionInt, int pageNum, String orderColumn){
 
+    	//int region을 null로 치환하기 위한 동작
     	String region = null;
     	if (regionInt != 0) {
     		region = regionInt+"";
     	}
     	
+    	//plan과 trip의 다른 컬럼이름을 통일된 정렬기준으로 맞추기 위한 동작
     	if(orderColumn == null || orderColumn.equals("") || orderColumn.equals("date")) {
     		orderColumn = "writedate";
     	}else if(orderColumn.equals("liked")) {
@@ -103,6 +104,7 @@ public class SearchService {
         map.put("region", region);
         map.put("orderColumn", orderColumn);
 
+        //페이지에 따라 값을 가져오기 위한 로직
         int start = (pageNum-1)*pageSize + 1;
         int end = start +  pageSize - 1;
 
@@ -110,7 +112,7 @@ public class SearchService {
         map.put("end", end);
 
 
-        //dao 통해 가져온 값을 넣는 리스트
+        //데이터 테이블에 없는 문자 지역명을 받기 위한 로직
         List<TripVO> prelist = tripService.findAll((HashMap<String, Object>) map);
         List<TripVO> list = new ArrayList<>();
         for (TripVO tripVO : prelist) {
@@ -135,17 +137,19 @@ public class SearchService {
 			}
 			list.add(tripVO);
 		}
-        //임시 리스트
+        
         return list;
     }
     
     public List<PlanVO> getSearchedPlan(String keyword, int regionInt, int pageNum, String orderColumn){
 
+    	//int region을 null로 치환하기 위한 동작
     	String region = null;
     	if (regionInt != 0) {
     		region = regionInt+"";
     	}
     	
+    	//plan과 trip의 다른 컬럼이름을 통일된 정렬기준으로 맞추기 위한 동작
     	if(orderColumn == null || orderColumn.equals("") || orderColumn.equals("date")) {
     		orderColumn = "plan_date";
     	}else if(orderColumn.equals("liked")) {
@@ -158,8 +162,7 @@ public class SearchService {
         map.put("region", region);
         map.put("orderColumn", orderColumn);
 
-       
-
+        //페이지에 따라 값을 가져오기 위한 로직
         int start = (pageNum-1)*pageSize + 1;
         int end = start +  pageSize - 1;
 
@@ -167,7 +170,7 @@ public class SearchService {
         map.put("end", end);
 
 
-        //dao 통해 가져온 값을 넣는 리스트
+        //데이터 테이블에 없는 문자 지역명을 받기 위한 로직
         List<PlanVO> prelist = planService.findAll((HashMap<String, Object>) map);
         List<PlanVO> list = new ArrayList<>();
         for (PlanVO planVO : prelist) {
@@ -192,7 +195,7 @@ public class SearchService {
 			}
 			list.add(planVO);
 		}
-        //임시 리스트
+        
         return list;
     }
     

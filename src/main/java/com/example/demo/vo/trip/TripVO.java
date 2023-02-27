@@ -11,4 +11,6 @@ public class TripVO {
     private String trip_addr;
     private String trip_tel;
     private String region;
+    private String trip_img;
+    private String trip_detail;
 }

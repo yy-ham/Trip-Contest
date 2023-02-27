@@ -34,16 +34,7 @@ public class SearchController {
         this.searchService = searchService;
     }
 
-    // PlanService di주입
-
-    // TripService di주입
-
-    @GetMapping("/search")
-    public String searchForm(){
-        return "search/searchForm";
-    }
-
-    //keyword(검색한 단어) pageNum(페이징에 처리) column(지역), sortColumn(정렬기준)
+    //검색결과 페이지로 이동하는 메소드
     @GetMapping("/search/result")
     public ModelAndView searchResult(String keyword,
                              @RequestParam(value = "region", defaultValue = "0") int region,
@@ -59,20 +50,24 @@ public class SearchController {
         log.info("region ={}",region);
         log.info("pageNum ={}",pageNum);
         log.info("orderColumn ={}",orderColumn);
-        
-        int tripStartPage = searchService.getStartTripPage(pageNum);
-        int planStartPage = searchService.getStartPlanPage(pageNum);
-        
+       
+        //검색결과를 상태유지
         mav.addObject("keyword", keyword);
         mav.addObject("region", region);
         mav.addObject("pageNum", pageNum);
         mav.addObject("orderColumn", orderColumn);
 
-        mav.addObject("planList",searchService.getSearchedPlan(keyword, region, pageNum, orderColumn));
+        //검색된 결과를 model에 담는것
+        mav.addObject("planList",searchService.getSearchedPlan(keyword, region, pageNum, orderColumn));   
         mav.addObject("tripList",searchService.getSearchedTrip(keyword, region, pageNum, orderColumn));
         
-        mav.addObject("planPage", searchService.getTotalPlanPage());
-        mav.addObject("tripPage", searchService.getTotalTripPage());
+        //검색결과의 전체 갯수를 구하는 것
+        searchService.getTotalPlanPage();
+        int tripRecord = searchService.getTotalRecord();
+        searchService.getTotalTripPage();
+        int planRecord = searchService.getTotalRecord();
+        
+        mav.addObject("totalRecord",planRecord+tripRecord );
         
 
         return mav;
