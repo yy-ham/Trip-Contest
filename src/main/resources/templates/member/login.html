@@ -8,16 +8,16 @@
 <script>
 	$(function(){
 		$("#btnLogin").click(function(e){
-			
+			e.preventDefault();
 			$.ajax({
 				url:"/checkLogin",
 				data:{"id": $('#id').val(), "pwd": $('#pwd').val()},
 				success:function(res){
 					if(res =="yes"){
+						$("#btnLogin").unbind('click').click();
 					}
 					else{
 						$("#login-error").text("로그인 정보가 올바르지 않습니다.").css("color", "red");
-						e.preventDefault();
 					}
 				} 
 			})

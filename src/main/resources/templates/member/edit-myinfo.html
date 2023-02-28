@@ -18,7 +18,6 @@ function deleteConfirm() {
 </script>
 <body>
 	<h1>내 정보 수정</h1>
-	
 	<form method="post" th:action="@{/myinfo/edit}" enctype="multipart/form-data">
 		<table>
 			<tr>
@@ -75,6 +74,7 @@ function deleteConfirm() {
 	<form id="delete-form" method="post" th:action="@{/myinfo/delete}">
   		<input type="hidden" name="id" th:value="${member.id}">
 	</form>
+	
 	<button onclick="deleteConfirm()">회원 탈퇴</button>
 </body>
 </html>

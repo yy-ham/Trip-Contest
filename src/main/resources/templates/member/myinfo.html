@@ -10,6 +10,7 @@
 $(function(){
 	sessionStorage.setItem("id",$("#id").val());
 	//console.log(sessionStorage.getItem("id"))
+	
 })
 function showPasswordPrompt() {
     var pwd = prompt("비밀번호를 입력해주세요.");
@@ -62,6 +63,8 @@ function showPasswordPrompt() {
         	<td><input type="hidden" name="jumin" id="jumin" th:value="${member.jumin}"></td>
         </tr>
     </table>
-    <a href="#" onclick="showPasswordPrompt()">정보 수정</a>
+    <a href="/pwdSetting">비밀번호 수정</a>
+    <!--  <button onclick="location.href='/pwdSetting'">비밀번호 수정</button>-->
+    <button onclick="showPasswordPrompt()">정보 수정</button>
 </body>
 </html>

@@ -51,6 +51,10 @@ public class MemberController {
 	@Autowired
 	private PlanService planService;
 		//메인페이지 test
+		@GetMapping("/main")
+		public String mainForm() {
+			return "member/main";
+		}
 	
 		//뷰를 보여주기 위한 mapping
 		@GetMapping("/join")
@@ -187,7 +191,16 @@ public class MemberController {
 	    @GetMapping("/myPage")
 	    public String myPage(HttpSession session, org.springframework.ui.Model model) {
 	    	model.addAttribute("id", (String)session.getAttribute("id"));
-	    	return "member/myPage";
+	    	
+	    	String id =(String)session.getAttribute("id");
+	    	if(id ==null) {
+	    		return "redirect:/login";
+	    	}else {
+	    		Optional<Member> member = memberService.findById(id);
+		    	model.addAttribute("member",member.get());
+		    	
+		    	return "member/myPage";
+	    	}
 	    }
 	 // 정보보기전 패스워드 입력
 	    @GetMapping("/beforeEditMyInfo")
@@ -197,24 +210,59 @@ public class MemberController {
 	    }
 	    @PostMapping("/beforeEditMyInfo")
 	    public String beforeEditMyInfoPost(HttpSession session, org.springframework.ui.Model model) {
+	    	
 	    	model.addAttribute("id", (String)session.getAttribute("id"));
+	    	
 	    	String pwd = (String)session.getAttribute("pwd");
-	    	model.addAttribute("pwd", pwd);
+	    	session.setAttribute("pwd", pwd);
+	        model.addAttribute("pwd", pwd);
+	        System.out.println(pwd);
+	    	
 	    	return "redirect:/myinfo";
 	    }
 	    // 회원 정보 조회
 	    @GetMapping("/myinfo")
 	    public String myInfo(HttpSession session, org.springframework.ui.Model model) {
 	    	String id =(String)session.getAttribute("id");
-	    	Optional<Member> member = memberService.findById(id);
-	    	model.addAttribute("member",member.get());
-	         if(member!=null) {
-	        	 return "member/myinfo";
-	         }
-	         else {
-	            // 로그인하지 않은 사용자의 경우 로그인 페이지로 이동
-	            return "member/login";
+	    	if(id ==null) {
+	    		return "redirect:/login";
+	    	}else {
+	    		Optional<Member> member = memberService.findById(id);
+		    	model.addAttribute("member",member.get());
+		    	
+		    	return "member/myinfo";
+	    	}
+	    }
+	    @GetMapping("/pwdSetting")
+	    public String pwdSettingForm() {
+	    	return "member/pwdSetting";
+	    }
+	    
+	    @PostMapping("/pwdSetting")
+	    public ModelAndView pwdSettingSubmit( 
+	    									  String oldPwd, 
+	                                          String newPwd, 
+	                                          HttpSession session, RedirectAttributes redirectAttributes, 
+	                                          HttpServletRequest request) {
+	        ModelAndView mav = new ModelAndView("redirect:/main");
+	        String id =(String)session.getAttribute("id");
+	        Optional<Member> member = memberService.findById(id);
+	        if (member.isPresent()) {
+	            if (member.get().getPwd().equals(oldPwd)) {
+	                member.get().setPwd(newPwd);
+	                memberService.updateMember(member.get());
+	                
+	                redirectAttributes.addAttribute("successMsg", "비밀번호가 성공적으로 변경되었습니다.");
+	                
+	            } else {
+	                redirectAttributes.addAttribute("errorMsg", "기존 비밀번호가 일치하지 않습니다.");
+	                mav.setViewName("redirect:/pwdSetting");
+	            }
+	        } else {
+	            redirectAttributes.addAttribute("errorMsg", "아이디가 존재하지 않습니다.");
+	            mav.setViewName("redirect:/pwdSetting");
 	        }
+	        return mav;
 	    }
 	    // 정보 수정
 	    @GetMapping("/myinfo/edit")

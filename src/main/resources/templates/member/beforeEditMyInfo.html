@@ -13,8 +13,8 @@ $(function(){
 $("#pwd-form").submit(function(event) {
     //event.preventDefault();
     var pwd = $("#pwd").val();
-	if (pwd == $("#pwd-input").val()) { // 비밀번호 검증
-        location.href = 'member/myinfo'; // 정보 수정 페이지로 이동
+	if (pwd ==$("#pwd-input").val()) { // 비밀번호 검증
+        location.href = '/member/myinfo'; // 정보 수정 페이지로 이동
     } else {
         alert('비밀번호가 일치하지 않습니다.');
     }
