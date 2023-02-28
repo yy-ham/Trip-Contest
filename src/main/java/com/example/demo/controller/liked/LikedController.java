@@ -28,16 +28,26 @@ public class LikedController {
 	
 	
 	
-	@GetMapping("/Liked/likeList")
-	public void findByIdandtype(Model model, @RequestParam(value="member_id") String member_id,@RequestParam(value="type") String type) {
-		HashMap<String, Object> map = new HashMap<>();
-		map.put("member_id", "hong");
-		map.put("type", "plan");
-		map.put("no", 1); 
- 		model.addAttribute("likedListPlan", likedService.findByIdandType(map));
-//		model.addAttribute("likedListTrip", likedService.findByIdandType(map));
- 		
+	/*
+	 * @GetMapping("/Liked/likeList/{member_id}") public String
+	 * findByIdandPlan(Model model, @PathVariable String member_id) {
+	 * model.addAttribute("likedListPlan", likedService.findByIdandPlan(member_id));
+	 * model.addAttribute("likedListTrip", likedService.findByIdandTrip(member_id));
+	 * System.out.println(likedService.findByIdandTrip(member_id));
+	 * 
+	 * return "/Liked/likeList"; }
+	 */
+	
+	@GetMapping("/Liked/likeList/{member_id}")
+	public ModelAndView list(@PathVariable String member_id) {
+		ModelAndView mav = new ModelAndView("/Liked/likeList");
+		mav.addObject("likedListPlan", likedService.findByIdandPlan(member_id));
+		mav.addObject("likedListTrip", likedService.findByIdandTrip(member_id));
+		return mav;
 	}
+	
+	
+	
 	
 	
 	@GetMapping("/Liked/deleteLiked/{like_no}")

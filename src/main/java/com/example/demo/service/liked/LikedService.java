@@ -17,10 +17,14 @@ public class LikedService {
 	
 	
 	
-	public List<Liked> findByIdandType(HashMap<String, Object> map){
-		return DBManager.findByIdandType(map);
+	public List<Liked> findByIdandPlan(String member_id){
+		return DBManager.findByIdandPlan(member_id);
 	}
   
+	
+	public List<Liked> findByIdandTrip(String member_id){
+		return DBManager.findByIdandTrip(member_id);
+	}
 	
 	public int deleteLiked(int like_no) {
 		return DBManager.deleteLiked(like_no);

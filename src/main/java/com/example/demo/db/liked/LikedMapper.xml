@@ -3,9 +3,14 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="liked">
-  <select id="findByIdandType" resultType="liked">
-  	select like_no,like_img,liked_title from liked where type=#{type} and member_id=#{member_id} and no=#{no}
+  <select id="findByIdandTrip" resultType="liked">
+  	select like_no,like_img,liked_title from liked where type='trip' and member_id=#{member_id}
   </select>
+  
+    <select id="findByIdandPlan" resultType="liked">
+  	select like_no,like_img,liked_title from liked where type='plan' and member_id=#{member_id}
+  </select>
+  
   
      <delete id="delete">
 		delete from liked where like_no=#{like_no}	

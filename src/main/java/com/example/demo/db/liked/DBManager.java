@@ -24,13 +24,24 @@ public class DBManager {
 		}
 	}
 	
-	public static List<Liked> findByIdandType(HashMap<String, Object> map){
+	public static List<Liked> findByIdandTrip(String member_id){
 		List<Liked> list = null;
 		SqlSession session = sqlSessionFactory.openSession();
-		list= session.selectList("liked.findByIdandType", map);
+		list= session.selectList("liked.findByIdandTrip", member_id);
 		session.close();
 		return list;
 	}
+	
+	
+	public static List<Liked> findByIdandPlan(String member_id){
+		List<Liked> list = null;
+		SqlSession session = sqlSessionFactory.openSession();
+		list= session.selectList("liked.findByIdandPlan", member_id);
+		session.close();
+		return list;
+	}
+	
+	
 	
 	public static int deleteLiked(int like_no) {
 		int re = -1;
