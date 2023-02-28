@@ -9,6 +9,62 @@
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>   
 <script> 
 $(function(){
+	$(document).ready(function(){
+		  $("form").submit(function(){
+		    if($("#id").val == " "){
+		      alert("아이디를 입력해주세요");
+		      $("#id").focus();
+		      return false;
+		       
+		     if($("#pwd").val == " "){
+		      alert("비밀번호를 입력해주세요");
+		      $("#pwd").focus();
+		      return false;
+		    }
+		     if($("#pwd-confirm").val == " "){
+		      alert("비밀번호 확인을 입력해주세요");
+		      $("#pwd-confirm").focus();
+		      return false;
+		    }
+		     if($("#jumin1").val == " "){
+		      alert("주민번호를 입력해주세요");
+		      $("#jumin1").focus();
+		      return false;
+		    }
+		     if($("#jumin2").val == " "){
+		      alert("주민번호를 입력해주세요");
+		      $("#jumin2").focus();
+		      return false;
+		    }
+		     if($("#name").val == " "){
+		      alert("이름을 입력해주세요");
+		      $("#name").focus();
+		      return false;
+		    }
+		     if($("#phone1").val == " "){
+		      alert("휴대폰번호를 입력해주세요");
+		      $("#phone1").focus();
+		      return false;
+		    }
+		     if($("#phone2").val == " "){
+		      alert("휴대폰번호를 입력해주세요");
+		      $("#phone2").focus();
+		      return false;
+		    }
+		     if($("#phone3").val == " "){
+		      alert("휴대폰번호를 입력해주세요");
+		      $("#phone3").focus();
+		      return false;
+		    }
+		     if($("#mail").val == " "){
+		      alert("메일을 입력해주세요");
+		      $("#mail").focus();
+		      return false;
+		    }
+		      
+		      }
+		  });
+		});
     $(document).ready(function() {
     	//휴대폰번호 입력시 다음으로 넘어감
     	  $("#phone1, #phone2, #phone3").on("input", function() {
@@ -18,6 +74,13 @@ $(function(){
     	    }
     	  });
     	});
+    $(document).ready(function() {
+        // 각 필드에서 값이 변경될 때마다 hidden 요소의 value 속성에 전화번호를 할당합니다.
+          var jumin1 = $('#jumin1').val();
+          var jumin2 = $('#jumin2').val();
+          var jumin = jumin1+"-"+ jumin2;
+          $('#jumin').val(jumin);
+      });
     $(document).ready(function() {
         // 각 필드에서 값이 변경될 때마다 hidden 요소의 value 속성에 전화번호를 할당합니다.
         $('input[type="tel"]').on('input', function() {
@@ -39,7 +102,12 @@ $(function(){
 	                    if (data == true) {
 	                        alert("중복된 ID입니다.");
 	                        $("#id").attr("readonly", true);
-	                    } else {
+	                    }
+	                    else if(id ==null){
+	                    	alert("잘못된 입력입니다.");
+	                    	$("#id").attr("readonly", true);
+	                    }
+	                    else {
 	                        alert("사용 가능한 아이디입니다.");
 	                    }
 	                }
@@ -73,7 +141,7 @@ $(function(){
     </script>
 <body>
 	<h1>회원가입</h1>
-	<form method="post" action="/join" enctype="multipart/form-data">
+	<form method="post" action="/join" enctype="multipart/form-data" id="member_form">
 		<label for="id">ID:</label>
 		<input type="text" name="id" id="id" required th:value="${id}" th:readonly="${id != null}"><br>
 		<button type="button" id="check-duplicate">ID 중복 체크</button><br>
@@ -86,7 +154,10 @@ $(function(){
 		<span id="pwd-confirm-message"></span><br>
 
 		<label for="jumin">주민번호:</label>
-		<input type="text" name="jumin" id="jumin" required><br>
+		<input type='text' name='jumin1' id='jumin1' />
+        - 
+        <input type='text' name='jumin2' id='jumin2' /><br>
+        <input type="hidden" name="jumin" id="jumin">
 
 		<label for="name">이름:</label>
 		<input type="text" name="name" id="name" required><br>

@@ -158,7 +158,7 @@ public class MemberController {
 	            redirectAttributes.addAttribute("status", true);
 	            mav.setViewName("redirect:/login_success");
 	        } else {
-//	        	mav.setViewName("redirect:/login");
+//	        	mav.setViewName("redirect:/login_fail");
 	        }
 	        return mav;
 	    }
@@ -185,8 +185,22 @@ public class MemberController {
 	    }
 	 // 마이페이지 경로 매핑
 	    @GetMapping("/myPage")
-	    public String myPage() {
+	    public String myPage(HttpSession session, org.springframework.ui.Model model) {
+	    	model.addAttribute("id", (String)session.getAttribute("id"));
 	    	return "member/myPage";
+	    }
+	 // 정보보기전 패스워드 입력
+	    @GetMapping("/beforeEditMyInfo")
+	    public String beforeEditMyInfo(HttpSession session, org.springframework.ui.Model model) {
+	    	
+	    	return "member/beforeEditMyInfo";
+	    }
+	    @PostMapping("/beforeEditMyInfo")
+	    public String beforeEditMyInfoPost(HttpSession session, org.springframework.ui.Model model) {
+	    	model.addAttribute("id", (String)session.getAttribute("id"));
+	    	String pwd = (String)session.getAttribute("pwd");
+	    	model.addAttribute("pwd", pwd);
+	    	return "redirect:/myinfo";
 	    }
 	    // 회원 정보 조회
 	    @GetMapping("/myinfo")
