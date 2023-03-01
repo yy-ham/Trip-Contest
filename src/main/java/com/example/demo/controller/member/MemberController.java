@@ -28,7 +28,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
-import com.example.demo.dao.MemberDAO;
+import com.example.demo.dao.member.MemberDAO;
 import com.example.demo.entity.member.Member;
 import com.example.demo.entity.plan.Plan;
 import com.example.demo.service.member.MemberService;
@@ -205,21 +205,23 @@ public class MemberController {
 	 // 정보보기전 패스워드 입력
 	    @GetMapping("/beforeEditMyInfo")
 	    public String beforeEditMyInfo(HttpSession session, org.springframework.ui.Model model) {
-	    	
-	    	return "member/beforeEditMyInfo";
+	        model.addAttribute("id", session.getAttribute("id"));
+	        return "member/beforeEditMyInfo";
 	    }
+
 	    @PostMapping("/beforeEditMyInfo")
-	    public String beforeEditMyInfoPost(HttpSession session, org.springframework.ui.Model model) {
-	    	
-	    	model.addAttribute("id", (String)session.getAttribute("id"));
-	    	
-	    	String pwd = (String)session.getAttribute("pwd");
-	    	session.setAttribute("pwd", pwd);
-	        model.addAttribute("pwd", pwd);
-	        System.out.println(pwd);
-	    	
-	    	return "redirect:/myinfo";
+	    public String beforeEditMyInfoPost(@RequestParam String pwd, HttpSession session, org.springframework.ui.Model model) {
+	        String id = (String) session.getAttribute("id");
+	        Optional<Member> member = memberService.findById(id);
+
+	        if (member.isPresent() && member.get().getPwd().equals(pwd)) {
+	            return "redirect:/myinfo";
+	        } else {
+	            model.addAttribute("error", "비밀번호가 일치하지 않습니다.");
+	            return "member/beforeEditMyInfo";
+	        }
 	    }
+
 	    // 회원 정보 조회
 	    @GetMapping("/myinfo")
 	    public String myInfo(HttpSession session, org.springframework.ui.Model model) {

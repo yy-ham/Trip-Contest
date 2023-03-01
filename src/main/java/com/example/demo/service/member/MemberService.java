@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.dao.MemberDAO;
+import com.example.demo.dao.member.MemberDAO;
 import com.example.demo.db.member.MemberDBManager;
 import com.example.demo.entity.member.*;
 import com.example.demo.vo.member.MemberVO;

@@ -1,34 +1,20 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-$(function(){
-	sessionStorage.setItem("id",$("#id").val());
-	console.log(sessionStorage.getItem("id"))
-})
-$("#pwd-form").submit(function(event) {
-    //event.preventDefault();
-    var pwd = $("#pwd").val();
-	if (pwd ==$("#pwd-input").val()) { // 비밀번호 검증
-        location.href = '/member/myinfo'; // 정보 수정 페이지로 이동
-    } else {
-        alert('비밀번호가 일치하지 않습니다.');
-    }
-});
-</script>
+  <meta charset="UTF-8">
+  <title>비밀번호 입력</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
-<form id="pwd-form" method="post">
-  <label for="pwd-input">비밀번호를 입력해주세요:</label>
-  <input type="password" id="pwd-input" name="pwd">
-  <input type="hidden" th:value="${id}" id="id">
-  <input type="hidden" th:value="${pwd}" id="pwd">
-  <button type="submit">확인</button>
-</form>
+    <h2>비밀번호 확인</h2>
+    <form method="post">
+        <label for="pwd">비밀번호를 입력하세요:</label>
+        <input type="password" id="pwd" name="pwd">
+        <input type="submit" value="확인">
+    </form>
+    <div th:if="${error}" style="color: red;">
+        [[${error}]]
+    </div>
 </body>
 </html>
