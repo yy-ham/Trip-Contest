@@ -42,7 +42,7 @@
         </if>
   </select>
   
-  <select id="likedFindByMemberId" resultType="plan">
+  <select id="likedFindByMemberId" resultType="planVO">
 	select p.* from plan p, liked l
 	where p.plan_no = l.NO
 	and l.type = 'plan' and l.member_id = #{id};
@@ -52,11 +52,11 @@
   	select nvl(max(plan_no), 0) + 1 from plan;
   </select>
    
-  <update id="insertLiked" parameterType="plan">
+  <update id="insertLiked" parameterType="planVO">
   	update plan set plan_liked = plan_liked + 1 where plan_no = #{plan_no};
   </update>
   
-  <update id="deleteLiked" parameterType="plan">
+  <update id="deleteLiked" parameterType="planVO">
   	update plan set plan_liked = plan_liked - 1 where plan_no = #{plan_no}
   </update>
    

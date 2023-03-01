@@ -37,4 +37,7 @@ public class LikedService {
 		return likedDAO.findByMemberIdAndType(memberId, type);
 	}
 	
+	public int deleteLiked(int no, String member_id) {
+		return likedDAO.deleteLiked(no, member_id);
+	}
 }

@@ -291,28 +291,49 @@
 		//등록 버튼 클릭 이벤트
 		$("#submit").click(function(e){
 			e.preventDefault();
-			var days = $("#count").val();
-			for(i = 1; i <= days; i++){
-				var arr = $("#day"+i+"_box").find(".selected_day"+i)
-				$.each(arr, function(index, value){
-					$("#day"+i+"_"+(index+1)).val("");
-					$("#day"+i+"_"+(index+1)).val($(this).attr("trip_no"));
-				});
+			console.log($("#region").val());
+			
+			if($("#region").val() == ""){
+				alert("지역을 선택하세요.")
+			}else if($("#plan_title").val() == ""){
+				alert("제목을 입력하세요.");
+			}else if($("#plan_start").val() == ""){
+				alert("여행시작일을 입력하세요.");
+			}else if($("#plan_end").val() == ""){
+				alert("여행종료일을 입력하세요.");
+			}else{
+				var days = $("#count").val();
+				for(i = 1; i <= days; i++){
+					var arr = $("#day"+i+"_box").find(".selected_day"+i)
+					$.each(arr, function(index, value){
+						$("#day"+i+"_"+(index+1)).val("");
+						$("#day"+i+"_"+(index+1)).val($(this).attr("trip_no"));
+					});
+				}
+				
+				//이미지 가져오기
+				var trip_no = $("#day1_1").val();
+				$.ajax({
+					url: "/plan/detail/getImg",
+					data: {
+						trip_no: trip_no
+					},
+					success: function(img){
+						$("#plan_img").val(img);
+						$("#submit").unbind('click').click();
+					}
+				});	
+				
 			}
 			
-			//이미지 가져오기
-			var trip_no = $("#day1_1").val();
-			$.ajax({
-				url: "/plan/detail/getImg",
-				data: {
-					trip_no: trip_no
-				},
-				success: function(img){
-					$("#plan_img").val(img);
-					$("#submit").unbind('click').click();
-				}
-			});	
 		}); //#submit 클릭
+		
+		//다시입력 누르면 선택된 여행지 선택해제
+		$("#btnReset").click(function(e){
+			e.preventDefault();
+			console.log("btnReset");
+			$(".add").remove();
+		});
 		
 		
 	});
@@ -326,7 +347,7 @@
 		<!-- 여행계획 기본 정보 -->
 		<div id="info">
 			일정번호 : <input type="text" name="plan_no" th:value="${nextNo}"><br>
-			일정제목 : <input type="text" name="plan_title"><br>
+			일정제목 : <input type="text" name="plan_title" id="plan_title"><br>
 			작성자 : <input type="text" name="member_id"><br>
 			지역 :
 			
@@ -346,7 +367,7 @@
 		
 		<!-- 여행계획 날짜별 일정 -->
 		<div id="day">
-			<div id="day1_box">
+			<div id="day1_box" class="box">
 				<h3 class="day_title" id="day1">DAY 1</h3>
 				<button class="deleteDay" id="deleteDay1">전체삭제</button><br>
 				<input type="text" name="day1_1" id="day1_1">
@@ -356,7 +377,7 @@
 				<input type="text" name="day1_5" id="day1_5"><br>
 			</div>
 			
-			<div id="day2_box">
+			<div id="day2_box" class="box">
 				<h3 class="day_title" id="day2">DAY 2</h3>
 				<button class="deleteDay">전체삭제</button><br>
 				<input type="text" name="day2_1" id="day2_1">
@@ -366,7 +387,7 @@
 				<input type="text" name="day2_5" id="day2_5"><br>
 			</div>
 			
-			<div id="day3_box">
+			<div id="day3_box" class="box">
 				<h3 class="day_title" id="day3">DAY 3</h3>
 				<button class="deleteDay">전체삭제</button><br>
 				<input type="text" name="day3_1" id="day3_1">
@@ -376,7 +397,7 @@
 				<input type="text" name="day3_5" id="day3_5"><br>
 			</div>
 			
-			<div id="day4_box">
+			<div id="day4_box" class="box">
 				<h3 class="day_title" id="day4">DAY 4</h3>
 				<button class="deleteDay">전체삭제</button><br>
 				<input type="text" name="day4_1" id="day4_1">
@@ -388,7 +409,8 @@
 		</div>
 
 		<input type="submit" value="등록" id="submit">
-		<input type="reset" value="다시입력">
+		<button id="btnReset">다시입력</button>
+		<!-- <input type="reset" value="다시입력"> -->
 	</form>
 	
 	<hr>
