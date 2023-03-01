@@ -3,38 +3,98 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" href="/css/mainpage.css">
-<link rel="stylesheet" href="/css/mainpage2.css">
-<link rel="stylesheet" href="/css/mainpage3.css">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="/css/mainpage.css"/>
+<link rel="stylesheet" type="text/css" href="/css/mainpage2.css"/>
+<link rel="stylesheet" type="text/css" href="/css/mainpage3.css"/>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous"/>
+<link rel="stylesheet" type="text/css" href="/css/header.css"/>
+<style type="text/css">
+/*  	.dropdown-toggle::after {
+    content: none;
+}
+
+.dropdown{
+    position: relative;
+    float: left;
+    height: 62px;
+    line-height: 62px;
+    font-family: nanum_b;
+    font-size: 16px;
+    font-weight: bold;
+    
+}
+
+	a {
+    color: black;
+    text-decoration: underline;
+	}
+.btn-secondary {
+     --bs-btn-color: none; 
+     --bs-btn-bg: noen; 
+     --bs-btn-border-color: none; 
+
+}
+.btn {
+   	--bs-btn-padding-x: 120px;
+    --bs-btn-font-weight: none;
+    --bs-btn-font-size: none; 
+  
+}
+
+.dropdown-menu {
+	
+	
+	--bs-dropdown-font-size: none;
+    --bs-dropdown-min-width: 24rem;
+    --bs-dropdown-padding-x: none;
+    }
+    
+    
+    .dropdown-item {
+    
+    font-weight: none!important;
+    text-align: center;
+  }
+
+.btn-secondary {
+    
+     --bs-btn-hover-color: none; 
+   
+     --bs-btn-active-color: none;
+
+} */
+
+</style>
 </head>
 <body>
-	<div id="header">
+ 	<div id="header">
 		<div class="wrap">
 			<h1 class="logo fl" alt="전국여행자랑">
 				<a href="#">
 					<img src="/images/전국여행자랑.jpg" alt="전국여행자랑" >
 				</a>
 			</h1>
-		<ul class="gnb fl">
-			<a href="/ko/area" class="fl">
-				<li>홈</li>
-			
-			</a>
-			<a href="/ko/plan" class="fl">
-				<li>플래너</li>
-			</a>
-			<a href="/ko/plan" class="fl">
-				<li>여행지</li>
-			</a>
-			<a href="/ko/plan" class="fl">
-				<li>관심목록</li>
-			</a>
-		</ul>
+<div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    플래너
+  </button>
+  <ul class="dropdown-menu">
+    <li><a class="dropdown-item" href="#">플래너 리스트</a></li>
+    <li><a class="dropdown-item" href="#">플래너 작성</a></li>
+  </ul>
+  <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    여행지
+  </button>
+  <ul class="dropdown-menu">
+    <li><a class="dropdown-item" href="#">여행지 탐색</a></li>
+    <li><a class="dropdown-item" href="#">여행지 리스트</a></li>
+  </ul>
+  <button class="btn btn-secondary dropdown-toggle" type="button"><a href="#">관심목록</a></button>
+</div> 
+
+
+		
 		<div class="fr gnb_box">
-			<a href="#" class="fr">
-				<div class="f1 gnb_join_btn">회원가입</div>
-			</a>
 			<a href="#" class="fr">
 				<div class ="f1 gnb_login_btn">로그인</div>
 			</a>
@@ -48,8 +108,12 @@
 			<div class="main_top_title">우리의 여행 전국여행자랑</div>
 			<div class="main_top_desc">당신의 여행을 자랑해보아요.</div>
 		<div class="search_area">
-			<input class="search_input" id="city_search" placeholder="국가명, 도시명으로 검색">
-			<a class="go_map" href="javascript:void(0)" onclick="et_full_modal('/ko/modal/world_map')">지도에서 검색 &gt;</a>
+			<input class="search_input" type="text" placeholder="지역명으로 검색해주세요.">
+			<button class="search-btn" type="submit"><img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png" style="position:absolute; width:20px; top:36px; right:34px; margin: 0;"></button>
+			
+
+			
+			</button>
 			<div class="clear"></div>
 		</div>
 	</div>
@@ -60,18 +124,18 @@
 		</div>
 		<div class="intro_list">
 			<div class="intro_box" onclick="location.href='/ko/area';">
-				<img src="/res/img/main/intro_img/intro_1.jpg" alt="">
+				<img src="/images/플래너.jpg" alt="">
 					<div class="intro_title">Planner</div>
 					<div class="intro_desc">당신의 여행계획을 자랑해보아요.</div>
 			</div>
 			<div class="intro_box" onclick="location.href='/ko/plan';">
-				<img src="/res/img/main/intro_img/intro_2.jpg" alt="">
+				<img src="/images/trip.jpg" alt="">
 				<div class="intro_title">Trip</div>
 				<div class="intro_desc">전국 여행지 정보를 확인해 보아요.</div>
 			</div>
 			<div class="intro_box" onclick="location.href='/ko/community/qa';">
-				<img src="/res/img/main/intro_img/intro_3.jpg" alt="">
-				<div class="intro_title">전국여행자랑 인기 플래너</div>
+				<img src="/images/관심목록.jpg" alt="">
+				<div class="intro_title">Interest</div>
 				<div class="intro_desc">당신의 좋아하는 여행지와 여행플랜너를 확인해요.</div>
 			</div>
 			<div class="clear"></div>
@@ -80,13 +144,13 @@
 				<div class="page_desc">전국여행자랑이 추천하는 여행지</div>
 				
 						<div class="trip_list">
-							<div class="card" style="width: 340px; height: 300px; float: left; margin-right: 24px; margin-bottom: 30px;"  th:each="trip:${tripbest}">
+							<div class="card" style="width: 340px; height: 300px; float: left; margin-right: 24px; margin-bottom: 30px; border: 0.75px solid #eaeaea; box-shadow: 3px 3px 4px rgba(26, 26, 26, 0.1);/* width: 340px; height: 300px; float: left; margin-right: 24px; margin-bottom: 30px; */"  th:each="trip:${tripbest}">
 								<img src="..." class="card-img-top" height="200" alt="...">
 								<div class="card-body">
 									
 									<h5 class="card title" th:text="${trip.trip_title}"></h5> 
-									<p class="card-text"th:text="${trip.trip_addr}"></p>
-									<a href="#" class="btn btn-primary">Go somewhere</a>
+									<p class="card-text text-truncate" th:text="${trip.trip_detail}" style="max-width: 300px;"></p>
+									<p class="card-text"th:text="|지역 : ${trip.trip_addr}|"></p>
 								</div>
 						</div>
 							
@@ -109,13 +173,13 @@
 				<div class="page_desc">전국여행자랑이 추천하는 여행지</div>
 				
 						<div class="plan_list">
-							<div class="card" style="width: 340px; height: 300px; float: left; margin-right: 24px; margin-bottom: 30px;"  th:each="plan:${planerbest}">
+							<div class="card" style="width: 340px; height: 300px; float: left; margin-right: 24px; margin-bottom: 30px; border: 0.75px solid #eaeaea; box-shadow: 3px 3px 4px rgba(26, 26, 26, 0.1);"  th:each="plan:${planbest}">
 								<img src="..." class="card-img-top" height="200" alt="...">
 								<div class="card-body">
 									
-									<h5 class="card title" th:text="${plan.plan_title}"></h5> 
-									<p class="card-text"th:text="${plan.member_id}"></p>
-									<a href="#" class="btn btn-primary">Go somewhere</a>
+									 <h5 class="card-title" th:text="${plan.plan_title}"></h5> 
+									<p class="card-text" th:text="|작성자 : ${plan.member_id}|"></p>
+									<p class="card-text" th:text="|여행지역 : ${plan.plan_region}|"></p>
 								</div>
 						</div>
 							

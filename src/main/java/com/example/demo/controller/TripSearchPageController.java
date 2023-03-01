@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.dao.TripSearchDao;
+import com.example.demo.db.DBManager;
+import com.example.demo.vo.PlanVo;
 import com.example.demo.vo.TripVo;
 
 @Controller
@@ -19,10 +21,10 @@ public class TripSearchPageController {
 	private TripSearchDao tripsearchdao;
 
 	@RequestMapping("/tripsearchpage")
-	public ModelAndView list(@RequestParam(value = "korea_code", defaultValue = "0") int korea_code) {
+	public ModelAndView list(@RequestParam(value = "korea_code", defaultValue = "1") int korea_code) {
 		ModelAndView mav = new ModelAndView("tripsearchpage");
 		mav.addObject("TripSearch", tripsearchdao.TripSearch(korea_code));
-//		mav.addObject("planer", tripsearchdao.Planer());
+		mav.addObject("PlanSearch", tripsearchdao.PlanSearch(korea_code));
 		return mav;
 	}	
 	
@@ -37,14 +39,20 @@ public class TripSearchPageController {
 	}
 	@RequestMapping("/planajax")
 	@ResponseBody
-	public List<TripVo>plan(@RequestParam(value = "korea_code", defaultValue = "0") int korea_code){
+	public List<PlanVo>plan(@RequestParam(value = "korea_code", defaultValue = "0") int korea_code){
 		return tripsearchdao.PlanSearch(korea_code);
 		
 		
 		
-				
 	}
 	
+	@RequestMapping("/regionajax")
+	@ResponseBody
+	public String getResion(int korea_code){
+		return DBManager.getRion(korea_code);
+	} 
+		
+		
 
 
 }

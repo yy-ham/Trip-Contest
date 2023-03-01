@@ -1,0 +1,54 @@
+.dropdown-toggle::after {
+    content: none;
+}
+
+.dropdown{
+    position: relative;
+    float: left;
+    height: 62px;
+    line-height: 62px;
+    font-family: nanum_b;
+    font-size: 16px;
+    font-weight: bold;
+    
+}
+
+	a {
+    color: black;
+    text-decoration: underline;
+	}
+.btn-secondary {
+     --bs-btn-color: none; 
+     --bs-btn-bg: noen; 
+     --bs-btn-border-color: none; 
+
+}
+.btn {
+   	--bs-btn-padding-x: 120px;
+    --bs-btn-font-weight: none;
+    --bs-btn-font-size: none; 
+  
+}
+
+.dropdown-menu {
+	
+	
+	--bs-dropdown-font-size: none;
+    --bs-dropdown-min-width: 24rem;
+    --bs-dropdown-padding-x: none;
+    }
+    
+    
+    .dropdown-item {
+    
+    font-weight: none!important;
+    text-align: center;
+  }
+
+.btn-secondary {
+    
+     --bs-btn-hover-color: none; 
+   
+     --bs-btn-active-color: none;
+
+}

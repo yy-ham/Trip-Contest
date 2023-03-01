@@ -6,11 +6,11 @@
   <select id="TripSearch" resultType="TripVo">
     select * from (select * from trip where  korea_code = #{korea_code} order by writedate desc)where rownum<![CDATA[ <= ]]>6 order by writedate desc
  </select>
- <select id="TripSeoul" resultType="TripVo">
-    select * from (select * from trip where korea_code = #{1} order by writedate desc)where rownum<![CDATA[ <= ]]>6 order by writedate desc
- </select>
-	<select id="PlanSearch" resultType="TripVo">
+	<select id="PlanSearch" resultType="PlanVo">
     select * from (select * from plan where  korea_code = #{korea_code} order by plan_date desc)where rownum<![CDATA[ <= ]]>6 order by plan_date desc
+ </select>
+ 	<select id="Region" parameterType="java.lang.Integer" resultType="java.lang.String">
+    select region from korea where code = #{korea_code}
  </select>
 
 </mapper>

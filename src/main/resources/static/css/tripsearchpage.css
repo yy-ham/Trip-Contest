@@ -1,6 +1,3 @@
-@charset "UTF-8";
-
-
 .swiper-wrapper {
     position: relative;
     width: 100%;
@@ -32,8 +29,8 @@
 .zone_cont .area_left .txt_info{margin-top:48px;}
 .zone_cont .area_left .txt_info strong{color: #000; font-size:30px;;font-weight:700; letter-spacing: -2px; line-height:36px;}
 .zone_cont .area_left .txt_info p{margin-top:2px;color:#353535;font-size:18px;}
-.zone_cont .area_left .btn_detail{display: inline-block;margin-top:37px;width:108px;height:34px;padding-left:20px;line-height:34px; border: 1px solid #666;border-radius:50px;letter-spacing:-0.5px;background: url(../images/main/ico_narrow2.gif) 94px 50% no-repeat;color:#666; font-size: 15px;}
-.zone_cont .area_left .btn_detail:hover{border:1px solid #000;color:#000;}
+.zone_cont .area_left .region-btn_detail{display: inline-block;margin-top:37px;width:108px;height:34px;padding-left:20px;line-height:34px; border: 1px solid #666;border-radius:50px;letter-spacing:-0.5px;background: url(../images/main/ico_narrow2.gif) 94px 50% no-repeat;color:#666; font-size: 15px;}
+.zone_cont .area_left .region-btn_detail:hover{border:1px solid #000;color:#000;}
 
 .zone_cont .area_mid{float: left;width:257px;margin:0 0 26px;}
 .zone_cont .area_mid a{display:block;}
@@ -70,8 +67,8 @@
 .zone_cont .list_sub li{float: left;margin-left:20px;}
 .zone_cont .list_sub li a{display:block;padding:2px 0;font-size:15px;color: #000;}
 .zone_cont .list_sub li a:hover{font-weight:800;}
-.zone_cont .list_sub .btn_more{display:none;position:absolute;bottom:15px;right:30px;height:20px;padding-right: 14px; color: #666; font-size: 16px; background: url(../images/sub/ico_arrowbtm.png) 100% 50%/7px 4px no-repeat;line-height:20px;}
-.zone_cont .list_sub.on .btn_more{background:url(../images/sub/ico_arrowtop.png) 100% 50%/7px 4px no-repeat;}
+.zone_cont .list_sub .region-btn_more{display:none;position:absolute;bottom:15px;right:30px;height:20px;padding-right: 14px; color: #666; font-size: 16px; background: url(../images/sub/ico_arrowbtm.png) 100% 50%/7px 4px no-repeat;line-height:20px;}
+.zone_cont .list_sub.on .region-btn{background:url(../images/sub/ico_arrowtop.png) 100% 50%/7px 4px no-repeat;}
 /* 지역 정보 전체보기 (모바일 화면 없음) */
 .contents_zone .zone_cont{display:block;min-width:940px !important;margin-bottom:0;padding:60px 0;border-style: solid;border-width: 0 0 4px 0;border-image: url(../images/sub/dot_line.gif) 0 0 4 0 fill repeat}
 .contents_zone .zone_cont:last-child{border-width: 0 0 0 0;}
@@ -308,7 +305,7 @@
     text-align: right;
 }
 
-.zone_wrap .list_zone .zone_top .btn_all {
+.zone_wrap .list_zone .zone_top .region-btn_all {
     display: inline-block;
     color: #000;
     padding-left: 19px;
@@ -316,7 +313,7 @@
     color: #000;
 }
 
-.zone_wrap .list_zone .zone_top .btn_mp_view {
+.zone_wrap .list_zone .zone_top .region-btn_mp_view {
     display: inline-block;
     margin-right: 25px;
     padding-left: 22px;
@@ -328,4 +325,166 @@
     padding: 0 30px 23px 30px;
     background: #fff;
     border-radius: 10px;
+}
+ .region-btn{
+	border: 0 none;
+	background-color: transparent; 
+} 
+
+
+
+#map{
+  postiion : relative;
+  
+}
+
+#서울 {
+  position: absolute;
+  top: 350px;
+  left : 175px;
+  width: "90";
+  padding: 4px 4px;
+  border: none;
+  
+}
+
+#경기 {
+  position: absolute;
+  top: 370px;
+  left : 190px;
+  padding: 5px 15px;
+  border: none;
+  
+}
+#인천 {
+  position: absolute;
+  top: 350px;
+  left : 145px;
+  width: "90";
+  padding: 4px 4px;
+  border: none;
+  
+}
+#강원{
+		position: absolute;
+	  top: 330px;
+	  left : 275px;
+	  padding: 8px 18px;
+	  border: none;
+	  
+}
+
+#충남{
+	  position: absolute;
+	  top: 450px;
+	  left : 155px;
+	  padding: 8px 20px;
+	  border: none;
+	  
+}
+#세종{
+	position: absolute;
+	  top: 	445px;
+	  padding: 4px 4px;
+	  left : 200px;
+	  border: none;
+	 
+
+
+}
+#대전{
+	position: absolute;
+	  top: 465px;
+	  left : 205px;
+	  padding: 8px 10px;
+	  border: none;
+	  
+}
+#충북{
+
+	position: absolute;
+	  top: 420px;
+	  left : 220px;
+	  padding: 8px 20px;
+	  border: none;
+	 
+
+}
+#경북{
+	position: absolute;
+	  top: 450px;
+	  left : 300px;
+	  padding: 8px 20px;
+	  border: none;
+	 
+}
+#대구{
+
+position: absolute;
+	  top: 500px;
+	  left : 285px;
+	  padding: 18px 18px;
+	  border: none;
+	  
+
+}
+#울산{
+	position: absolute;
+	  top: 535px;
+	  left : 350px;
+	  padding: 15px 15px;
+	  border: none;
+	 
+}
+#경남{
+	position: absolute;
+	  top: 560px;
+	  left : 265px;
+	  padding: 8px 20px;
+	  border: none;
+	  
+	
+}
+#부산{
+	  position: absolute;
+	  top: 575px;
+	  left : 335px;
+	  padding: 8px 20px;
+	  border: none;
+	  
+}
+#전북{
+	position: absolute;
+	  top: 520px;
+	  left : 185px;
+	  padding: 18px 18px;
+	  border: none;
+	  
+}
+#전남{
+	position: absolute;
+	  top: 610px;
+	  left : 152px;
+	  padding: 8px 20px;
+	  border: none;
+	 
+}
+#광주{
+	position: absolute;
+	  top: 585px;
+	  left : 152px;
+	  padding: 8px 20px;
+	  border: none;
+	 
+}
+#제주{
+	position: absolute;
+	  top: 693px;
+	  left : 95px;
+	  padding: 8px 20px;
+	  border: none;
+}
+.region-btn{
+	border: 0 none;
+	background-color: transparent;
 }

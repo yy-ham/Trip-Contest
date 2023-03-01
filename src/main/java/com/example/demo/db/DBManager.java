@@ -52,12 +52,20 @@ public static SqlSessionFactory sqlSessionFactory;
 		return TripSearch;
 	}
 		
-		public static List<TripVo> PlanSearch(int korea_code){
-			List<TripVo> PlanSearch = null;
+		public static List<PlanVo> PlanSearch(int korea_code){
+			List<PlanVo> PlanSearch = null;
 			SqlSession session = sqlSessionFactory.openSession();
-			PlanSearch = session.selectList("TripSearchPage.TripSearch",korea_code);
+			PlanSearch = session.selectList("TripSearchPage.PlanSearch",korea_code);
 			session.close();
 			return PlanSearch;
+		}
+		
+		public static String getRion(int korea_code){
+			String region = "";
+			SqlSession session = sqlSessionFactory.openSession();
+			region = session.selectOne("TripSearchPage.Region",korea_code);
+			session.close();
+			return region;
 		}
 
 }
