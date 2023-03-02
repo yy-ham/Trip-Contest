@@ -35,5 +35,7 @@ public class Plan {
 	private String plan_img;
 	private int korea_code;
 	
+//	@OneToMany(mappedBy = "plan")
+//	private List<PlanDetail> planDetailList = new ArrayList<>();
 
 }

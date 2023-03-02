@@ -3,16 +3,146 @@
 <head>
 <meta charset="UTF-8">
 <title>여행계획 상세</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 <style type="text/css">
+	* {
+		padding: 0;
+		margin: 0;
+	}
+	
+	section{
+		width: 80%;
+		margin: auto;
+		clear: both;
+		border: 2px solid grey;
+		margin-bottom: 20px;
+	}
+	
+	article{
+		width: 80%;
+		margin: auto;
+		clear: both;
+	}
+	
+	#btn_container{
+		/* margin: auto; */
+		/* border: 2px solid grey; */
+		width: 330px;
+		height: 50px;
+		margin-bottom: 20px;
+		margin-top: 20px;
+		padding-left: 20px;
+		padding-top: 3px;
+		float: right;
+	}
+	
+	#content{
+		clear: both;
+		margin: auto;
+		border: 2px solid pink;
+		text-align: center;
+		margin-bottom: 20px;
+	}
+	
+	#img_container{
+		margin: auto;
+	}
+	
+	#plan_img{
+		margin: auto;
+		margin-top: 20px;
+		margin-bottom: 20px;
+	}
+	
+	#day{
+		margin: auto;
+		border: 2px solid red; 
+		margin-bottom: 20px;
+	}
+	
+	#day1{
+		border: 2px solid grey;
+	}
+	#day2{
+		border: 2px solid grey;
+	}
+	#day3{
+		border: 2px solid grey;
+	}
+	#day4{
+		border: 2px solid grey;
+	}
+	
+	.card{
+		float: left;
+		text-align: center;
+	}
+	
+	.day_title{
+		margin-bottom: 10px;
+	}
+	.day_container{
+		clear: both;
+	}
+	
+
+
+	#recoment{
+		margin: auto;
+		border: 2px solid pink;
+		clear: both;
+		margin-bottom: 50px;
+	}
+	
+	#recoment_title{
+		margin-bottom: 20px;
+	}
+	
 	.rec{
 		border: 2px red solid;
 	}
 	#updateRecoment{
-		dsiplay: none;
+		display: none;
 	}
 	#updateReset{
 		dsiplay: none;
 	}
+	
+	.btn{
+		border: 2px solid grey;
+		width: 110px;
+		margin-left: 20px;
+		margin-bottom: 20px;
+		height: 40px;
+	}
+	
+	#btn_recoment_container{
+		width: 335px;
+		height: 50px;
+		
+		
+		margin-bottom: 20px;
+		margin-top: 20px;
+		padding-left: 20px;
+		padding-top: 3px;
+		float: right;
+		margin-right: 140px;
+		padding-top: 10px;
+	}
+	
+	#write{
+		margin-bottom: 30px;
+	}
+	
+	#text_container{
+		float: left;
+	}
+	
+	#listRecoment{
+		clear: both;
+		margin-top: 30px;
+	}
+	
 </style>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
 <script type="text/javascript">
@@ -47,8 +177,14 @@
 						var rec_date = $("<p></p>").html(this.rec_date);
 						$(div).append(rec_no, member_id, content, rec_date);
 						if(login == this.member_id){
-							var btnUpdate = $("<button id='btnUpdate'>수정</button>").attr("recNo",this.recNo);
-							var btnDelete = $("<button id='btnDelete'>삭제</button>").attr("recNo",this.recNo);
+							var btnUpdate = $("<button id='btnUpdate'>수정</button>").attr({
+								"recNo": this.recNo,
+								"class": "btn"
+							});
+							var btnDelete = $("<button id='btnDelete'>삭제</button>").attr({
+								"recNo": this.recNo,
+								"class": "btn"
+							});
 							$(div).append(btnUpdate, btnDelete);
 						}
 						
@@ -68,7 +204,10 @@
 			var recNo = $(this).attr("recNo");
 			console.log(recNo);
 			var data = $("#writeRecoment").serializeArray();
-			$("#writeRecoment").append($("<input>").attr("id", "rec_no").attr("name", "rec_no"));
+			$("#writeRecoment").append($("<input>").attr("id", "rec_no").attr({
+				"name": "rec_no",
+				"type": "hidden"
+			}));
 			
 			//input에 값 보여주기
 			$.ajax({
@@ -188,7 +327,7 @@
 						data: {
 							member_id: login,
 							no: no,
-							plan_img: $("#plan_img").html(),
+							plan_img: $("#plan_img").attr("alt"),
 							liked_title: $('#plan_title').html()
 						},
 						success: function(re){
@@ -251,117 +390,133 @@
 <body>
 	<h2>여행계획 상세</h2>
 	로그인한 유저 : <input type="text" name="login_user" id="login_user" value="hong">
-	
 	<a href="/plan/list">목록</a>
-	<hr>
 	
+	<!-- 헤더 -->
+	<header>
 	
-	<!-- 기본 정보 -->
-	글번호: <input type="text" th:value="${plan.planNo}" id="plan_no"><br>
-	여행일수 : <input type="text" th:value="${cnt}"><br>
-	지역 : <span th:text=${region}></span><br>
-	<br>
+	</header>
 
-	<table border="1" width="80%">
-		<tr>
-			<th>제목</th>
-			<th>지역</th>
-			<th>작성자</th>
-			<th>작성일</th>
-			<th>조회수</th>
-			<th>사진</th>
-			<th>여행시작일</th>
-			<th>여행종료일</th>
-		</tr>
+
+	<!-- 본문 -->
+	<section>
+		<!-- 버튼 박스 -->
+		<div id="btn_container">
+			<button class="btn" th:onclick="|location.href='/plan/update/${plan.planNo}'|" th:text="수정"></button>
+			<button class="btn" th:onclick="|location.href='/plan/delete/${plan.planNo}'|" th:text="삭제"></button>
+			<!-- <a th:href="@{'/plan/update/'+${plan.planNo}}" th:text="수정"></a>
+			<a th:href="@{'/plan/delete/'+${plan.planNo}+'/'+${plan.member_id}}" th:text="삭제" id="deletePlan"></a> -->
+		</div>
+		
+		<!-- 여행계획 기본정보 -->
+		<div id="content" th:each="p:${plan}">
+			글번호: <input type="text" th:value="${p.planNo}" id="plan_no"><br>
+			<h1 th:text="${p.plan_title}" id="plan_title"></h1>
 			
-		<tr th:each="p:${plan}">
-			<td th:text="${p.plan_title}" id="plan_title"></td>
-			<td th:text="${region}"></td>
-			<td th:text="${p.member_id}" id="member_id"></td>
-			<td th:text="${p.plan_date}"></td>
-			<td th:text="${p.plan_hit}"></td>
-			<td th:text="${p.plan_img}" id="plan_img"></td>
-			<td th:text="${p.plan_start}"></td>
-			<td th:text="${p.plan_end}"></td>
-		</tr>
-	</table>
-	<br>
-	<div id="edit">
-		<a th:href="@{'/plan/update/'+${plan.planNo}}" th:text="수정"></a>
-		<a th:href="@{'/plan/delete/'+${plan.planNo}+'/'+${plan.member_id}}" th:text="삭제" id="deletePlan"></a>
-	</div>
-	<hr>
-	찜 <input type="checkbox" id="liked"><br>
-	좋아요수 <input type="text" id="cntLiked">
-	<hr>
-	<!-- 날짜별 일정 -->
-	<div id="day">
-		<!-- day1 -->
-		<div th:if="${detail1} != null">
-		<h2>DAY 1</h2>
-			<div th:each="d:${detail1}">
-				<span th:text="${d.trip_no}" id="trip_no"></span><br>
-				<span th:text="${d.trip_title}"></span><br>
-				<span th:text="${d.trip_img}"></span><br>
-				<br>
+			<p th:text="${p.member_id}" id="member_id"></p>
+			<span th:text="${region}" id="plan_region"></span>
+			<span>&nbsp;|&nbsp;</span>
+			<span th:text="${cnt}+'일'"></span><br>
+			
+			<div id="img_container">
+				<img alt="${p.plan_img}" th:src="@{|/images/${p.plan_img}|}" id="plan_img"><br>
+			</div>
+			
+			<span th:text="'여행일정: ' + ${p.plan_start} + ' ~ ' + ${p.plan_end}"></span><br>
+			작성일 <span th:text="${p.plan_date}" id="plan_date"></span><br>
+			조회수 <span th:text="${p.plan_hit}" id="plan_hit"></span><br>
+			
+			<div id="liked_container">
+				찜 <input type="checkbox" id="liked"><br>
+				좋아요수 <input type="text" id="cntLiked">
 			</div>
 		</div>
-		<!-- day2 -->
-		<div th:if="${detail2} != null">
-		<h2>DAY 2</h2>
-			<div th:each="d:${detail2}">
-				<span th:text="${d.trip_no}"></span><br>
-				<span th:text="${d.trip_title}"></span><br>
-				<span th:text="${d.trip_img}"></span><br>
-				<br>
+
+		<!-- 날짜별 일정 -->
+		<div id="day">
+			<!-- day1 -->
+			<div id="day1" th:if="${detail1} != null" class="day_container">
+				<h2 class="day_title">DAY 1</h2>
+				<div class="card" style="width: 15rem;" th:each="d:${detail1}">
+					<img th:alt="${d.trip_img}" th:src="@{|/images/${d.trip_img}|}" id="trip_img">
+					<div class="card-body">
+						<h5 class="card-title" th:text="${d.trip_title}"></h5>
+					    <p class="card-text" th:text="${d.trip_no}" id="trip_no"></p>
+					</div>
+				</div>		
+			</div>
+			
+			
+			<!-- day2 -->
+			<div id="day2" th:if="${detail2} != null" class="day_container">
+				<h2 class="day_title">DAY 2</h2>
+				<div class="card" style="width: 15rem;" th:each="d:${detail2}">
+					<img th:alt="${d.trip_img}" th:src="@{|/images/${d.trip_img}|}" id="trip_img">
+					<div class="card-body">
+						<h5 class="card-title" th:text="${d.trip_title}"></h5>
+					    <p class="card-text" th:text="${d.trip_no}" id="trip_no"></p>
+					</div>
+				</div>
+			</div>
+			<!-- day3 -->
+			<div id="day3" th:if="${detail3} != null" class="day_container">
+				<h2 class="day_title">DAY 3</h2>
+				<div class="card" style="width: 15rem;" th:each="d:${detail3}">
+					<img th:alt="${d.trip_img}" th:src="@{|/images/${d.trip_img}|}" id="trip_img">
+					<div class="card-body">
+						<h5 class="card-title" th:text="${d.trip_title}"></h5>
+					    <p class="card-text" th:text="${d.trip_no}" id="trip_no"></p>
+					</div>
+				</div>
+			</div>
+			<!-- day4 -->
+			<div id="day4" th:if="${detail4} != null" class="day_container">
+				<h2 class="day_title">DAY 4</h2>
+				<div class="card" style="width: 15rem;" th:each="d:${detail4}">
+					<img th:alt="${d.trip_img}" th:src="@{|/images/${d.trip_img}|}" id="trip_img">
+					<div class="card-body">
+						<h5 class="card-title" th:text="${d.trip_title}"></h5>
+					    <p class="card-text" th:text="${d.trip_no}" id="trip_no"></p>
+					</div>
+				</div>
 			</div>
 		</div>
-		<!-- day3 -->
-		<div th:if="${detail3} != null">
-		<h2>DAY 3</h2>
-			<div th:each="d:${detail3}">
-				<span th:text="${d.trip_no}"></span><br>
-				<span th:text="${d.trip_title}"></span><br>
-				<span th:text="${d.trip_img}"></span><br>
-				<br>
+	</section>
+	
+	<article>
+		<!-- 댓글 -->
+		<div id="recoment">
+			<h2 id="recoment_title">댓글</h2>
+			<div id="write">
+				<form action="" id="writeRecoment">
+					아이디 : <input type="text" name="member_id" id="rec_member_id"><br>
+					<input type="hidden" name="no" th:value="${plan.planNo}" id="no">
+					<input type="hidden" name="type" value="plan" id="type"><br>
+					
+					<div id="text_container">
+						<textarea rows="4" cols="70" name="rec_content" id="rec_content"></textarea>
+					</div>
+					
+					<div id="btn_recoment_container">
+						<button id="insertRecoment" class="btn">댓글쓰기</button>
+						<button id="updateRecoment" class="btn">댓글수정</button>
+						<button id="updateReset" class="btn">취소</button>
+					</div>
+				</form>
 			</div>
+
+			<div id="listRecoment"></div>
 		</div>
-		<!-- day4 -->
-		<div th:if="${detail4} != null">
-		<h2>DAY 4</h2>
-			<div th:each="d:${detail4}">
-				<span th:text="${d.trip_no}"></span><br>
-				<span th:text="${d.trip_title}"></span><br>
-				<span th:text="${d.trip_img}"></span><br>
-				<br>
-			</div>
-		</div>
-	</div>
 	
+	</article>
+
 	
-	
-	<hr>
-	
-	<!-- 댓글 -->
-	<div id="recoment">
-		<h2>댓글</h2>
-		<div id="write">
-			<form action="" id="writeRecoment">
-				아이디 : <input type="text" name="member_id" id="rec_member_id"><br>
-				<input type="text" name="no" th:value="${plan.planNo}" id="no">
-				<input type="text" name="type" value="plan" id="type"><br>
-				<textarea rows="4" cols="70" name="rec_content" id="rec_content"></textarea>
-				<button id="insertRecoment">댓글쓰기</button>
-				<button id="updateRecoment">댓글수정</button>
-				<button id="updateReset">취소</button>
-				<!-- <input type="submit" value="댓글쓰기" id="insertRecoment"> -->
-			</form>
-		</div>
-		
-		<div id="listRecoment"></div>
-		
-	</div>
 	
 
+	<footer>
+	
+	</footer>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>
 </html>

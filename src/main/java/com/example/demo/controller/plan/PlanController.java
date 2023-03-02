@@ -51,11 +51,11 @@ public class PlanController {
 		System.out.println("pageNUM:" + pageNUM);
 		System.out.println("keyword:" + keyword);
 		System.out.println("region:" + region);
+		System.out.println("orderColumn:" + orderColumn);
 		
 		HashMap<String , Object> map = new HashMap<String, Object>();
 		map.put("keyword", keyword);
 		map.put("region", region);
-		System.out.println("controller map:" + map);
 		
 		totalRecord = planService.getTotalRecord(map);
 		totalPage = (int) Math.ceil(totalRecord / (double)pageSIZE);
@@ -79,9 +79,12 @@ public class PlanController {
 		if(endPage > totalPage) {
 			endPage = totalPage;
 		}else if(endPage == 0) {
-			endPage = 1;
+			endPage = 1; 
 		}
 		
+		
+		System.out.println("controller map:" + map);
+
 		model.addAttribute("list", planService.findAll(map));
 		
 		model.addAttribute("totalPage", totalPage);
@@ -109,10 +112,11 @@ public class PlanController {
 	//여행계획 상세 불러오기
 	@GetMapping("/plan/detail/{plan_no}")
 	public String detail(Model model, @PathVariable int plan_no) {
+		int cnt = planService.countDaysByPlanNo(plan_no);
 		planService.updateHit(plan_no);
+
 		model.addAttribute("plan", planService.findByPlanNo(plan_no));
 		model.addAttribute("region", planService.getRegion(plan_no));
-		int cnt = planService.countDaysByPlanNo(plan_no);
 		model.addAttribute("cnt", cnt);
 	
 		HashMap<String, Object> map = new HashMap<String, Object>();

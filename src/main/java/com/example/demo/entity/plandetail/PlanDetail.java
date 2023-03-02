@@ -19,6 +19,10 @@ public class PlanDetail {
 	
 	@Column(name = "plan_no")
 	private int planNo;
+	
+//	@ManyToOne
+//	@JoinColumn(name = "plan_no", insertable = true, updatable = true)
+//	private Plan plan;
 
 	private int day;
 	
