@@ -17,69 +17,16 @@
 }
 
 
-.zone_cont{display: none; width: 100%;}
-.zone_cont.on{display: block;}
-.zone_cont .area_left{float: left;width:322px;}
-.list_zone .box_logo .logo{float:left;}
-.list_zone .box_logo .name{display: inline-block;margin-left:5px;font-weight:800;color: #222; font-size: 30px; vertical-align: middle;}
-.list_zone .box_logo p{float:left;font-size:18px;letter-spacing:-0.25px;margin-top: 10px;color:#333;}
-.list_zone .box_logo p:before{content:'';display:inline-block;width:1px;height:25px;background:#efefef;margin:0 15px 0 16px;vertical-align: -6px;}
-.zone_cont .area_left span{display:inline-block;font-size:13px;color:#aeaeae;font-weight: 300;padding:17px 0 0;}
-.zone_cont .area_left span:after{content:'';display:block;width:100%;height:1px;background:#aeaeae;}
-.zone_cont .area_left .txt_info{margin-top:48px;}
-.zone_cont .area_left .txt_info strong{color: #000; font-size:30px;;font-weight:700; letter-spacing: -2px; line-height:36px;}
-.zone_cont .area_left .txt_info p{margin-top:2px;color:#353535;font-size:18px;}
-.zone_cont .area_left .region-btn_detail{display: inline-block;margin-top:37px;width:108px;height:34px;padding-left:20px;line-height:34px; border: 1px solid #666;border-radius:50px;letter-spacing:-0.5px;background: url(../images/main/ico_narrow2.gif) 94px 50% no-repeat;color:#666; font-size: 15px;}
-.zone_cont .area_left .region-btn_detail:hover{border:1px solid #000;color:#000;}
 
 .zone_cont .area_mid{float: left;width:257px;margin:0 0 26px;}
 .zone_cont .area_mid a{display:block;}
-.zone_cont .area_mid a:focus{outline: 3px solid red; outline-offset: 1px;}
-.zone_cont .area_mid .img{text-align: center;display:inline-block;width:226px;height:320px;border-radius:10px;box-shadow: 14px 14px 43px 0px rgba(15, 37, 72, 0.2);}
-.zone_cont .area_mid .img img{width:100%;height:100%;}
+
 .zone_cont .area_right{float: right;width:300px;}
 .zone_cont .area_right ul{padding: 0 0;}
 .zone_cont .area_right ul li{width: 100%;margin-top:10px;}
 .zone_cont .area_right ul li:first-child{margin-top:0;}
 .zone_cont .area_right ul li > div:hover{border:1px solid #666;}
 .zone_cont .area_right ul li > div{position:relative;overflow: hidden; width: 100%;height:100px;padding: 28px 45px 25px 20px;border: 1px solid #e6e6e6;box-sizing: border-box;border-radius:10px;}
-.zone_cont .area_right ul li > div.img_full{padding:0}
-.zone_cont .area_right ul li > div.img_full img{width:100%;height:100%;}
-.zone_cont .area_right ul li.obj3 > div.img_full img{width:144px;height:99px;}
-.zone_cont .area_right ul li.obj1 > div.img_full img{width:299px;height:99px;}
-.zone_cont .area_right ul li strong{display: block;letter-spacing:-0.5px;padding-bottom: 5px; font-size: 14px;overflow:hidden; white-space:nowrap; text-overflow:ellipsis; -o-text-overflow:ellipsis;}
-.zone_cont .area_right ul li .bn_txtR{color: #ff0068;}
-.zone_cont .area_right ul li .bn_txtB{color: #0a97cd;}
-.zone_cont .area_right ul li .bn_txtG{color: #00b500;}
-.zone_cont .area_right ul li a{display:block; color: #000; font-size: 18px;letter-spacing:-1px;line-height: 1.2;overflow:hidden; white-space:nowrap; text-overflow:ellipsis; -o-text-overflow:ellipsis; }
-.zone_cont .area_right ul li .leftBox{float: left; width: 146px; padding: 12px 20px 0;}
-.zone_cont .area_right ul li .rightBox{float: right; width: 146px; padding: 12px 20px;}
-.zone_cont .area_right ul li .leftBox strong,.zone_cont .area_right ul li .rightBox strong{font-size:14px;letter-spacing:-0.5px;}
-.zone_cont .area_right ul li a:after{content:'';display:inline-block;width:100%;height:16px;position:absolute;right:30px;top:39px;background: url(../images/main/ico_zone_cont.png) 100% 0  no-repeat;color:#fff;}
-.zone_cont .area_right ul li > div:hover a:after{background-position:100% -16px;}
-.zone_cont .area_right ul li.obj3 a:after{position:static;display:block;margin:8px auto 0;}
-
-.zone_cont .list_sub{position:relative;clear:both;padding:13px 40px 12px 40px; background:#f7f7f7;border-radius:10px;}
-.zone_cont .list_sub .inr{overflow:hidden;height:25px;}
-.zone_cont .list_sub.on .inr{overflow:visible !important;;height:auto !important;}
-.zone_cont .list_sub ul{margin-left:-20px;}
-.zone_cont .list_sub ul:after{content:'';display:block;clear:both;}
-.zone_cont .list_sub li{float: left;margin-left:20px;}
-.zone_cont .list_sub li a{display:block;padding:2px 0;font-size:15px;color: #000;}
-.zone_cont .list_sub li a:hover{font-weight:800;}
-.zone_cont .list_sub .region-btn_more{display:none;position:absolute;bottom:15px;right:30px;height:20px;padding-right: 14px; color: #666; font-size: 16px; background: url(../images/sub/ico_arrowbtm.png) 100% 50%/7px 4px no-repeat;line-height:20px;}
-.zone_cont .list_sub.on .region-btn{background:url(../images/sub/ico_arrowtop.png) 100% 50%/7px 4px no-repeat;}
-/* 지역 정보 전체보기 (모바일 화면 없음) */
-.contents_zone .zone_cont{display:block;min-width:940px !important;margin-bottom:0;padding:60px 0;border-style: solid;border-width: 0 0 4px 0;border-image: url(../images/sub/dot_line.gif) 0 0 4 0 fill repeat}
-.contents_zone .zone_cont:last-child{border-width: 0 0 0 0;}
-.contents_zone .zone_cont .area_right{clear:none;width: 32%;}
-.contents_zone .zone_cont .area_right ul li > div.img_full{padding:0}
-.contents_zone .zone_cont .area_right ul li a{font-size: 20px;}
-.contents_zone .zone_cont .area_right ul li .leftBox{width: 146px; padding:13px 14px;}
-.contents_zone .zone_cont .area_right ul li .rightBox{width: 146px; padding:13px 14px;}
-
-.contents_zone .zone_cont.logo_list{width: 100%; padding: 40px 0 30px 0;}
-.contents_zone .zone_cont.logo_list li{display: inline-block; margin-right: 26px; margin-bottom: 20px;}
 
 .zone_wrap {
     background: #edeef2;
@@ -112,11 +59,6 @@
     color: #333;
     letter-spacing: -1px;
     line-height: 59px;
-}
-
-.zone_wrap .toggle {
-    float: right;
-    padding-right: 2px;
 }
 
 .zone_wrap .switch_wrap {
@@ -200,10 +142,6 @@
     background: #13294b;
 }
 
-.zone_wrap .tog_wrap input:focus + .slider {
-    /*box-shadow: 0 0 1px #13294b;*/
-    outline: 2px solid red;
-}
 
 .zone_wrap .tog_wrap input:checked + .slider:before, .zone_wrap .tog_wrap .slider.on:before {
     -webkit-transform: translateX(15px);
@@ -281,9 +219,6 @@
     outline: 2px solid red;
 }
 
-.zone_wrap .list_zone #zone17.swiper-slide.on button, .zone_wrap .list_zone #zone17.swiper-slide button:hover {
-    box-shadow: -1px 5px 12px 0px rgba(19, 41, 75, 0.3);
-}
 
 .zone_wrap .list_zone .box_logo {
     width: 100%;
@@ -359,7 +294,7 @@
 #인천 {
   position: absolute;
   top: 350px;
-  left : 145px;
+  left : 150px;
   width: "90";
   padding: 4px 4px;
   border: none;
