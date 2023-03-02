@@ -1,3 +1,13 @@
+#header{width:100%;height:64px;border-top:solid #4eb1e4 2px;position:relative;}
+.logo{margin-right:13px;padding-top:11px;cursor:pointer;}
+.gnb{height:62px;line-height:62px;font-family:nanum_b;font-size:16px; overflow:hidden;font-weight:bold;}
+.gnb_box{height:62px;position:relative;}
+.gnb_login_btn{width:63px;height:29px;line-height:29px;border:solid #f7870f 1px;border-left:0px;margin-top:17px;text-align:center;color:#fff;cursor:pointer;background:#ff9320;}
+body{font-family:nanum;}
+.wrap{width:1092px;margin:0 auto;position:relative;}
+.fl{float:left;}
+.fr{float:right;}
+
 .dropdown-toggle::after {
     content: none;
 }
