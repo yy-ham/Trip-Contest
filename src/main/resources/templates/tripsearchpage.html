@@ -10,10 +10,10 @@
 <link rel="stylesheet" type="text/css" href="/css/header.css/">
 
 <style>
-/*  .region-btn{
-	border: 0 none;
-	background-color: transparent; 
-}  */
+.card{
+	
+	--bs-card-border-color: none;
+	}
 
 </style>
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.2.min.js"></script>
@@ -120,15 +120,9 @@
         
         console.log("테스트:"+$(this).val());
       	console.log("koreaCode:"+korea_code);
-        
-       
         console.log("h2:"+$(this).html())
          $(".tit").append(h2)
 
-      /*   console.log($(this).html());
-        $("#zoneTitle").html("");
-        $("#zoneTitle").html($(this).html()); */
-      	
         $.ajax({
             
             url : "/regionajax",
@@ -142,11 +136,6 @@
                 console.log(data[0]);
                 $("#trip_container").empty(); 
                 $.each(data, function(){
-                
-					/* $("#zoneTitle").html($(this).html());
-					console.log($(this).html());
-                	 */
-                	
                 })
               //  $("#trip_container").append(data); // 성공 시, body부분에 data라는 html 문장들을 다 적용시킵니다.
             },
@@ -155,14 +144,7 @@
             }//error
         })//ajax
     });//button click
-    
-
- 
-    
-    
 }); 
- 
- 
 </script>
 </script>
 </head>
@@ -260,10 +242,10 @@
 							    <p class="mb-1" th:text="${plan.plan_region}"></p>
 							  </a>
 							  </div>
+							</div>
 					</div>
-					</div>
-					</div>
-					</div>
+			</div>
+		</div>
 				</div>
 			</div>
 		</div>
@@ -278,23 +260,18 @@
 				
 				<div class="page_desc">전국여행자랑이 자랑하는 여행지</div>
 					<div id="trip_container">
-						<div class="trip_list">
-							<div class="card" style="width: 340px; height: 300px; float: left; margin-right: 24px; margin-bottom: 30px; border: 0.75px solid #eaeaea; box-shadow: 3px 3px 4px rgba(26, 26, 26, 0.1);"  th:each="trip:${TripSearch}">
-								<img src="..." class="card-img-top" style="height:200px;" alt="...">
+						<div class="trip_list" th:each="trip:${TripSearch}">
+							<div class="card"  OnClick="location.href ='#'"style="width: 340px; height: 300px; float: left; margin-right: 24px; margin-bottom: 30px; border: 0.75px solid #eaeaea; box-shadow: 3px 3px 4px rgba(26, 26, 26, 0.1); cursor:pointer;">
+								<img src="..." class="card-img-top" style="height:200px;" alt="..." th:src="@{|/images/${trip.trip_img}|}">
 								<div class="card-body">
-									
 									<h5 class="card title" th:text="${trip.trip_title}"></h5> 
 									<p class="card-text text-truncate" th:text="${trip.trip_detail}" style="max-width: 300px;"></p>
 									<p class="card-text"th:text="${trip.trip_addr}"></p>
-						
 								</div>
-						</div> 
-					</div>		
-		
+							</div> 
+						</div>		
 					</div>
-			
-
-		</div>
+			</div>
 		</div>
 	</div>
 	<div class="more_btn" onclick="location.href='/ko/plan';">여행지 모두보기</div>
