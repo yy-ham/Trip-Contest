@@ -60,10 +60,10 @@ public static SqlSessionFactory sqlSessionFactory;
 			return PlanSearch;
 		}
 		
-		public static String getRion(int korea_code){
+		public static String region(int korea_code){
 			String region = "";
 			SqlSession session = sqlSessionFactory.openSession();
-			region = session.selectOne("TripSearchPage.Region",korea_code);
+			region = session.selectOne("TripSearchPage.region",korea_code);
 			session.close();
 			return region;
 		}

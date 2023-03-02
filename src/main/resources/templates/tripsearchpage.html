@@ -14,6 +14,11 @@
 	
 	--bs-card-border-color: none;
 	}
+	
+.card-img-top{
+	
+	height:200px;
+}	
 
 </style>
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.2.min.js"></script>
@@ -39,13 +44,13 @@
                 $.each(data, function(){
                 	var trip_list = $("<div></div>").addClass("trip_list");
                 	var card= $("<div></div>").css({'width': '340px', 'height':'300px', 'float': 'left', 'margin-right': '24px', 'margin-bottom': '30px', 'border': '0.75px solid #eaeaea', 'box-shadow': '3px 3px 4px rgba(26, 26, 26, 0.1)'}).addClass("card");
-					var card_img = $("<img/>").addClass("card-img-top").css('height','200'); 
+					var card_img = $("<img/>").addClass("card-img-top").attr({src:"images/"+this.trip_img}) 
                 	var card_body = $("<div></div>").addClass("card-body");
 					var card_title=	$("<h5></h5>").addClass("card title").html(this.trip_title);
 					var card_text1=	$("<p></p>").addClass("card-text text-truncate").html(this.trip_detail).css('max-width', '300');
-					var card_text2=	$("<p></p>").addClass("card-text").html(this.trip_addr);
+					var card_text2=	$("<p></p>").addClass("card-text text-truncate").html("지역 : "+this.trip_addr);
 
-					$(card_body).append(card_img);
+					$(card).append(card_img);
 					$(card_body).append(card_title);
 					$(card_body).append(card_text1);
 					$(card_body).append(card_text2)
@@ -262,11 +267,11 @@
 					<div id="trip_container">
 						<div class="trip_list" th:each="trip:${TripSearch}">
 							<div class="card"  OnClick="location.href ='#'"style="width: 340px; height: 300px; float: left; margin-right: 24px; margin-bottom: 30px; border: 0.75px solid #eaeaea; box-shadow: 3px 3px 4px rgba(26, 26, 26, 0.1); cursor:pointer;">
-								<img src="..." class="card-img-top" style="height:200px;" alt="..." th:src="@{|/images/${trip.trip_img}|}">
+								<img src="..." class="card-img-top"  alt="..." th:src="@{|/images/${trip.trip_img}|}">
 								<div class="card-body">
 									<h5 class="card title" th:text="${trip.trip_title}"></h5> 
 									<p class="card-text text-truncate" th:text="${trip.trip_detail}" style="max-width: 300px;"></p>
-									<p class="card-text"th:text="${trip.trip_addr}"></p>
+									<p class="card-text text-truncate" th:text="|지역 : ${trip.trip_addr}|"></p>
 								</div>
 							</div> 
 						</div>		

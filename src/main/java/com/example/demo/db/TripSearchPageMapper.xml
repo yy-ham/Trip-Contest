@@ -9,7 +9,7 @@
 	<select id="PlanSearch" resultType="PlanVo">
     select * from (select * from plan where  korea_code = #{korea_code} order by plan_date desc)where rownum<![CDATA[ <= ]]>6 order by plan_date desc
  </select>
- 	<select id="Region" parameterType="java.lang.Integer" resultType="java.lang.String">
+ 	<select id="region" parameterType="java.lang.Integer" resultType="java.lang.String">
     select region from korea where code = #{korea_code}
  </select>
 

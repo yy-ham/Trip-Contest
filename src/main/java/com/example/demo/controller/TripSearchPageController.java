@@ -49,7 +49,7 @@ public class TripSearchPageController {
 	@RequestMapping("/regionajax")
 	@ResponseBody
 	public String getResion(int korea_code){
-		return DBManager.getRion(korea_code);
+		return DBManager.region(korea_code);
 	} 
 		
 		
