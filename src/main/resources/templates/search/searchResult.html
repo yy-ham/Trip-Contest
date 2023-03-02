@@ -37,14 +37,12 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
 <script type="text/javascript">
 	$(function(){
-		$(".info").click(function(){
-			var no = $(this).attr("no");
-			var type = $(this).attr("type");
-			location.href="/"+type+"/detail/"+no;
-		});
+		$("#select").val($("#region").val()).prop("selected", true);
+
 	})
 </script>
 <body>
+	<input type="hidden" id ="region" th:value="${region}">
     <header>
 
     </header>
@@ -54,9 +52,9 @@
 			<div style=" width: 100%; float: right; margin: auto;">
 				<form method="get" action="/search/result" style="display: flex;">
 				<span style="width: 100%; height: auto; float: right;">
-					<select class="form-select select" name="region"
+					<select class="form-select select" name="region" id="select"
 						style="width: 13%; margin: auto; float: left; height: 55px;">
-						<option selected value="0">전국</option>
+						<option value="0">전국</option>
 						<option value="1">서울</option>
 						<option value="2">경기</option>
 						<option value="3">인천</option>
@@ -75,7 +73,7 @@
 						<option value="16">광주</option>
 						<option value="17">제주</option>
 					</select> 
-					<input type="text" name="keyword" class="form-control" style="float: left; width: 77%; height: 55px">
+					<input type="text" name="keyword" class="form-control" style="float: left; width: 77%; height: 55px" required="required" placeholder="검색어를 입력하세요...">
 					<button type="submit" class="w-20 btn btn-secondary btn-lg" style="float: left; margin: 0px; height: 55px; width: 10%" >검색</button>
 					</span>
 				</form>
@@ -93,15 +91,21 @@
 					</div>
 
 					<div class="container ">
-						<div class="row row-cols-md-4">
-							<div class="col-3 info" th:each="trip:${tripList}" th:attr="no=${trip.trip_no}" type="trip">
+						<div class="row row-cols-1 row-cols-md-4 g-4">
+							<div class="info col-3" style="width: 17rem; float:left; margin-right: 18px;"  th:each="trip:${tripList}"
+								th:attr="no=${trip.trip_no}" type="trip">
 								<div class="card"
-									style="width: 17rem; border: 0.75px solid #eaeaea; box-shadow: 3px 3px 4px rgba(26, 26, 26, 0.1);">
-									<img src="..." th:src="@{|/images/${trip.trip_img}|}"
-										class="card-img-top" alt="...">
+									style="width: 17rem;  border: 0.75px solid #eaeaea; box-shadow: 3px 3px 4px rgba(26, 26, 26, 0.1);">
+									<a th:href="|/trip/detail/${trip.trip_no}|"> <img src="..."
+										th:src="@{|/images/${trip.trip_img}|}" class="card-img-top"
+										alt="...">
+									</a>
 									<div class="card-body">
-										<h5 class="card-title" th:text="${trip.trip_title}"></h5>
-										<p class="card-text text-truncate" th:text="${trip.trip_detail}" style="max-width: 300px;"></p>
+										<a th:href="|/trip/detail/${trip.trip_no}|">
+											<h5 class="card-title" th:text="${trip.trip_title}"></h5>
+										</a>
+										<p class="card-text text-truncate"
+											th:text="${trip.trip_detail}" style="max-width: 300px;"></p>
 										<p class="card-text" th:text="|지역 : ${trip.region}|"></p>
 									</div>
 								</div>
@@ -110,12 +114,12 @@
 					</div>
 				</span>
 			</div>
-			<div>
-				<button type="button" class="btn btn-outline-primary" th:onclick="|location.href=@{|/plan/planList?keyword=${keyword}&amp;region=${region}&orderColumn=${orderColumn}|}|">더보기</button>
+			<div >
+				<button th:if="${tripList.size() >= 4}" type="button" class="btn btn-outline-primary" th:onclick="|location.href='@{|/trip/list?keyword=${keyword}&amp;region=${region}&orderColumn=${orderColumn}|}'|">더보기</button>
 			</div>
 		</div>
 
-		<div class="container" style="margin-top: 75px">
+		<div style="margin-top: 75px">
 			<hr style="overflow: visible;">
 			<span id="tripInfo">
 				<div>
@@ -125,24 +129,30 @@
 					<h2>검색결과가 없습니다.</h2>
 				</div>
 				<div class="container ">
-					<div class="row row-cols-md-4">
-						<div class="col-3 info" th:each="plan:${planList}" th:attr="no=${plan.plan_no}" type="plan">
+					<div class="row row-cols-1 row-cols-md-4 g-4">
+						<div class="info col-3" th:each="plan:${planList}"
+							th:attr="no=${plan.plan_no}" type="plan" style="width: 17rem; float:left; margin-right: 18px;">
 							<div class="card"
-								style="width: 17rem; border: 0.75px solid #eaeaea; box-shadow: 3px 3px 4px rgba(26, 26, 26, 0.1);">
-								<img src="..." class="card-img-top" alt="...">
+								style="width: 17rem; margin-right: auto; border: 0.75px solid #eaeaea; box-shadow: 3px 3px 4px rgba(26, 26, 26, 0.1);">
+								<a th:href="|/plan/detail/${plan.plan_no}|"> 
+									<img src="..."
+										class="card-img-top" alt="..."
+										th:src="@{|/images/${plan.plan_img}|}">
+								</a>
 								<div class="card-body">
-									<h5 class="card-title" th:text="${plan.plan_title}"></h5>
+									<a th:href="|/plan/detail/${plan.plan_no}|">
+										<h5 class="card-title" th:text="${plan.plan_title}"></h5>
+									</a>
 									<p class="card-text" th:text="|작성자 : ${plan.member_id}|"></p>
 									<p class="card-text" th:text="|여행지역 : ${plan.plan_region}|"></p>
 								</div>
 							</div>
 						</div>
-
 					</div>
 				</div>
 			</span>
 			<div>
-				<button type="button" class="btn btn-outline-primary" th:onclick="|location.href=@{|/plan/planList?keyword=${keyword}&amp;region=${region}&orderColumn=${orderColumn}|}|">더보기</button>
+				<button th:if="${planList.size() >= 4}" type="button" class="btn btn-outline-primary" th:onclick="|location.href='@{|/plan/list?keyword=${keyword}&amp;region=${region}&orderColumn=${orderColumn}|}'|">더보기</button>				
 			</div>
 		</div>
 	</article>

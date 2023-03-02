@@ -12,6 +12,7 @@ import com.example.demo.dao.plan.PlanDAO;
 import com.example.demo.db.plan.PlanDBManager;
 import com.example.demo.entity.plan.Plan;
 import com.example.demo.vo.plan.PlanVO;
+import com.example.demo.vo.trip.TripVO;
 
 import lombok.Setter;
 
@@ -38,6 +39,13 @@ public class PlanService {
 		return dao.findByPlanNo(plan_no);
 	}
 	
+	public String getRegion(int plan_no) {
+		return dao.getRegion(plan_no);
+	}
+	
+	public int updateHit(int plan_no) {
+		return dao.updateHit(plan_no);
+	}
 	
 	//mybatis
 
@@ -67,12 +75,36 @@ public class PlanService {
 	
 	//여행일수 계산
 	public int countDaysByPlanNo(int plan_no) {
-		return PlanDBManager.countDaysByPlanNo(plan_no);
+		return dao.countDaysByPlanNo(plan_no);
 	}
 	
 	//여행계획 검색
 	public List<Plan> searchPlan(HashMap<String, Object> map){
 		return PlanDBManager.searchPlan(map);
+	}
+	
+	public int insert(PlanVO p) {
+		return PlanDBManager.insert(p);
+	}
+	
+	public int updatePlan(PlanVO p) {
+		return PlanDBManager.updatePlan(p);
+	}
+	
+	public int count(HashMap<String, Object> map) {
+		return PlanDBManager.count(map);
+	}
+	
+	public int getTotalRecordInInsert(int region) {
+		return PlanDBManager.getTotalRecordInInsert(region);
+	}
+	
+	public List<TripVO> findAllInInsert(HashMap<String, Object> map){
+		return PlanDBManager.findAllInInsert(map);
+	}
+	
+	public TripVO findByTripNoInUpdate(int trip_no) {
+		return PlanDBManager.findByTripNoInUpdate(trip_no);
 	}
 	
 	

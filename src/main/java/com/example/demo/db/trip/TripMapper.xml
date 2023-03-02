@@ -18,7 +18,7 @@
     <select id="getTotalPreSavedRecord" resultType="java.lang.Integer">
         select count(*) from trip where state = 'N'
         <if test="keyword != null and keyword != ''">
-            and (trip_title like '%' || #{keyword} || '%' or trip_addr like '%' || #{keyword} || '%')
+            and (trip_title like '%' || #{keyword} || '%' or trip_addr like '%' || #{keyword} || '%' or trip_detail like '%' || #{keyword} || '%')
         </if>
     </select>
 

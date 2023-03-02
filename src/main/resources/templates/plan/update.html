@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>여행계획 수정</title>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<style type="text/css">
+	#day2_box {display: none}
+	#day3_box {display: none}
+	#day4_box {display: none}
+	
+	#trip_list{
+		border: 3px solid black;
+	}
+	.trip{
+		border: 2px solid pink;
+	}
+	
+	.selected{
+		border: 2px solid blue;
+	}
+	
+</style>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1c15424bc94cd4eeaedfb92cae5cb928"></script>
+<script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script type="text/javascript">
+	$(function(){
+		var days;
+		var selectedRegion = $('#sel').val();
+		
+		$("#region").val(selectedRegion).prop("selected", true);
+		
+		//여행시작일, 여행종료일 선택 시 조건
+		$("#plan_start").datepicker({
+			dateFormat: "yy-mm-dd",
+		});
+		//$('#plan_start').datepicker("option", "maxDate", $("#plan_end").val());
+	    $('#plan_start').datepicker("option", "onClose", function ( selectedDate ) {
+	        $("#plan_end").datepicker( "option", "minDate", selectedDate );
+	        $("#plan_end").datepicker( "option", "maxDate", new Date(new Date(selectedDate).getTime() + 3*24*60*60*1000) );
+	    });
+	    
+		$("#plan_end").datepicker({
+			dateFormat: "yy-mm-dd"
+		});
+		$('#plan_end').datepicker("option", "minDate", $("#plan_start").val());
+	   
+		//날짜 변경 시 이벤트
+		$("#plan_start").change(function(){
+			var plan_start = new Date($("#plan_start").val()).getTime();
+		});
+		
+		
+		$("#plan_end").change(function(){
+			var plan_start = $.datepicker.formatDate("yy-mm-dd", $("#plan_start").datepicker("getDate"));
+			var plan_end = $.datepicker.formatDate("yy-mm-dd", $("#plan_end").datepicker("getDate"));
+
+			$("#day2_box").css("display", "none");
+			$("#day3_box").css("display", "none");
+			$("#day4_box").css("display", "none");
+			
+			//여행일수 가져오기
+			$.ajax({
+				url: "/plan/insert/count",
+				data: {
+					plan_start: plan_start,
+					plan_end: plan_end
+				},
+				success: function(cnt){
+					$("#count").val(cnt);
+					days = cnt;
+					for(i = 1; i <= cnt; i++){
+						console.log(i);
+						console.log("#day"+i+"_box");
+						$("#day"+i+"_box").css("display", "inline-block");
+					}
+				}
+			});
+		});
+		
+		
+		
+	
+		
+	
+		$.ajax({
+			url: "/plan/insert/count",
+			data: {
+				plan_start: $.datepicker.formatDate("yy-mm-dd", $("#plan_start").datepicker("getDate")),
+				plan_end: $.datepicker.formatDate("yy-mm-dd", $("#plan_end").datepicker("getDate"))
+			},
+			success: function(cnt){
+				$("#count").val(cnt);
+				days = cnt;
+				console.log("days:" + days);
+				var plan_no = $("#plan_no").val();
+				console.log("plan:" + plan_no);
+				
+				//$("#day"+i+"_box").css("display", "inline-block");
+				
+				for(i = 1; i <= days; i++){
+					console.log("i:" + i);
+					$("#day"+i+"_box").css("display", "inline-block");
+					findByPlanNo(plan_no, i);
+				}
+				
+			}
+		});
+		
+		var region = 0;
+		var pageNUM = 1;
+
+		getTotalRecord(region, pageNUM);
+		getTripList(pageNUM, region)
+		
+		$("#trip_region").change(function(){
+			region = $("#trip_region").val();
+			getTotalRecord(region, pageNUM);
+			getTripList(pageNUM, region);
+		});
+
+		//페이징 - 전체 레코드 수 가져오기
+		function getTotalRecord(region, pageNUM){
+			$.ajax({
+				url: "/plan/insert/list/record",
+				data: {
+					region: region
+				},
+				success: function(total){
+					$("#page").empty();
+					var totalPage = Math.ceil(total / 8);
+					var pageGROUP = 5;
+					if(totalPage > pageGROUP){
+						console.log("pageNUM:" + pageNUM);
+						
+						var startPage = (pageNUM-1)/pageGROUP*pageGROUP+1;
+						var endPage = startPage+pageGROUP-1;
+						if(totalPage < endPage) {
+							endPage = totalPage;
+						}
+						
+						console.log("sta:" + startPage);
+						console.log("end:" + endPage);
+						
+						if(startPage > 1){
+							var pre = $("<a></a>").html("<").attr({
+								"href": "#",
+								"pageNUM": startPage - 1
+							}).addClass("link").addClass("pre");
+							
+							$("#page").append(pre);
+							$("#page").append("&nbsp;&nbsp;");
+						}
+						
+						for(i = startPage; i <= endPage; i++){
+							var num = $("<a></a>").html(i).attr({
+								"href": "#",
+								"pageNUM": i
+							}).addClass("link");
+							
+							$("#page").append(num);
+							$("#page").append("&nbsp;&nbsp;");
+						}
+						
+						if(endPage < totalPage){
+							var next = $("<a></a>").html(">").attr({
+								"href": "#",
+								"pageNUM": endPage + 1
+							}).addClass("link").addClass("next");
+							$("#page").append(next);
+							$("#page").append("&nbsp;&nbsp;");
+						}
+						
+						
+					}else{
+						for(i = 1; i <= totalPage; i++){
+							var num = $("<a></a>").html(i).attr({
+								"href": "#",
+								"pageNUM": i
+							}).addClass("link");
+							
+							$("#page").append(num);
+							$("#page").append("&nbsp;&nbsp;");
+						}
+						
+					}
+				}
+			});
+			
+		} //end getTotalRecord()
+		
+		//페이지 링크 클릭 시 이벤트
+		$(document).on("click", ".link", function(){
+			pageNUM = $(this).attr("pageNUM");
+			getTripList(pageNUM, region);
+		});
+		
+		// < 링크 클릭 이벤트
+		$(document).on("click", ".pre", function(){
+			pageNUM = $(this).attr("pageNUM");
+			getTotalRecord(region, pageNUM-4);
+		});
+		
+		// > 링크 클릭 이벤트
+		$(document).on("click", ".next", function(){
+			$("#page").empty();
+			pageNUM = $(this).attr("pageNUM");
+			getTotalRecord(region, pageNUM);
+		});
+		
+		//여행지 목록 가져오기
+		function getTripList(pageNUM, region){
+			$.ajax({
+				url: "/plan/insert/list",
+				data: {
+					pageNUM: pageNUM,
+					region: region
+				},
+				success: function(arr){
+					$("#trip").empty();
+					$.each(arr, function(){
+						var div = $("<div></div>").addClass("trip").attr({
+							"trip_no": this.trip_no,
+							"lat": this.lat,
+							"lng": this.lng
+						});
+						var trip_no = $("<div></div>").html(this.trip_no);
+						var trip_img = $("<div></div>").html(this.trip_img);
+						var trip_title = $("<div></div>").html(this.trip_title);
+						
+						$(div).append(trip_no, trip_img, trip_title);
+						$("#trip").append(div);
+					});
+				}
+			});
+		}
+	
+	
+		//여행지 목록에서 여행지 클릭 시 이벤트
+		function clickList(){
+			var day = "day1";
+			
+			$(".day_title").click(function(){
+				day = $(this).attr("id")
+			});
+	
+			$(document).on("click", ".trip", function(){
+				var selected = $(".selected_"+day).length;
+				console.log("selected:"+selected);
+				if(selected < 5){
+					var div = $("<div></div>").addClass("add");
+					var button = $("<button></button>").html("삭제").attr("id", "btnDelete");
+					$(div).append($(this).clone().addClass("selected_"+day).removeClass("trip").attr({
+						"n": selected+1,
+						"day": day
+					}));
+					$(div).append(button);
+					$("#"+day+"_box").append(div);
+					
+					//카카오맵
+					var lat = $(this).attr("lat");
+					var lng = $(this).attr("lng");
+					
+					var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+					var options = { //지도를 생성할 때 필요한 기본 옵션
+						center: new kakao.maps.LatLng(lat, lng), //지도의 중심좌표.
+						level: 3 //지도의 레벨(확대, 축소 정도)
+					};
+					var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+					
+				}else{
+					alert("최대 5개까지 선택할 수 있습니다.");
+				}
+				
+				//input에 trip_no 추가
+				var trip_no = $(this).attr("trip_no");
+				$("#"+day+"_"+(selected+1)).val(trip_no);
+				
+				
+			});
+		}
+
+		clickList();
+
+		
+		//날짜별 전체 삭제
+		$(".deleteDay").click(function(e){
+			e.preventDefault();
+			//day1 전체 삭제 시 plan_img 삭제
+			if($(this).attr("id") == "deleteDay1"){
+				$("#plan_img").val("");
+			}
+			
+			$(this).siblings("input").val("");
+			$(this).siblings(".add").remove();
+		});
+				
+		
+		//개별 삭제 버튼 클릭 이벤트
+		$(document).on("click", "#btnDelete", function(e){
+			e.preventDefault();
+			$(this).closest(".add").remove();
+			
+			var day = $(this).siblings("div").attr("day");
+			var n =$(this).siblings("div").attr("n");
+			$("#"+day+"_"+n).val("");
+			
+			if($("#day1_1").val() == ""){
+				$("#plan_img").val("");
+			}
+			
+		});
+		
+		//등록 버튼 클릭 이벤트
+		$("#submit").click(function(e){
+			e.preventDefault();
+			var days = $("#count").val();
+			console.log("days:" + days);
+			for(i = 1; i <= days; i++){
+				var arr = $("#day"+i+"_box").find(".selected_day"+i)
+				$.each(arr, function(index, value){
+					console.log("index:" + index);
+					console.log("value:" + value);
+					$("#day"+i+"_"+(index+1)).val("");
+					$("#day"+i+"_"+(index+1)).val($(this).attr("trip_no"));
+				});
+			}
+			
+			//이미지 가져오기
+			var trip_no = $("#day1_1").val();
+			$.ajax({
+				url: "/plan/detail/getImg",
+				data: {
+					trip_no: trip_no
+				},
+				success: function(img){
+					$("#plan_img").val(img);
+					$("#submit").unbind('click').click();
+				}
+			});	
+		}); //#submit 클릭
+		
+
+		//수정 시 이미 선택된 여행지 추가
+		function findByPlanNo(plan_no, days){
+			$.ajax({
+				url: "/plan/update/list",
+				data: {
+					plan_no: plan_no,
+					day: days
+				},
+				success: function(arr){
+					$.each(arr, function(){
+						var div_add = $("<div></div>").addClass("add");
+						var div_selected = $("<div></div>").addClass("selected_day"+days).attr("trip_no", this.trip_no);
+						
+						var trip_no = $("<div></div>").html(this.trip_no);
+						var trip_img = $("<div></div>").html(this.trip_img);
+						var trip_title = $("<div></div>").html(this.trip_title);
+						var button = $("<button></button>").html("삭제").attr("id", "btnDelete");
+						
+						$(div_selected).append(trip_no, trip_img, trip_title);
+						$(div_add).append(div_selected, button); 
+						$("#day"+days+"_box").append(div_add);
+					});
+				}
+			}); 
+		}
+		
+		
+	});
+</script>
+</head>
+<body>
+	<h2>여행계획 수정</h2>
+	<a href="/plan/list">목록</a>
+	<input type="hidden" th:value="${p.korea_code}" id="sel">
+	<form action="/plan/update" method="post" id="update">
+		<!-- 여행계획 기본 정보 -->
+		<div id="info">
+			일정번호 : <input type="text" name="plan_no" th:value="${p.planNo}" readonly="readonly" id="plan_no"><br>
+			일정제목 : <input type="text" name="plan_title" th:value="${p.plan_title}"><br>
+			작성자 : <input type="text" name="member_id" th:value="${p.member_id}"><br>
+			지역 :
+			
+			<select id="region" name="korea_code">
+				<option value="" selected>지역선택</option>
+				<option th:each="r:${regionlist}" th:text="${r.region}" th:value="${r.code}"></option>
+			</select>
+			
+			<br>
+			여행시작일 : <input type="text" name="plan_start" id="plan_start" th:value="${p.plan_start}">
+			&nbsp;&nbsp;&nbsp;
+			여행종료일 : <input type="text" name="plan_end" id="plan_end" th:value="${p.plan_end}"><br>
+			<br>
+			이미지 : <input type="text" name="plan_img" id="plan_img" th:value="${p.plan_img}"><br>
+			여행일수 : <input type="text" id="count"><br>
+		</div>
+		
+		<!-- 여행계획 날짜별 일정 -->
+		<div id="day">
+			<div id="day1_box">
+				<h3 class="day_title" id="day1">DAY 1</h3>
+				<button class="deleteDay" id="deleteDay1">전체삭제</button><br>
+				<input type="text" name="day1_1" id="day1_1" th:value="${day1_1}">
+				<input type="text" name="day1_2" id="day1_2" th:value="${day1_2}">
+				<input type="text" name="day1_3" id="day1_3" th:value="${day1_3}">
+				<input type="text" name="day1_4" id="day1_4" th:value="${day1_4}">
+				<input type="text" name="day1_5" id="day1_5" th:value="${day1_5}"><br>
+			</div>
+			
+			<div id="day2_box">
+				<h3 class="day_title" id="day2">DAY 2</h3>
+				<button class="deleteDay">전체삭제</button><br>
+				<input type="text" name="day2_1" id="day2_1" th:value="${day2_1}">
+				<input type="text" name="day2_2" id="day2_2" th:value="${day2_2}">
+				<input type="text" name="day2_3" id="day2_3" th:value="${day2_3}">
+				<input type="text" name="day2_4" id="day2_4" th:value="${day2_4}">
+				<input type="text" name="day2_5" id="day2_5" th:value="${day2_5}"><br>
+			</div>
+			
+			<div id="day3_box">
+				<h3 class="day_title" id="day3">DAY 3</h3>
+				<button class="deleteDay">전체삭제</button><br>
+				<input type="text" name="day3_1" id="day3_1" th:value="${day3_1}">
+				<input type="text" name="day3_2" id="day3_2" th:value="${day3_2}">
+				<input type="text" name="day3_3" id="day3_3" th:value="${day3_3}">
+				<input type="text" name="day3_4" id="day3_4" th:value="${day3_4}">
+				<input type="text" name="day3_5" id="day3_5" th:value="${day3_5}"><br>
+			</div>
+			
+			<div id="day4_box">
+				<h3 class="day_title" id="day4">DAY 4</h3>
+				<button class="deleteDay">전체삭제</button><br>
+				<input type="text" name="day4_1" id="day4_1" th:value="${day4_1}">
+				<input type="text" name="day4_2" id="day4_2" th:value="${day4_2}">
+				<input type="text" name="day4_3" id="day4_3" th:value="${day4_3}">
+				<input type="text" name="day4_4" id="day4_4" th:value="${day4_4}">
+				<input type="text" name="day4_5" id="day4_5" th:value="${day4_5}"><br>
+			</div>
+		</div>
+
+		<input type="submit" value="수정" id="submit">
+		<input type="reset" value="다시입력">
+	</form>
+	
+	<hr>
+	
+	<!-- 여행지 목록 -->
+	<div id="trip_list">
+		<select id="trip_region" name="korea_code">
+			<option value="0" selected>전국</option>
+			<option th:each="r:${regionlist}" th:text="${r.region}" th:value="${r.code}"></option>
+		</select>
+		
+		<hr>
+		
+		<div id="trip"></div>
+		
+		<div id="page"></div>
+	
+	</div> <!-- end #trip_list -->
+	
+	<hr>
+	<!-- 지도 -->
+	<div id="map" style="width:500px;height:400px;"></div>
+
+</body>
+</html>

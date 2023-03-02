@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo.entity.plan.Plan;
 import com.example.demo.vo.plan.PlanVO;
+import com.example.demo.vo.trip.TripVO;
 @Repository
 public class PlanDBManager {
 	public static SqlSessionFactory sqlSessionFactory;
@@ -35,6 +36,7 @@ public class PlanDBManager {
 		return list;
 	}
 	
+
 	//여행계획 목록 (지역별)
 	public static List<Plan> findByRegion(HashMap<String, Object> map){
 		List<Plan> list = null;
@@ -48,7 +50,7 @@ public class PlanDBManager {
 	public static int getTotalRecord(HashMap<String, Object> map) {
 		int total = -1;
 		SqlSession session = sqlSessionFactory.openSession();
-		total = session.selectOne("plan.TotalRecord", map);
+		total = session.selectOne("plan.totalRecord", map);
 		session.close();
 		return total;
 	}
@@ -71,14 +73,6 @@ public class PlanDBManager {
 		return list;
 	}
 	
-	//여행일수 계산
-	public static int countDaysByPlanNo(int plan_no) {
-		int cnt = -1;
-		SqlSession session = sqlSessionFactory.openSession();
-		cnt = session.selectOne("plan.countDays");
-		session.close();
-		return cnt;
-	}
 	
 	//여행계획 검색
 	public static List<Plan> searchPlan(HashMap<String, Object> map){
@@ -107,6 +101,55 @@ public class PlanDBManager {
 //		session.close();
 //		return list;
 //	}
+	
+	public static int insert(PlanVO plan) {
+		int re = -1;
+		SqlSession session = sqlSessionFactory.openSession();
+		re = session.insert("plan.insertPlan", plan);
+		session.commit();
+		session.close();
+		return re;
+	}
+	
+	public static int updatePlan(PlanVO p) {
+		int re = -1;
+		SqlSession session = sqlSessionFactory.openSession();
+		re = session.update("plan.updatePlan", p);
+		session.commit();
+		session.close();
+		return re;
+	}
+	
+	public static int count(HashMap<String, Object> map) {
+		int re = -1;
+		SqlSession session = sqlSessionFactory.openSession();
+		re = session.selectOne("plan.count", map);
+		session.close();
+		return re;
+	}
+	
+	public static int getTotalRecordInInsert(int region) {
+		int re = -1;
+		SqlSession session = sqlSessionFactory.openSession();
+		re = session.selectOne("plan.getTotalRecordInInsert", region);
+		session.close();
+		return re;
+	}
+	
+	public static List<TripVO> findAllInInsert(HashMap<String, Object> map){
+		List<TripVO> list = null;
+		SqlSession session = sqlSessionFactory.openSession();
+		list = session.selectList("plan.findAllInInsert", map);
+		session.close();
+		return list;
+	}
 
+	public static TripVO findByTripNoInUpdate(int trip_no) {
+		TripVO trip = null;
+		SqlSession session = sqlSessionFactory.openSession();
+		trip = session.selectOne("plan.findByTripNoInUpdate", trip_no);
+		session.close();
+		return trip;
+	}
 	
 }
