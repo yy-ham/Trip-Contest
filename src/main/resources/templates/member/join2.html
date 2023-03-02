@@ -89,24 +89,6 @@ body {
 	width : 15px;
 	height: 15px;
 }
-#jumin1,#jumin2{
-	width : 100px;
-	min-height: 41px;
-	border : none;
-	border : 1px solid #eee;
-	border-radius : 3px;
-}
-#phone1,#phone2,#phone3{
-	width : 70px;
-	min-height: 41px;
-	border : none;
-	border : 1px solid #eee;
-	border-radius : 3px;
-}
-
-#jumin1:hover, #jumin2:hover,#phone1:hover,#phone2:hover,#phone3:hover{
-	border : 1px solid #5cd3b4;
-}
 </style>
 </head>
 <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
@@ -327,18 +309,18 @@ $(function(){
         </div>
         <div class="form-group row">
 			<label class="col-form-label col-4">주민번호</label>
-			<span class="col-8">
-                <input type="text" class="jumin" name="jumin1" id="jumin1" maxlength="6" required="required"> - 
-                <input type="text" class="jumin" name="jumin2" id="jumin2" maxlength="7" required="required">
+			<div class="col-8">
+                <input type="text" class="form-control" name="jumin1" id="jumin1" maxlength="6" required="required">-
+                <input type="text" class="form-control" name="jumin2" id="jumin2" maxlength="7" required="required">
                 <input type="hidden" name="jumin" id="jumin">
-            </span>        	
+            </div>        	
         </div>
         <div class="form-group row">
 			<label class="col-form-label col-4">연락처</label>
 			<div class="col-8">
-                <input type="tel" class="phone" name="phone1" id="phone1" maxlength="3" required="required">-
-                <input type="tel" class="phone" name="phone2" id="phone2" maxlength="4" required="required">-
-                <input type="tel" class="phone" name="phone3"  id="phone3" maxlength="4" required="required">
+                <input type="tel" class="form-control" name="phone1" id="phone1" maxlength="3" required="required">-
+                <input type="tel" class="form-control" name="phone2" id="phone2" maxlength="4" required="required">-
+                <input type="tel" class="form-control" name="phone3"  id="phone3" maxlength="4" required="required">
                 <input type="hidden" name="phone" id="phone">
                 <input type="button" value="휴대폰 인증" id='btn_phone'>
             </div>        	
@@ -376,7 +358,7 @@ $(function(){
 			<label class="col-form-label col-4">등급</label>
 			<div class="col-8">
 			<select name="grade" id="grade" required>
-				<option value="bronze">일반회원</option>
+				<option value="vip">관리자</option>
 			</select>
             </div>        	
         </div>

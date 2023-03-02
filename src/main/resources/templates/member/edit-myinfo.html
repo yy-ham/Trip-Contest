@@ -1,10 +1,99 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>내 정보 수정</title>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700">
+<title>Bootstrap Sign up Form Horizontal</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<style>
+body {
+	color: #999;
+	background: #f3f3f3;
+	font-family: 'Roboto', sans-serif;
+}
+.form-control {
+	border-color: #eee;
+	min-height: 41px;
+	box-shadow: none !important;
+}
+.form-control:focus {
+	border-color: #5cd3b4;
+}
+.form-control, .btn {        
+	border-radius: 3px;
+}
+.signup-form {
+	width: 500px;
+	margin: 0 auto;
+	padding: 30px 0;
+}
+.signup-form h2 {
+	color: #333;
+	margin: 0 0 30px 0;
+	display: inline-block;
+	padding: 0 30px 10px 0;
+	border-bottom: 3px solid #5cd3b4;
+}
+.signup-form form {
+	color: #999;
+	border-radius: 3px;
+	margin-bottom: 15px;
+	background: #fff;
+	box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+	padding: 30px;
+}
+.signup-form .form-group row {
+	margin-bottom: 20px;
+}
+.signup-form label {
+	font-weight: normal;
+	font-size: 14px;
+	line-height: 2;
+}
+.signup-form input[type="checkbox"] {
+	position: relative;
+	top: 1px;
+}
+.signup-form .btn {        
+	font-size: 16px;
+	font-weight: bold;
+	background: #5cd3b4;
+	border: none;
+	margin-top: 20px;
+	min-width: 140px;
+}
+.signup-form .btn:hover, .signup-form .btn:focus {
+	background: #41cba9;
+	outline: none !important;
+}
+.signup-form a {
+	color: #5cd3b4;
+	text-decoration: underline;
+}
+.signup-form a:hover {
+	text-decoration: none;
+}
+.signup-form form a {
+	color: #5cd3b4;
+	text-decoration: none;
+}	
+.signup-form form a:hover {
+	text-decoration: underline;
+}
+[type='radio']{
+	width : 15px;
+	height: 15px;
+}
+</style>
 </head>
+<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+<!-- 주소등록 시 주소 찾기=>카카오 -->
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>   
 <script>
 $(function(){
 	sessionStorage.setItem("id",$("#id").val());
@@ -15,69 +104,118 @@ function deleteConfirm() {
     document.getElementById('delete-form').submit();
   }
 }
+$(document).ready(function() {
+    // input 요소에서 주민등록번호를 가져옴
+    var jumin = $('#jumin').val();
+
+    // 문자열의 일부분을 추출하여 저장
+    var startIndex = 0;
+    var middleIndex = 6;
+    var endIndex = 14;
+    var substring1 = jumin.substring(startIndex, middleIndex);
+    var substring2 = jumin.substring(middleIndex+2, endIndex);
+    console.log(substring1);
+	console.log(substring2);
+    // 추출한 문자열을 input 요소의 value 값으로 설정
+    
+  });
 </script>
 <body>
-	<h1>내 정보 수정</h1>
-	<form method="post" th:action="@{/myinfo/edit}" enctype="multipart/form-data">
-		<table>
-			<tr>
-				<th>ID</th>
-				<td th:text="${member.id}"></td>
-				<td><input type="hidden" name="id" th:value="${member.id}" id="id">
+
+<div class="signup-form">
+<form method="post" th:action="@{/myinfo/edit}" enctype="multipart/form-data">
+      	<div class="row">
+        	<div class="col-8 offset-4">
+				<h2>나의 프로필</h2>
+			</div>	
+      	</div>
+      	<div class="form-group row">
+			<label class="col-form-label col-4">사진</label>
+			<div class="col-8">
+                <img th:src="@{|/images/${member.memberImg}|}" width=100 height=100/>
+                
+				<input type="file" name="member_img_edit" id="member_img_edit">
+            </div>        	
+        </div>   
+		<div class="form-group row">
+			<label class="col-form-label col-4">ID</label>
+			<div class="col-8">
+				<p class="form-control" th:text="${member.id}"></p>
+				<input type="hidden" name="id" th:value="${member.id}" id="id">
+				<input type="hidden" name="pwd" th:value="${member.pwd}"><br>
+				<input type="hidden" name="memberImg" th:value="${member.memberImg}">
+            </div>        	
+        </div>
+		
+        <div class="form-group row">
+			<label class="col-form-label col-4">이름</label>
+			<div class="col-8">
+			<input class="form-control" type="text" name="name" th:value="${member.name}">
+            </div>        	
+        </div>
+        <div class="form-group row">
+			<label class="col-form-label col-4">주민번호</label>
+			<div class="col-8">
+				<input class="form-control" type="text" name="jumin" id="jumin" th:value="${member.jumin.substring(0, 6)}">
+				-
+				<input class="form-control" type="text" name="jumin" id="jumin" th:value="${member.jumin.substring(7, 14)}">
 				
-				</td>
-			</tr>
-			<tr>
-			
-				<th>이름</th>
-				<td><input type="text" name="name" th:value="${member.name}"></td>
-			</tr>
-			<tr>
-				<th>주소</th>
-				<td><input type="text" name="addr" th:value="${member.addr}"></td>
-			</tr>
-			<tr>
-				<th>전화번호</th>
-				<td><input type="text" name="phone" th:value="${member.phone}"></td>
-			</tr>
-			<tr>
-				<th>이메일</th>
-				<td><input type="text" name="mail" th:value="${member.mail}"></td>
-			</tr>
-			<tr>
-				<th>성별</th>
-				<td><input type="radio" name="gender" value="M"
-					th:checked="${member.gender == 'M'}">남성 <input type="radio"
+            </div>        	
+        </div>
+        
+        <div class="form-group row">
+			<label class="col-form-label col-4">연락처</label>
+			<div class="col-8">
+				<input class="form-control" type="text" name="phone" th:value="${member.phone.substring(0, 3)}">-
+                <input class="form-control" type="text" name="phone" th:value="${member.phone.substring(4, 8)}">-
+                <input class="form-control" type="text" name="phone" th:value="${member.phone.substring(9)}">
+            </div>        	
+        </div>
+        
+        <div class="form-group row">
+			<label class="col-form-label col-4">주소</label>
+			<div class="col-8">
+                <input class="form-control" type="text" name="addr" th:value="${member.addr}">
+                
+            </div>        	
+        </div>
+        
+        <div class="form-group row">
+			<label class="col-form-label col-4">이메일</label>
+			<div class="col-8">
+                <input class="form-control" type="text" name="mail" th:value="${member.mail}">
+                
+            </div>        	
+        </div>
+        
+        <div class="form-group row">
+			<label class="col-form-label col-4">성별</label>
+			<div class="col-8">
+                <input  type="radio" name="gender" value="M"
+					th:checked="${member.gender == 'M'}">남성 <br>
+				<input type="radio"
 					name="gender" value="F" th:checked="${member.gender == 'F'}">여성
-				</td>
-			</tr>
-			<tr>
-				<th>등급</th>
-				<td><input type="radio" name="grade" value="member"
-					th:checked="${member.grade == 'member'}">일반회원 <input
-					type="radio" name="grade" value="vip"
-					th:checked="${member.grade == 'vip'}">관리자</td>
-			</tr>
-			<tr>
-			<th>사진:</th>
-			<td><input type="file" name="member_img_edit" id="member_img_edit"><br></td>
-			</tr>
-			<tr>
-			<th></th>
-			<td><input type="hidden" name="jumin" th:value="${member.jumin}"><br></td>
-			<td><input type="hidden" name="pwd" th:value="${member.pwd}"><br></td>
-			<td><input type="hidden" name="memberImg" th:value="${member.memberImg}"><br></td>
-			</tr>
-		</table>
-		<input type="submit" value="수정">
-	</form>
-	<form id="delete-form" method="post" th:action="@{/myinfo/delete}">
-  		<input type="hidden" name="id" th:value="${member.id}">
-	</form>
+            </div>        	
+        </div>
+        
+        <div class="form-group row">
+			<label class="col-form-label col-4">등급</label>
+			<div class="col-8">
+			<input type="radio"name="grade" value="member"
+					th:checked="${member.grade == 'member'}">일반회원 <br>
+			<input type="radio"  name="grade" value="vip"
+					th:checked="${member.grade == 'vip'}">관리자
+            </div>        	
+        </div>
+        <input type="submit" value="수정">
+        </form>
+      </div>
 	
-	<button onclick="deleteConfirm()">회원 탈퇴</button>
+<div>
+    <button onclick="location.href='/pwdSetting'">비밀번호 수정</button>
+    <!--  <button onclick="location.href='/pwdSetting'">비밀번호 수정</button>-->
+    <button onclick="showPasswordPrompt()">정보 수정</button>
+	<div class="text-center">Already have an account? <a href="/login">Login here</a></div>
+</div>
 </body>
 </html>
-
-
-

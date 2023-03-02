@@ -61,6 +61,11 @@ public class MemberController {
 		public String insertForm() {
 			return "member/join";
 		}
+		//관리자 전용 가입
+		@GetMapping("/join/madeByTeamFinal")
+		public String insertAdminForm() {
+			return "member/join2";
+		}
 		//회원가입 PostMapping
 		@PostMapping("/join")
 		public ModelAndView insertSubmit(org.springframework.ui.Model model,com.example.demo.entity.member.Member member, MultipartHttpServletRequest mtfRequest,HttpServletRequest request) throws Exception {
@@ -202,13 +207,18 @@ public class MemberController {
 		    	return "member/myPage";
 	    	}
 	    }
-	 // 정보보기전 패스워드 입력
+	 // 회원 정보 열람하기 위해 패스워드 입력하는 mapping
 	    @GetMapping("/beforeEditMyInfo")
 	    public String beforeEditMyInfo(HttpSession session, org.springframework.ui.Model model) {
 	        model.addAttribute("id", session.getAttribute("id"));
-	        return "member/beforeEditMyInfo";
+	        String id = (String) session.getAttribute("id");
+	        if (id!=null) {
+	    		return "member/beforeEditMyInfo";
+	    	} else {
+	    		// 로그인하지 않은 사용자의 경우 로그인 페이지로 이동
+	    		return "redirect:/login";
+	    	}
 	    }
-
 	    @PostMapping("/beforeEditMyInfo")
 	    public String beforeEditMyInfoPost(@RequestParam String pwd, HttpSession session, org.springframework.ui.Model model) {
 	        String id = (String) session.getAttribute("id");
@@ -236,13 +246,19 @@ public class MemberController {
 	    	}
 	    }
 	    @GetMapping("/pwdSetting")
-	    public String pwdSettingForm() {
-	    	return "member/pwdSetting";
+	    public String pwdSettingForm(HttpSession session, org.springframework.ui.Model model) {
+	    	model.addAttribute("id", session.getAttribute("id"));
+	        String id = (String) session.getAttribute("id");
+	        if (id!=null) {
+	    		return "member/pwdSetting";
+	    	} else {
+	    		// 로그인하지 않은 사용자의 경우 로그인 페이지로 이동
+	    		return "redirect:/login";
+	    	}
 	    }
 	    
 	    @PostMapping("/pwdSetting")
-	    public ModelAndView pwdSettingSubmit( 
-	    									  String oldPwd, 
+	    public ModelAndView pwdSettingSubmit( String oldPwd, 
 	                                          String newPwd, 
 	                                          HttpSession session, RedirectAttributes redirectAttributes, 
 	                                          HttpServletRequest request) {
@@ -330,11 +346,14 @@ public class MemberController {
 	    @RequestMapping(value = "/findMyPlan", method = RequestMethod.GET)
 	    public String findMyPlan(org.springframework.ui.Model model,HttpSession session) {
 	    	String id =(String)session.getAttribute("id");
-//	    	System.out.println(id);
-	    	planService.findMyPlanByMemberId(id);
-	    	List<PlanVO> plan =planService.findMyPlanByMemberId(id);
-	    	model.addAttribute("plan",plan);
-	        return "member/edit-myplan";
+	    	if(id ==null) {
+	    		return "redirect:/login";
+	    	}else {
+	    		planService.findMyPlanByMemberId(id);
+		    	List<PlanVO> plan =planService.findMyPlanByMemberId(id);
+		    	model.addAttribute("plan",plan);
+		    	return "member/edit-myplan";
+	    	}
 	    }
 	    //id찾기
 	    @RequestMapping(value = "/findId", method = {RequestMethod.GET})
