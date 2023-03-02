@@ -74,16 +74,6 @@
     	select * from liked where member_id= #{member_id} and type = #{type}
     </select>
 
-    <!-- 찜하기 -->
-    <!-- <update id="updateTripLiked" parameterType="java.lang.Integer">
-        update trip set trip_liked = trip_liked + 1 where trip_no = #{tripNo}
-    </update> -->
-
-    <!-- 찜 취소 -->
-    <!-- <update id="updateTripNoLiked" parameterType="java.lang.Integer">
-        update trip set trip_liked = trip_liked - 1 where trip_no = #{tripNo}
-    </update> -->
-    
     <!-- tripNo로 지역명 찾기 -->
     <select id="getRegionByTripNo" parameterType="java.lang.Integer" resultType="String">
     	select a.region from korea a, trip b where a.code = b.korea_code and b.trip_no = #{tripNo}

@@ -19,9 +19,6 @@ public class Trip {
     @Column(name = "trip_title")
     private String tripTitle;
 
-//    @Column(name = "korea_code")
-//    private int koreaCode;
-
     @ManyToOne
     @JoinColumn(name = "korea_code", insertable=true, updatable=true)
     private Korea korea;

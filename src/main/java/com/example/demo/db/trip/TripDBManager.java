@@ -100,27 +100,6 @@ public class TripDBManager {
         return re;
     }
 
-
-    // 찜하기
-//    public static int updateTripLiked(int tripNo){
-//        int re = -1;
-//        SqlSession session = sqlSessionFactory.openSession(true);
-//        re = session.update("trip.updateTripLiked", tripNo);
-//        session.close();
-//
-//        return re;
-//    }
-
-    // 찜 취소
-//    public static int updateTripNoLiked(int tripNo){
-//        int re = -1;
-//        SqlSession session = sqlSessionFactory.openSession(true);
-//        re = session.update("trip.updateTripNoLiked", tripNo);
-//        session.close();
-//
-//        return re;
-//    }
-    
    // tripNo로 지역명 찾기
     public static String getRegionByTripNo(int tripNo) {
     	SqlSession session = sqlSessionFactory.openSession();

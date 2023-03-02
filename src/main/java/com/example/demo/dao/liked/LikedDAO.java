@@ -15,4 +15,5 @@ public interface LikedDAO extends JpaRepository<Liked, Integer>{
 	List<Liked> findByMemberIdAndType(String memberId, String type);
 
 	Optional<Liked> findByNoAndTypeAndMemberId(int no, String type, String memberId);
+	
 }

@@ -17,5 +17,5 @@ public interface TripDAO extends JpaRepository<Trip, Integer> {
 
     // 여행지 상세 출력
     Trip findByTripNo(int tripNo);
-
+    
 }

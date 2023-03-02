@@ -1,6 +1,5 @@
 package com.example.demo.controller.trip;
 
-import com.example.demo.db.trip.TripDBManager;
 import com.example.demo.entity.liked.Liked;
 import com.example.demo.entity.trip.Trip;
 import com.example.demo.service.liked.LikedService;
@@ -38,6 +37,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class TripController {
 
     public int pageSIZE = 8;
+    public int pageGROUP  = 5;
     public int totalRecord = 0;
     public int totalPage = 1;
 
@@ -53,7 +53,7 @@ public class TripController {
     	map.put("keyword", keyword);
     	map.put("region", region);
     	
-    	totalRecord = TripDBManager.getTotalRecord(map);
+    	totalRecord = tripService.getTotalRecord(map);
     	totalPage = (int) Math.ceil(totalRecord / (double)pageSIZE);
     	if(totalPage == 0) {
     		totalPage = 1;
@@ -80,12 +80,23 @@ public class TripController {
     		koreaList.add(regionVO);
     	}
     	
+    	int startPage = (pageNUM-1)/pageGROUP*pageGROUP+1;
+		int endPage = startPage+pageGROUP-1;
+		if(endPage > totalPage) {
+			endPage = totalPage;
+		}else if(endPage == 0) {
+			endPage = 1; 
+		}
+    	
     	// 상태유지
+		mav.addObject("pageNum", pageNUM);
     	mav.addObject("totalPage", totalPage);
+    	mav.addObject("startPage", startPage);
+    	mav.addObject("endPage", endPage);
     	mav.addObject("keyword", keyword);
     	mav.addObject("orderColumn", orderColumn);
     	mav.addObject("region", region);
-    	mav.addObject("tripList", TripDBManager.findAll(map));
+    	mav.addObject("tripList", tripService.findAll(map));
     	mav.addObject("koreaList", koreaList);
     	// 회원 등급
     	mav.addObject("grade","admin");
@@ -99,7 +110,7 @@ public class TripController {
     	HashMap<String, Object> map = new HashMap<>();  
     	map.put("keyword", keyword);
     	
-    	totalRecord = TripDBManager.getTotalPreSavedRecord(keyword);
+    	totalRecord = tripService.getTotalPreSavedRecord(keyword);
     	totalPage = (int) Math.ceil(totalRecord / (double)pageSIZE);
     	if(totalPage == 0) {
     		totalPage = 1;
@@ -109,17 +120,27 @@ public class TripController {
     	int end = start + pageSIZE - 1;
     	System.out.println(start);
     	System.out.println(end);
-    	ModelAndView mav = new ModelAndView();
-    		
+    	
+    	int startPage = (pageNUM-1)/pageGROUP*pageGROUP+1;
+		int endPage = startPage+pageGROUP-1;
+		if(endPage > totalPage) {
+			endPage = totalPage;
+		}else if(endPage == 0) {
+			endPage = 1; 
+		}
+    	ModelAndView mav = new ModelAndView();	
+    	
     	map.put("orderColumn", orderColumn);
     	map.put("start", start);
     	map.put("end", end);
     	
     	// 상태유지
     	mav.addObject("totalPage", totalPage);
+    	mav.addObject("startPage", startPage);
+    	mav.addObject("endPage", endPage);
     	mav.addObject("keyword", keyword);
     	mav.addObject("orderColumn", orderColumn);
-    	mav.addObject("tripList", TripDBManager.findAllByAdmin(map));
+    	mav.addObject("tripList", tripService.findAllByAdmin(map));
     	// 회원 등급
     	mav.addObject("grade","admin");
     	
@@ -414,5 +435,15 @@ public class TripController {
     	}
     	
     	return tripLikedNoList;
+    }
+    
+    @ResponseBody
+    @GetMapping("/trip/getTripLikedCnt/{tripNo}")
+    public int getTripLikedCnt(@PathVariable int tripNo) {
+    	int cnt = 0;
+    	Trip trip = tripService.findByTripNo(tripNo);
+    	cnt = trip.getTripLiked();
+    	
+    	return cnt;
     }
 }

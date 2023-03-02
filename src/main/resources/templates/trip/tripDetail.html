@@ -3,6 +3,25 @@
 <head>
 	<meta charset="UTF-8">
 	<title>여행지 상세</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+<style type="text/css">
+	.carousel {
+	    position: relative;
+	    width: 50%;
+	    margin-left: auto;
+	    margin-right: auto;
+	}
+	
+	.carousel-inner > .carousel-item > img {
+		top: 0;
+		left: 0;
+		min-width: 80%;
+		min-height: 200px;
+		max-height: 400px;
+  	} 
+
+</style>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f12cedc04a3b71edb51a90ae7835e50f"></script>
 <script type="text/javascript">
@@ -23,6 +42,9 @@
 		    position: markerPosition
 		});
 
+		// 마우스 휠로 지도 확대,축소 기능 막기
+		map.setZoomable(false);  
+		
 		// 마커가 지도 위에 표시되도록 설정
 		marker.setMap(map);
 		
@@ -30,19 +52,17 @@
 		var no = $("#no").val();
 		
 		//좋아요 수 가져오기
-		/* function getLiked(){
+		function getLiked(){
 			$.ajax({
-				url: "/plan/detail/liked",
-				data: {
-					plan_no: no
-				},
-				success: function(re){
-					$("#cntLiked").val(re);
+				url: "/trip/getTripLikedCnt/"+$("#tripLiked").attr("checkLikedNo"),
+				success: function(cnt){
+					$("#cntLiked").text(cnt);
+					console.log(cnt);
 				}
 			});
 		}
 
-		getLiked(); */
+		getLiked();
 		
 		// 해당 아이디가 찜한 게시물 표시
 		function getUserLiked(login){
@@ -80,7 +100,7 @@
 		};
 		
 		getUserLiked(login);
- 
+		
 		// 찜 기능
 		$("#tripLiked").click(function(){
 			if($(this).is(":checked")){
@@ -242,16 +262,42 @@
 	</div>
 	<hr>
 	찜 <input type="checkbox" id="tripLiked" th:value="${trip.tripNo}" th:attr="likedTitle=${trip.tripTitle},likeImg=${trip.tripImg},checkLikedNo=${trip.tripNo}"><br>
-	좋아요수 <input type="text" id="cntLiked">
+	좋아요수 <span id="cntLiked"></span>
 	<hr>
-	<div>
-		<label th:for="tripTitle">관광지명 : </label> 
-		<span th:text="${trip.tripTitle}"></span>
-	</div>
-	<div>
-		<label th:for="region">지역명 : </label> 
-		<span th:text="${region}"></span>
+	<div style="width: 80%; text-align: center; margin-left: auto; margin-right: auto;">
+		<!-- 관광지명 -->
+		<div th:text="${trip.tripTitle}" style="font-weight: bold; font-size: 36px; text-align: center;"></div>
+		<!-- 지역명 -->
+		<div th:text="${region}"></div>
 	</div> 
+	
+	<!-- 이미지 캐러셀 -->
+	<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
+		<div class="carousel-indicators">
+		  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+		  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+		  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+		</div>
+  		<div class="carousel-inner">
+	    	<div class="carousel-item active">
+	      		<img th:src="@{'/images/'+${trip.tripImg}}" class="d-block w-100" alt="...">
+	    	</div>
+	    	<div class="carousel-item" th:each="img:${imgList}">
+	      		<img th:src="@{'/images/'+${img.fname}}" class="d-block w-100" alt="...">
+	    	</div>
+ 		</div>
+		<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+		  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+		  <span class="visually-hidden">Previous</span>
+		</button>
+		<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+		  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+		  <span class="visually-hidden">Next</span>
+		</button>
+	</div>
+	
+	<div style="font-weight: bold; font-size: 30px;">상세정보</div>
+	<div th:text="${trip.tripDetail}"></div>
 	<div>
 		<label th:for="tripTel">전화번호 : </label> 
 		<span th:text="${trip.tripTel}"></span>
@@ -276,20 +322,8 @@
 		<label th:for="fare">이용요금 : </label>
 		<span th:text="${trip.fare}"></span>
 	</div>
-	<div>
-		<label th:for="tripDetail">상세정보 : </label>
-		<span th:text="${trip.tripDetail}"></span>
-	</div>
-	<div>
-		<label th:for="tripImg">이미지 : </label>
-		<div th:text="${trip.tripImg}"></div>
-		<img th:src="@{'/images/'+${trip.tripImg}}" width="100" height="100"/>
-		<div th:each="img:${imgList}">
-			<div th:text="${img.fname}"></div>
-			<img th:src="@{'/images/'+${img.fname}}" width="100" height="100"/>
-		</div>
-	</div>
-	<div id="map" style="width:100%;height:350px;"></div>
+	
+	<div id="map" style="width:60%;height:350px; margin-left: auto; margin-right: auto;"></div>
 	<input type="hidden" th:value="${trip.lat}" id="lat">
 	<input type="hidden" th:value="${trip.lng}" id="lng">
 	

@@ -68,7 +68,7 @@ public class TripService {
 				case 15: tripVO.setRegion("전남"); break;
 				case 16: tripVO.setRegion("광주"); break;
 				case 17: tripVO.setRegion("제주"); break;
-		}
+    		}
     		tripList.add(tripVO);
     	}
     	
@@ -95,14 +95,6 @@ public class TripService {
     	return TripDBManager.deleteTripImgByFname(fname);
     }
 
-//    public int updateTripLiked(int tripNo){
-//        return TripDBManager.updateTripLiked(tripNo);
-//    }
-//
-//    public int updateTripNoLiked(int tripNo){
-//        return TripDBManager.updateTripNoLiked(tripNo);
-//    }
-    
     public String getRegionByTripNo(int tripNo) {
     	return TripDBManager.getRegionByTripNo(tripNo);
     }

@@ -45,10 +45,6 @@ public class RecomentController {
 	
 	@GetMapping("/recoment/update")
 	public int updateRecoment(String recContent, int recNo) {
-//		r.setRec_no(recNo);
-		System.out.println("컨 r:" + recContent);
-		System.out.println("컨 recNo:" + recNo);
-		
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("rec_content", recContent);
 		map.put("rec_no", recNo);
