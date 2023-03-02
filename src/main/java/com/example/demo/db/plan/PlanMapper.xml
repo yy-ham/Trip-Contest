@@ -5,20 +5,16 @@
 <mapper namespace="plan"> 
   <!-- 여행계획 목록 페이지 -->
 	<select id="findAll" resultType="planVO">
-        select * from(select rownum n, a.* from(select * from plan p 
+        select * from(select rownum n, a.* from(select * from plan p where p.plan_hit >=0
         <if test="keyword != null and keyword != ''">
-            where (plan_title like '%' || #{keyword} || '%' or (select distinct  k.code  from plan p, korea k 
+            and (plan_title like '%' || #{keyword} || '%' or (select distinct  k.code  from plan p, korea k 
             where p.korea_code = k.code 
 			and k.region like '%' || #{keyword} || '%') = p.korea_code)
-	        <if test="region != null and region != '' and region != 0">
-	            AND p.korea_code = #{region}
-	        </if>
         </if>
-        <if test="keyword == null or keyword == ''">
-	        <if test="region != null and region != '' and region != 0">
-	            where p.korea_code = #{region}
-	        </if>
+        <if test="region != null and region != '' and region != 0">
+            AND p.korea_code = #{region}
         </if>
+        
         <if test="orderColumn != null and orderColumn != ''">
             order by ${orderColumn} desc
         </if>

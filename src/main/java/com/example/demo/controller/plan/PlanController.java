@@ -86,11 +86,11 @@ public class PlanController {
 		System.out.println("controller map:" + map);
 
 		model.addAttribute("list", planService.findAll(map));
-		
+		System.out.println("result:" + planService.findAll(map));
 		model.addAttribute("totalPage", totalPage);
 		model.addAttribute("startPage", startPage);
 		model.addAttribute("endPage", endPage);
-		
+		System.out.println(map.get("orderColumn"));
 		System.out.println("start:" + startPage);
 		System.out.println("end:" + endPage);
 		

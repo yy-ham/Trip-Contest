@@ -57,6 +57,7 @@ public class PlanService {
 
 	//여행계획 목록
 	public List<Plan> findAll(HashMap<String, Object> map){
+		System.out.println("서비스 map: "+map.get("orderColumn"));
 		return PlanDBManager.findAll(map);
 	}
 	//여행계획 목록 (지역별)

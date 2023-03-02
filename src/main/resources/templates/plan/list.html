@@ -88,8 +88,9 @@
 	}
 	
 	
-	.col-3{
+	.col-6{
 		/* border: 2px solid red; */
+		width: 17rem;
 	}
 	
 	.card{
@@ -100,6 +101,7 @@
 		margin: auto;
 		margin-bottom: 20px;
 		margin-top: 20px;
+		max-height: 350px;
 	}
 	
 	.card-img-top{
@@ -157,12 +159,12 @@
 	    
 	    padding-left: 35px; 
 	    background-repeat: no-repeat;
-	    background-image: url('../images/heart_default.png');
+	    background-image: url('/images/heart_default.png');
 
 	}
 	
 	input[type=checkbox]:checked + label {
-	    background-image: url('../images/heart_liked.png');
+	    background-image: url('/images/heart_liked.png');
 	}
 	
 	
@@ -190,16 +192,7 @@
 <script type="text/javascript">
 	$(function(){
 		var login = $("#login_user").val();
-		
-		/* $("#page_num").click(function(){
-			console.log($(this));
-			$(this).css({
-				"css": "blue",
-				"font_weight": "bold"
-			});
-		}); */
-		
-		
+			
 		//로그인한 아이디가 찜한 게시물 표시
 		function getUserLiked(login){
 			var planLikedNoList = new Array();
@@ -259,49 +252,54 @@
 		
 		
 		// 찜 기능
-		$(".planLiked").click(function(){
-			console.log("좋아요");
-			console.log("클릭:"+ $(this).attr("LikedPlanNo"));
+		$(".planLiked_label").click(function(){
+			var attr = $(this).attr("likedPlanNo");
+			var state = $("input[likedPlanNo="+attr+"]").prop("checked");
+			console.log("State: " + state);
 			if(login == ""){
 				alert("로그인하세요");
 				//로그인 페이지 링크 연결
-				$(this).prop("checked", false);
 			}else{
-				console.log($(this));
-				
-				if($(this).is(":checked")){
-					$.ajax({
-						url:"/plan/detail/liked/insert",
-						data: {
-							member_id: login,
-							no: $(this).attr("LikedPlanNo"),
-							plan_img: $(this).attr("likedImg"),
-							liked_title: $(this).attr("likedTitle")
-						},
-						success: function(re){
-							if(re == 1){
-								console.log("찜!!");
-							}
-						}
-					});
-				}
-	
-				if($(this).is(":checked") == false){
+				//찜 해제
+				if(state == true){
+					$("input[likedPlanNo="+attr+"]").prop("checked", false);
+					
 					$.ajax({
 						url: "/plan/detail/liked/delete",
 						data: {
-							no: $(this).attr("LikedPlanNo")
+							no: $(this).attr("likedPlanNo")
 						},
 						success: function(re){
+							console.log("insert re:" + re);
 							if(re == 1){
 								console.log("찜취소!!");
 							}
 						}
 					});
 				}
-				
+				if(state == false){
+					$("input[likedPlanNo="+attr+"]").prop("checked", true);
+					console.log("g");
+					console.log($(this).attr("likedPlanNo"));
+					console.log($(this).attr("likedImg"));
+					console.log($(this).attr("likedTitle"));
+					$.ajax({
+						url:"/plan/detail/liked/insert",
+						data: {
+							member_id: login,
+							no: $(this).attr("likedPlanNo"),
+							plan_img: $(this).attr("likedImg"),
+							liked_title: $(this).attr("likedTitle")
+						},
+						success: function(re){
+							console.log("insert re:" + re);
+							if(re == 1){
+								console.log("찜!!");
+							}
+						}
+					});
+				}
 			}
-			
 		});
 		
 		
@@ -376,10 +374,16 @@
 			</form>
 		</div>
 	
-		<div id="order_container">
-			<a th:href="@{|/plan/list?orderColumn=plan_date&pageNUM=${pageNUM}&keyword=${keyword}|}" th:text="업데이트순"></a>&nbsp;&nbsp;
-		 	<a th:href="@{|/plan/list?orderColumn=plan_hit&pageNUM=${pageNUM}&keyword=${keyword}|}" th:text="조회순"></a>&nbsp;&nbsp;
-			<a th:href="@{|/plan/list?orderColumn=plan_liked&pageNUM=${pageNUM}&keyword=${keyword}|}" th:text="좋아요순"></a>
+		<div id="order_container" th:if="${keyword == null}">
+			<a th:href="@{|/plan/list?orderColumn=plan_date&pageNUM=${pageNUM}&amp;region=${region}|}" th:text="업데이트순"></a>&nbsp;&nbsp;
+		 	<a th:href="@{|/plan/list?orderColumn=plan_hit&pageNUM=${pageNUM}&amp;region=${region}|}" th:text="조회순"></a>&nbsp;&nbsp;
+			<a th:href="@{|/plan/list?orderColumn=plan_liked&pageNUM=${pageNUM}&amp;region=${region}|}" th:text="좋아요순"></a>
+		</div>
+		
+		<div id="order_container" th:if="${keyword != null}">
+			<a th:href="@{|/plan/list?orderColumn=plan_date&pageNUM=${pageNUM}&keyword=${keyword}&amp;region=${region}|}" th:text="업데이트순"></a>&nbsp;&nbsp;
+		 	<a th:href="@{|/plan/list?orderColumn=plan_hit&pageNUM=${pageNUM}&keyword=${keyword}&amp;region=${region}|}" th:text="조회순"></a>&nbsp;&nbsp;
+			<a th:href="@{|/plan/list?orderColumn=plan_liked&pageNUM=${pageNUM}&keyword=${keyword}&amp;region=${region}|}" th:text="좋아요순"></a>
 		</div>
 	
 	</div>
@@ -387,11 +391,10 @@
 	<!-- 본문 -->
 	<section>
 		<!-- 여행계획 목록 -->
-		<div id="content">
-			<div class="row row-cols-md-4">
-				<div class="col-3" th:each="p:${list}">
-				<!-- th:onclick="|location.href='@{|/plan/detail/${p.plan_no}|}'|" -->
-					<div class="card" style="width: 18rem;">
+		<div id="content" class="container">
+			<div class="row row-cols-md-4 row-cols-2 g-4">
+				<div class="col-3" th:each="p:${list}" style="width: 17rem;margin: auto;">
+					<div class="card" style="width: 17rem;">
 						<a th:href="@{'/plan/detail/'+${p.plan_no}}" class="card_link">
 							<img th:src="@{|/images/${p.plan_img}|}" class="card-img-top" alt="...">
 						</a>
@@ -405,8 +408,8 @@
 								<p class="card-text korea_code" th:text="${p.korea_code}"></p>
 							</div>
 							<div id="liked_container">
-								<input type="checkbox" class="planLiked" th:attr="likedTitle=${p.plan_title},likedImg=${p.plan_img},LikedPlanNo=${p.plan_no}">
-								<label for="liked"></label>
+								<input type="checkbox" class="planLiked" th:attr="likedTitle=${p.plan_title},likedImg=${p.plan_img},likedPlanNo=${p.plan_no}">
+								<label for="liked" class="planLiked_label" th:attr="likedTitle=${p.plan_title},likedImg=${p.plan_img},likedPlanNo=${p.plan_no}"></label>
 							</div>
 						</div>
 					</div>

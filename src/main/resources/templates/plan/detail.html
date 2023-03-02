@@ -11,11 +11,12 @@
 	}
 	
 	section{
-		width: 80%;
+		width: 70%;
 		margin: auto;
 		clear: both;
 		border: 2px solid grey;
 		margin-bottom: 20px;
+		height: auto;
 	}
 	
 	article{
@@ -42,35 +43,43 @@
 		border: 2px solid pink;
 		text-align: center;
 		margin-bottom: 20px;
+		height: 700px;
 	}
 	
 	#img_container{
 		margin: auto;
+		clear: both;
 	}
 	
 	#plan_img{
-		margin: auto;
-		margin-top: 20px;
-		margin-bottom: 20px;
+		margin-top: 10px;
+		/* margin: auto;
+		margin-bottom: 20px; */
+		width: 70%;
 	}
 	
 	#day{
 		margin: auto;
 		border: 2px solid red; 
 		margin-bottom: 20px;
+		
 	}
 	
 	#day1{
 		border: 2px solid grey;
+		overflow: hidden;
 	}
 	#day2{
 		border: 2px solid grey;
+		overflow: hidden;
 	}
 	#day3{
 		border: 2px solid grey;
+		overflow: hidden;
 	}
 	#day4{
 		border: 2px solid grey;
+		overflow: hidden;
 	}
 	
 	.card{
@@ -83,6 +92,7 @@
 	}
 	.day_container{
 		clear: both;
+		
 	}
 	
 
@@ -142,6 +152,62 @@
 		clear: both;
 		margin-top: 30px;
 	}
+	
+		/* 찜 */
+	input[type=checkbox] {
+   		display:none;
+	}
+	
+	label {
+		width: 10px;
+	    height: 30px;
+		cursor: pointer;
+	}
+	
+	input[type=checkbox] + label { 
+	    padding-left: 35px; 
+	    background-repeat: no-repeat;
+	    background-image: url('/images/heart_default.png');
+
+	}
+	
+	input[type=checkbox]:checked + label {
+	    background-image: url('/images/heart_liked.png');
+	}
+	
+	#liked_container{
+		border: 2px solid blue;
+		width: 100px;
+		height: 40px;
+		margin-bottom: 200px;
+		margin-right: 20px;
+	}
+	
+	#info{
+		/* text-align: center; */
+		/* float: right; */
+		margin-right: 200px;
+		position: relative;
+		/* border: 2px solid pink; */
+		height: 30px;
+		margin: auto;
+		width: 70%;
+		
+	}
+	
+	#plan_date_container{
+		float: left;
+		/* border: 2px solid grey; */
+		/* position: absolute; */
+	}
+	
+	#plan_hit_container{
+		float: right;
+		/* border: 2px solid grey; */
+		/* position: absolute; */
+	}
+	
+
 	
 </style>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
@@ -306,38 +372,56 @@
 					plan_no: no
 				},
 				success: function(re){
-					$("#cntLiked").val(re);
+					$("#cntLiked").html(re);
 				}
 			});
 		}
 		
 		getLiked();
 		
-		$("#liked").click(function(){
+		$("#liked_label").click(function(){
+			console.log("login:" + login);
+			console.log("no:" + no);
+			console.log("좋아요");
+			
+			var attr = $(this).attr("likedPlanNo");
+			var state = $("input[likedPlanNo="+attr+"]").prop("checked");
+			console.log("attr:" + attr);
+			console.log("state:" + state);
+			
 			if(login == ""){
 				alert("로그인하세요");
 				//로그인 페이지 링크 연결
-				$(this).prop("checked", false);
+				$("input[likedPlanNo="+attr+"]").prop("checked", false);
 			}else{
-				var state = $("#liked").prop("checked");
-				if(state == true){
-					console.log("찜");
+				//찜X -> 찜O
+				if(state == false){
+					$("input[likedPlanNo="+attr+"]").prop("checked", true);
+					console.log($("input[likedPlanNo="+attr+"]").prop("checked"));
+					
 					$.ajax({
 						url: "/plan/detail/liked/insert",
 						data: {
 							member_id: login,
 							no: no,
-							plan_img: $("#plan_img").attr("alt"),
-							liked_title: $('#plan_title').html()
+							plan_img: $(this).attr("likedImg"),
+							liked_title: $(this).attr("likedTitle")
 						},
 						success: function(re){
-							console.log("re:" + re);
-							getLiked();
+							console.log("insert re:" + re);
 							getUserLiked(login);
+							getLiked();
 						}
 					});
 					
-				}else{
+				}
+				
+				//찜O -> 찜X
+				if(state == true){
+					console.log("삭제");
+					$("input[likedPlanNo="+attr+"]").prop("checked", false);
+					console.log($("input[likedPlanNo="+attr+"]").prop("checked"));
+					console.log("-----");
 					$.ajax({
 						url: "/plan/detail/liked/delete",
 						data: {
@@ -345,8 +429,8 @@
 						},
 						success: function(re){
 							console.log("삭제결과:"+re);
-							getLiked();
 							getUserLiked(login);
+							getLiked();
 						}
 					});
 				}
@@ -364,7 +448,11 @@
 				success: function(re){
 					console.log("user re:" + re);
 					if(re == 1){
-						$("#liked").prop("checked", true);
+						console.log("get:" + $("input[likedPlanNo="+no+"]").prop("checked"));
+						$("input[likedPlanNo="+no+"]").prop("checked", true);
+					}else{
+						$("input[likedPlanNo="+no+"]").prop("checked", false);
+						
 					}
 				}
 			});
@@ -410,30 +498,50 @@
 		
 		<!-- 여행계획 기본정보 -->
 		<div id="content" th:each="p:${plan}">
-			글번호: <input type="text" th:value="${p.planNo}" id="plan_no"><br>
-			<h1 th:text="${p.plan_title}" id="plan_title"></h1>
+			<input type="hidden" th:value="${p.planNo}" id="plan_no">
+			<div th:text="${p.plan_title}" id="plan_title" style="margin-top: 20px;margin-bottom:10px;text-align: center;font-size: 36px;font-weight: bold;"></div>
 			
-			<p th:text="${p.member_id}" id="member_id"></p>
-			<span th:text="${region}" id="plan_region"></span>
-			<span>&nbsp;|&nbsp;</span>
-			<span th:text="${cnt}+'일'"></span><br>
+			<span th:text="${p.member_id}" id="member_id" style="font-size: 18px;"></span>
+			<span style="font-size: 18px;">&nbsp;|&nbsp;</span>
+			<span th:text="${region}" id="plan_region" style="font-size: 18px;"></span>
+			<span style="font-size: 18px;">&nbsp;|&nbsp;</span>
+			<span th:text="${cnt}+'일'" style="font-size: 18px;"></span>
+			<br>
+			<br>
+			<!-- <hr style="margin-top: 30px; margin-bottom: 40px;"> -->
+			
+			
+			
+			<div id="info">
+				<div id="plan_date_container">
+					<span th:text="${p.plan_date}" id="plan_date" style="font-size: 18px;"></span><br>
+				</div>
+				<div id="plan_hit_container">
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16" style="margin-bottom: 5px; margin-right: 3px;">
+					  <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+					  <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+					</svg>
+					<span th:text="${p.plan_hit}" id="plan_hit" style="font-size: 18px;"></span><br>
+				</div>
+			</div>
 			
 			<div id="img_container">
 				<img alt="${p.plan_img}" th:src="@{|/images/${p.plan_img}|}" id="plan_img"><br>
 			</div>
-			
-			<span th:text="'여행일정: ' + ${p.plan_start} + ' ~ ' + ${p.plan_end}"></span><br>
-			작성일 <span th:text="${p.plan_date}" id="plan_date"></span><br>
-			조회수 <span th:text="${p.plan_hit}" id="plan_hit"></span><br>
-			
-			<div id="liked_container">
-				찜 <input type="checkbox" id="liked"><br>
-				좋아요수 <input type="text" id="cntLiked">
+
+			<div id="liked_container" style="float: right;">
+				<div id="cntLiked" style="display: inline-block; margin: auto; margin-right: 5px; margin-bottom: 20px; border: 2px solid black;"></div>
+				<input type="checkbox" id="liked" th:attr="likedTitle=${p.plan_title},likedImg=${p.plan_img},likedPlanNo=${p.planNo}">
+				<label for="liked" id="liked_label" th:attr="likedTitle=${p.plan_title},likedImg=${p.plan_img},likedPlanNo=${p.planNo}"></label>
 			</div>
+			
+			<span style="clear: both;" th:text="'여행일정: ' + ${p.plan_start} + ' ~ ' + ${p.plan_end}"></span><br>
+			
+			
 		</div>
 
 		<!-- 날짜별 일정 -->
-		<div id="day">
+		<div id="day" style="clear: both;">
 			<!-- day1 -->
 			<div id="day1" th:if="${detail1} != null" class="day_container">
 				<h2 class="day_title">DAY 1</h2>
@@ -473,7 +581,7 @@
 			<div id="day4" th:if="${detail4} != null" class="day_container">
 				<h2 class="day_title">DAY 4</h2>
 				<div class="card" style="width: 15rem;" th:each="d:${detail4}">
-					<img th:alt="${d.trip_img}" th:src="@{|/images/${d.trip_img}|}" id="trip_img">
+					<img th:alt="${d.trip_img}" th:src="@{|/images/${d.trip_img}|}" class="card-img-top" alt="..." id="trip_img">
 					<div class="card-body">
 						<h5 class="card-title" th:text="${d.trip_title}"></h5>
 					    <p class="card-text" th:text="${d.trip_no}" id="trip_no"></p>
