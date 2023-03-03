@@ -10,44 +10,74 @@
 		margin: 0;
 	}
 	header{
-		clear: both;
-	}
-	
-	
-	/*헤더 이미지*/
-	#header_img{
 		width: 80%;
 		margin: auto;
-		border: 2px solid grey;
-		height: 250px;
-		margin-top: 20px;
+		margin-bottom: 30px;
 	}
 	
+	#header_container{
+		width: 80%;
+		margin: auto;
+		height: 60px;
+		margin-bottom: 50px;
+	}
+	
+	/*헤더 이미지 컨테이너*/
+	#header_img{
+ 		width: 80%;
+		margin: auto;
+		height: 400px;
+		position: relative;
+		/*
+		border: 2px solid grey;
+		margin-top: 20px; */
+		
+		/* background-image: url("/images/main.png"); */
+	}
+	
+	/*h1 전국*/
 	#header_title{
 		width: 87px;
-		height: 50px;
+		/* height: 100%;
 		margin-left: 30px;
-		margin-top: 170px;
+		 */cursor: pointer;
+		
+		position: absolute;
+	    top: 75%;
+	    left: 5%;
+	    /* transform: translate( -50%, -50% ); */
+	    color: white;
+	    
+	    z-index: 99;
+	    font-weight: bold;
 		
 		/*마진 패딩 위 오 아 왼*/
 	}
 	
+	
 	#search_order_container{
 		width: 80%;
 		margin: auto;
+		margin-top: 20px;
+		/* border: 2px solid black; */
+		
 	}
 	
 	/*검색창*/
 	#search_contariner{
-		width: 470px;
-		height: 50px;
+		width: 75%;
+		height: 60px;
 		/* border: 2px solid grey; */
 		margin-top: 20px;
 		margin-bottom: 20px;
-		padding-top: 10px;
-		padding-left: 10px;
-
-		float: left;		
+		float: left;
+		/* border: 2px solid grey; */
+		padding-top: 3px;
+	}
+	
+	#region{
+		width: 150px;
+		float: left;
 	}
 	
 	#keyword{
@@ -56,19 +86,16 @@
 	
 	#order_container{
 		width: 280px;
-		height: 50px;
+		height: 60px;
 		margin-top: 20px;
 		margin-bottom: 20px;
-		padding-top: 10px;
+		/* border: 2px solid grey; */
+		padding-top: 14px;
 		padding-left: 10px;
 		float: right;
 	}
 	
-	#header_container{
-		width: 80%;
-		margin: auto;
-		height: 60px;
-	}
+
 	
 	section{
 		width: 80%;
@@ -82,16 +109,11 @@
 		width: 80%;
 	} */
 	
-	.row{
+ 	.row{
 		/* border: 2px solid blue; */
-		padding: 10px;
+		padding-right: 30px;
 	}
-	
-	
-	.col-6{
-		/* border: 2px solid red; */
-		width: 17rem;
-	}
+
 	
 	.card{
 		width: 17rem;
@@ -131,7 +153,7 @@
 	}
 	
 	#page{
-		width: 10%;
+		width: 15%;
 		margin: auto;
 		padding-top: 10px;
 		padding-bottom: 10px;
@@ -186,12 +208,19 @@
 	
 	#btnInsert{
 		float: right;
+		margin-top: 40px;
 	}
+	
+	
 </style>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
 <script type="text/javascript">
 	$(function(){
 		var login = $("#login_user").val();
+		
+		$("#header_title").click(function(){
+			location.href = "/plan/list";
+		});
 			
 		//로그인한 아이디가 찜한 게시물 표시
 		function getUserLiked(login){
@@ -345,32 +374,43 @@
 </head>
 <body>
 	
-	<h2>여행계획 목록</h2>
-	로그인한 유저 : <input type="text" name="login_user" id="login_user" value="hong">
-	<div id="header_container">
-		<button id="btnInsert" class="btn" onclick="location.href='/plan/insert'">여행계획 작성</button>
+	<!-- <h2>여행계획 목록</h2> -->
+	<input type="hidden" name="login_user" id="login_user" value="hong">
 	
-	</div>
 	
 	<!-- 헤더 -->
 	<header>
 	
 	</header>
 	
+	<div id="header_container">
+		<button id="btnInsert" class="btn" onclick="location.href='/plan/insert'">여행계획 작성</button>
+	</div>
+	
 	<!-- 헤더 이미지 박스 -->
 	<div id="header_img">
 		<h1 id="header_title">전국</h1>
+		<img alt="" src="/images/main.png" style="width: 100%; height: 100%; z-index: 1; margin: auto;">
 	</div>
 	
 	<div id="search_order_container">
 		<div id="search_contariner">
 			<form action="/plan/list" method="get">
-				<select id="region" name="region">
+				<!-- <select id="region" name="region">
 						<option value="" selected>지역선택</option>
 						<option th:each="r:${regionlist}" th:text="${r.region}" th:value="${r.code}"></option>
+				</select> -->
+				
+				<select id="region" name="region" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+					<option value="" selected>지역선택</option>
+					<option th:each="r:${regionlist}" th:text="${r.region}" th:value="${r.code}"></option>
 				</select>
-				<input type="search" id="keyword" name="keyword">
-				<input type="submit" value="검색">
+				<!-- <input type="search" id="keyword" name="keyword">
+				<input type="submit" value="검색"> -->
+				
+				<input type="text" name="keyword" class="form-control" style="float: left; width: 75%; height: 48px" required="required" placeholder="검색어를 입력하세요...">
+				<button type="submit" class="w-20 btn btn-secondary btn-lg" style="float: left; margin: 0px; height: 48px; width: 10%" >검색</button>
+					
 			</form>
 		</div>
 	
@@ -392,10 +432,10 @@
 	<section>
 		<!-- 여행계획 목록 -->
 		<div id="content" class="container">
-			<div class="row row-cols-md-4 row-cols-2 g-4">
+			<div class="row row-cols-md-4 row-cols-2 g-4" style="">
 				<div class="col-3" th:each="p:${list}" style="width: 17rem;margin: auto;">
-					<div class="card" style="width: 17rem;">
-						<a th:href="@{'/plan/detail/'+${p.plan_no}}" class="card_link">
+					<div class="card" style="width: 17rem; height: 21rem;">
+						<a th:href="@{'/plan/detail/'+${p.plan_no}}" class="card_link" style="height: 200px;">
 							<img th:src="@{|/images/${p.plan_img}|}" class="card-img-top" alt="...">
 						</a>
 						<div class="card-body">
@@ -425,16 +465,16 @@
  	<div id="page_container">
  		<div id="page">
 		 	<span th:if="${startPage} > 1 ">
-				<a th:href="@{|/plan/list?region=${region}&orderColumn=${orderColumn}&pageNUM=${startPage-1}|}" th:text="|<|"></a>
+				<a th:href="@{|/plan/list?region=${region}&orderColumn=${orderColumn}&pageNUM=${startPage-1}|}" th:text="|<|"></a>&nbsp;&nbsp;
 			</span>
 			<span th:each="page : ${#numbers.sequence(startPage,endPage)}" th:if="${keyword != null } ">
-				<a id="page_num" th:text="${page}" th:href="@{|/plan/list?keyword=${keyword}&amp;region=${region}&orderColumn=${orderColumn}&pageNUM=${page}|}"></a>
+				<a id="page_num" th:text="${page}" th:href="@{|/plan/list?keyword=${keyword}&amp;region=${region}&orderColumn=${orderColumn}&pageNUM=${page}|}"></a>&nbsp;&nbsp;
 			</span>
 			<span th:each="page : ${#numbers.sequence(startPage,endPage)}" th:if="${keyword == null} ">
-				<a id="page_num" th:text="${page}" th:href="@{|/plan/list?region=${region}&orderColumn=${orderColumn}&pageNUM=${page}|}"></a>
+				<a id="page_num" th:text="${page}" th:href="@{|/plan/list?region=${region}&orderColumn=${orderColumn}&pageNUM=${page}|}"></a>&nbsp;&nbsp;
 			</span>
 			<span th:if="${endPage} < ${totalPage }">
-				<a id="page_num" th:href="@{|/plan/list?region=${region}&orderColumn=${orderColumn}&pageNUM=${endPage+1}|}" th:text="|>|"></a>
+				<a id="page_num" th:href="@{|/plan/list?region=${region}&orderColumn=${orderColumn}&pageNUM=${endPage+1}|}" th:text="|>|"></a>&nbsp;&nbsp;
 			</span>
  		</div>
 	</div> 

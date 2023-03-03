@@ -29,5 +29,5 @@ public class Recoment {
 	private String rec_content;
 	private int no;
 	private String type;
-	private Date rec_date;
+	private String rec_date;
 }

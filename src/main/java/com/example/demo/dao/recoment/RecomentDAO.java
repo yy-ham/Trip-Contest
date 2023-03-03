@@ -12,6 +12,10 @@ import jakarta.transaction.Transactional;
 
 public interface RecomentDAO extends JpaRepository<Recoment, Integer> {
 	
+	@Query(value = "select rec_no, member_id, rec_content, no, type, "
+			+ "to_char(rec_date, 'yyyy-mm-dd') rec_date from recoment", nativeQuery = true)
+	public List<Recoment> findAll();
+	
 	@Query(value = "select * from recoment where no = ?1 and type = ?2 "
 			+ "order by rec_date desc", nativeQuery = true)
 	public List<Recoment> findByNoAndType(int no, String type);

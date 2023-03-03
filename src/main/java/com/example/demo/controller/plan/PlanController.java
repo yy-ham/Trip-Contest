@@ -115,6 +115,8 @@ public class PlanController {
 		int cnt = planService.countDaysByPlanNo(plan_no);
 		planService.updateHit(plan_no);
 
+		
+		System.out.println("check:" + planService.findByPlanNo(plan_no));
 		model.addAttribute("plan", planService.findByPlanNo(plan_no));
 		model.addAttribute("region", planService.getRegion(plan_no));
 		model.addAttribute("cnt", cnt);

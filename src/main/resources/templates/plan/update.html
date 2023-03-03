@@ -3,22 +3,91 @@
 <head>
 <meta charset="UTF-8">
 <title>여행계획 수정</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-<link rel="stylesheet" href="/resources/demos/style.css">
+<!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
 <style type="text/css">
-	#day2_box {display: none}
-	#day3_box {display: none}
-	#day4_box {display: none}
+	* {
+		padding: 0;
+		margin: 0;
+	}
 	
+	section{
+		width: 80%;
+		margin: auto;
+		margin-bottom: 50px;
+		border: 2px solid red;
+		
+	}
+	
+	
+	#day2_box, #day2 {display: none}
+	#day3_box, #day3 {display: none}
+	#day4_box, #day4 {display: none}
+	
+	
+	#day{
+		border: 2px solid blue;
+		width: 350px;
+		height: 600px;
+		float: left;
+		
+	}
+	
+	/* 여행지 목록 */
 	#trip_list{
 		border: 3px solid black;
+		width: 350px;
+		height: 600px;
+		/* margin-left: 380px; */
+		display: inline-block;
+		margin-left: 20px;
 	}
+	
+	#map{
+		border: 2px solid grey;
+		width: 640px;
+		height: 600px;
+		float: right;
+	}
+	
+	
 	.trip{
 		border: 2px solid pink;
 	}
 	
 	.selected{
 		border: 2px solid blue;
+	}
+	
+	#info{
+		border: 2px solid red;
+		margin-bottom: 20px;
+		padding-top: 20px;
+		padding-bottom: 20px;
+	}
+	
+	.day_title{
+		border: 2px solid pink;
+		margin-left: 10px;
+		margin-right: 10px;
+	}
+	
+	#btn_container{
+		border: 2px solid blue;
+		margin-bottom: 20px;
+	}
+	
+	.box{
+		margin-left: 50px;
+		margin-top: 10px;
+	
+	}
+	
+
+	
+	footer{
+		clear: both;
 	}
 	
 </style>
@@ -57,9 +126,13 @@
 			var plan_start = $.datepicker.formatDate("yy-mm-dd", $("#plan_start").datepicker("getDate"));
 			var plan_end = $.datepicker.formatDate("yy-mm-dd", $("#plan_end").datepicker("getDate"));
 
-			$("#day2_box").css("display", "none");
+			/* $("#day2_box").css("display", "none");
 			$("#day3_box").css("display", "none");
-			$("#day4_box").css("display", "none");
+			$("#day4_box").css("display", "none"); */
+			
+			$("#day2").css("display", "none");
+			$("#day3").css("display", "none");
+			$("#day4").css("display", "none");
 			
 			//여행일수 가져오기
 			$.ajax({
@@ -74,7 +147,8 @@
 					for(i = 1; i <= cnt; i++){
 						console.log(i);
 						console.log("#day"+i+"_box");
-						$("#day"+i+"_box").css("display", "inline-block");
+						$("#day"+i).css("display", "inline-block");
+						console.log("in");
 					}
 				}
 			});
@@ -84,7 +158,7 @@
 		
 	
 		
-	
+		//여행일수 가져오기 처음 시작할 떄 동작
 		$.ajax({
 			url: "/plan/insert/count",
 			data: {
@@ -103,6 +177,7 @@
 				for(i = 1; i <= days; i++){
 					console.log("i:" + i);
 					$("#day"+i+"_box").css("display", "inline-block");
+					$("#day"+i).css("display", "block");
 					findByPlanNo(plan_no, i);
 				}
 				
@@ -243,7 +318,14 @@
 			var day = "day1";
 			
 			$(".day_title").click(function(){
-				day = $(this).attr("id")
+				day = $(this).attr("id");
+				console.log("day:" + day);
+				//$(".day_title").css("display", "none");
+				
+				$(".box").css("display", "none");
+				$("#"+day).css("display", "inline-block");
+				$("#"+day+"_box").css("display", "inline-block");
+				$("#"+day).addClass("active");
 			});
 	
 			$(document).on("click", ".trip", function(){
@@ -364,11 +446,14 @@
 						$(div_selected).append(trip_no, trip_img, trip_title);
 						$(div_add).append(div_selected, button); 
 						$("#day"+days+"_box").append(div_add);
+						$("#day"+days+"_box").css("display", "none");
+						$("#day"+days).css("display", "inline-block");
 					});
+					$("#day1_box").css("display", "inline-block");
+					
 				}
 			}); 
 		}
-		
 		
 	});
 </script>
@@ -376,96 +461,133 @@
 <body>
 	<h2>여행계획 수정</h2>
 	<a href="/plan/list">목록</a>
-	<input type="hidden" th:value="${p.korea_code}" id="sel">
-	<form action="/plan/update" method="post" id="update">
-		<!-- 여행계획 기본 정보 -->
-		<div id="info">
-			일정번호 : <input type="text" name="plan_no" th:value="${p.planNo}" readonly="readonly" id="plan_no"><br>
-			일정제목 : <input type="text" name="plan_title" th:value="${p.plan_title}"><br>
-			작성자 : <input type="text" name="member_id" th:value="${p.member_id}"><br>
-			지역 :
-			
-			<select id="region" name="korea_code">
-				<option value="" selected>지역선택</option>
-				<option th:each="r:${regionlist}" th:text="${r.region}" th:value="${r.code}"></option>
-			</select>
-			
-			<br>
-			여행시작일 : <input type="text" name="plan_start" id="plan_start" th:value="${p.plan_start}">
-			&nbsp;&nbsp;&nbsp;
-			여행종료일 : <input type="text" name="plan_end" id="plan_end" th:value="${p.plan_end}"><br>
-			<br>
-			이미지 : <input type="text" name="plan_img" id="plan_img" th:value="${p.plan_img}"><br>
-			여행일수 : <input type="text" id="count"><br>
-		</div>
-		
-		<!-- 여행계획 날짜별 일정 -->
-		<div id="day">
-			<div id="day1_box">
-				<h3 class="day_title" id="day1">DAY 1</h3>
-				<button class="deleteDay" id="deleteDay1">전체삭제</button><br>
-				<input type="text" name="day1_1" id="day1_1" th:value="${day1_1}">
-				<input type="text" name="day1_2" id="day1_2" th:value="${day1_2}">
-				<input type="text" name="day1_3" id="day1_3" th:value="${day1_3}">
-				<input type="text" name="day1_4" id="day1_4" th:value="${day1_4}">
-				<input type="text" name="day1_5" id="day1_5" th:value="${day1_5}"><br>
-			</div>
-			
-			<div id="day2_box">
-				<h3 class="day_title" id="day2">DAY 2</h3>
-				<button class="deleteDay">전체삭제</button><br>
-				<input type="text" name="day2_1" id="day2_1" th:value="${day2_1}">
-				<input type="text" name="day2_2" id="day2_2" th:value="${day2_2}">
-				<input type="text" name="day2_3" id="day2_3" th:value="${day2_3}">
-				<input type="text" name="day2_4" id="day2_4" th:value="${day2_4}">
-				<input type="text" name="day2_5" id="day2_5" th:value="${day2_5}"><br>
-			</div>
-			
-			<div id="day3_box">
-				<h3 class="day_title" id="day3">DAY 3</h3>
-				<button class="deleteDay">전체삭제</button><br>
-				<input type="text" name="day3_1" id="day3_1" th:value="${day3_1}">
-				<input type="text" name="day3_2" id="day3_2" th:value="${day3_2}">
-				<input type="text" name="day3_3" id="day3_3" th:value="${day3_3}">
-				<input type="text" name="day3_4" id="day3_4" th:value="${day3_4}">
-				<input type="text" name="day3_5" id="day3_5" th:value="${day3_5}"><br>
-			</div>
-			
-			<div id="day4_box">
-				<h3 class="day_title" id="day4">DAY 4</h3>
-				<button class="deleteDay">전체삭제</button><br>
-				<input type="text" name="day4_1" id="day4_1" th:value="${day4_1}">
-				<input type="text" name="day4_2" id="day4_2" th:value="${day4_2}">
-				<input type="text" name="day4_3" id="day4_3" th:value="${day4_3}">
-				<input type="text" name="day4_4" id="day4_4" th:value="${day4_4}">
-				<input type="text" name="day4_5" id="day4_5" th:value="${day4_5}"><br>
-			</div>
-		</div>
-
-		<input type="submit" value="수정" id="submit">
-		<input type="reset" value="다시입력">
-	</form>
 	
-	<hr>
 	
-	<!-- 여행지 목록 -->
-	<div id="trip_list">
-		<select id="trip_region" name="korea_code">
-			<option value="0" selected>전국</option>
-			<option th:each="r:${regionlist}" th:text="${r.region}" th:value="${r.code}"></option>
-		</select>
+	<header>
+	
+	</header>
+	
+	
+	<section>
+		<input type="hidden" th:value="${p.korea_code}" id="sel">
+		<form action="/plan/update" method="post" id="update">
+			<!-- 여행계획 기본 정보 -->
+			<div id="info">
+				<input type="hidden" name="plan_no" th:value="${p.planNo}" readonly="readonly" id="plan_no">
+				<input type="hidden" name="member_id" th:value="${p.member_id}">
+				일정제목 : <input type="text" name="plan_title" th:value="${p.plan_title}"><br>
+				지역 :
+				
+				<select id="region" name="korea_code">
+					<option value="" selected>지역선택</option>
+					<option th:each="r:${regionlist}" th:text="${r.region}" th:value="${r.code}"></option>
+				</select>
+				
+				<br>
+				여행시작일 : <input type="text" name="plan_start" id="plan_start" th:value="${p.plan_start}">
+				&nbsp;&nbsp;&nbsp;
+				여행종료일 : <input type="text" name="plan_end" id="plan_end" th:value="${p.plan_end}">
+				
+				<input type="hidden" name="plan_img" id="plan_img" th:value="${p.plan_img}"><br>
+				<input type="hidden" id="count">
+			</div>
+			
+			<!-- 여행계획 날짜별 일정 -->
+			<div id="day">
+				<div id="btn_container">
+					<input type="submit" value="수정" id="submit">
+					<input type="reset" value="다시입력">
+				</div>
+				
+				<div id="day_title_container">
+					<h3 class="day_title" id="day1">DAY 1</h3>
+					<h3 class="day_title" id="day2">DAY 2</h3>
+					<h3 class="day_title" id="day3">DAY 3</h3>
+					<h3 class="day_title" id="day4">DAY 4</h3>
+					
+					<ul class="nav nav-tabs">
+					  <li class="nav-item">
+					    <a class="nav-link active day_title" id="day1" aria-current="page" href="#">DAY 1</a>
+					  </li>
+					  <li class="nav-item">
+					    <a class="nav-link day_title" id="day2" href="#">DAY 2</a>
+					  </li>
+					  <li class="nav-item">
+					    <a class="nav-link day_title" id="day3" href="#">DAY 3</a>
+					  </li>
+					  <li class="nav-item">
+					    <a class="nav-link day_title" id="day4" href="#">DAY 4</a>
+					  </li>
+					</ul>
+				</div>
+			
+				<div id="day1_box" style="border: 2px solid red;" class="box">
+					<button class="deleteDay" id="deleteDay1">전체삭제</button><br>
+					<input type="hidden" name="day1_1" id="day1_1" th:value="${day1_1}">
+					<input type="hidden" name="day1_2" id="day1_2" th:value="${day1_2}">
+					<input type="hidden" name="day1_3" id="day1_3" th:value="${day1_3}">
+					<input type="hidden" name="day1_4" id="day1_4" th:value="${day1_4}">
+					<input type="hidden" name="day1_5" id="day1_5" th:value="${day1_5}"><br>
+				</div>
+				
+				<div id="day2_box" style="border: 2px solid blue;" class="box">
+					<button class="deleteDay">전체삭제</button><br>
+					<input type="hidden" name="day2_1" id="day2_1" th:value="${day2_1}">
+					<input type="hidden" name="day2_2" id="day2_2" th:value="${day2_2}">
+					<input type="hidden" name="day2_3" id="day2_3" th:value="${day2_3}">
+					<input type="hidden" name="day2_4" id="day2_4" th:value="${day2_4}">
+					<input type="hidden" name="day2_5" id="day2_5" th:value="${day2_5}"><br>
+				</div>
+				
+				<div id="day3_box" style="border: 2px solid green;" class="box">
+					<button class="deleteDay">전체삭제</button><br>
+					<input type="hidden" name="day3_1" id="day3_1" th:value="${day3_1}">
+					<input type="hidden" name="day3_2" id="day3_2" th:value="${day3_2}">
+					<input type="hidden" name="day3_3" id="day3_3" th:value="${day3_3}">
+					<input type="hidden" name="day3_4" id="day3_4" th:value="${day3_4}">
+					<input type="hidden" name="day3_5" id="day3_5" th:value="${day3_5}"><br>
+				</div>
+				
+				<div id="day4_box" style="border: 2px solid pink;" class="box">
+					<button class="deleteDay">전체삭제</button><br>
+					<input type="hidden" name="day4_1" id="day4_1" th:value="${day4_1}">
+					<input type="hidden" name="day4_2" id="day4_2" th:value="${day4_2}">
+					<input type="hidden" name="day4_3" id="day4_3" th:value="${day4_3}">
+					<input type="hidden" name="day4_4" id="day4_4" th:value="${day4_4}">
+					<input type="hidden" name="day4_5" id="day4_5" th:value="${day4_5}"><br>
+				</div>
+			</div>
+	
+			
+		</form>
 		
 		<hr>
 		
-		<div id="trip"></div>
+		<!-- 여행지 목록 -->
+		<div id="trip_list">
+			<select id="trip_region" name="korea_code">
+				<option value="0" selected>전국</option>
+				<option th:each="r:${regionlist}" th:text="${r.region}" th:value="${r.code}"></option>
+			</select>
+			
+			<hr>
+			
+			<div id="trip"></div>
+			
+			<div id="page"></div>
 		
-		<div id="page"></div>
+		</div> <!-- end #trip_list -->
+		
+		<hr>
+		<!-- 지도 -->
+		<div id="map" style="width:500px;height:400px;"></div>
 	
-	</div> <!-- end #trip_list -->
+	</section>
 	
-	<hr>
-	<!-- 지도 -->
-	<div id="map" style="width:500px;height:400px;"></div>
-
+	<footer>
+	
+	</footer>
+	
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>
 </html>

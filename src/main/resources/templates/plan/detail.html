@@ -10,19 +10,25 @@
 		margin: 0;
 	}
 	
+	header{
+		width: 70%;
+		margin: auto;
+	}
+	
 	section{
 		width: 70%;
 		margin: auto;
 		clear: both;
-		border: 2px solid grey;
+		/* border: 3px solid black; */
 		margin-bottom: 20px;
 		height: auto;
 	}
 	
 	article{
-		width: 80%;
+		width: 70%;
 		margin: auto;
 		clear: both;
+		margin-bottom: 100px;
 	}
 	
 	#btn_container{
@@ -37,80 +43,141 @@
 		float: right;
 	}
 	
+	#btn_container2{
+		/* border: 2px solid grey; */
+		width: 330px;
+		height: 50px;
+		margin-bottom: 20px;
+		margin-top: 20px;
+		padding-left: 20px;
+		padding-top: 3px;
+		float: left;
+	}
+	
 	#content{
 		clear: both;
 		margin: auto;
-		border: 2px solid pink;
+		/* border: 2px solid pink; */
 		text-align: center;
 		margin-bottom: 20px;
-		height: 700px;
+		height: auto;
 	}
 	
 	#img_container{
 		margin: auto;
 		clear: both;
+		/* border: 2px solid red; */
+		width: 70%;
 	}
 	
 	#plan_img{
 		margin-top: 10px;
 		/* margin: auto;
 		margin-bottom: 20px; */
-		width: 70%;
+		width: 100%;
+		display: inline-block;
+		text-align: center;
+	}
+	
+	#liked_container{
+		/* border: 2px solid blue; */
+		margin: auto;
+		width: 60px;
+		height: 40px;
+		margin-top: 50px;
 	}
 	
 	#day{
 		margin: auto;
-		border: 2px solid red; 
+		/* border: 2px solid red; */
 		margin-bottom: 20px;
 		
 	}
 	
 	#day1{
-		border: 2px solid grey;
+		/* border: 2px solid grey; */
 		overflow: hidden;
 	}
 	#day2{
-		border: 2px solid grey;
+		/* border: 2px solid grey; */
 		overflow: hidden;
 	}
 	#day3{
-		border: 2px solid grey;
+		/* border: 2px solid grey; */
 		overflow: hidden;
 	}
 	#day4{
-		border: 2px solid grey;
+		/* border: 2px solid grey; */
 		overflow: hidden;
 	}
 	
 	.card{
 		float: left;
 		text-align: center;
+		margin-right: 15px;
+		margin-left: 15px;
+		border: 0.75px solid #eaeaea;
+		box-shadow: 3px 3px 4px rgba(26, 26, 26, 0.1);
 	}
 	
 	.day_title{
-		margin-bottom: 10px;
+		margin-bottom: 20px;
+		font-weight: bold;
+		margin-left: 13px;
 	}
 	.day_container{
 		clear: both;
+		margin-bottom: 40px;
 		
 	}
 	
 
-
+	/*댓글*/
 	#recoment{
 		margin: auto;
-		border: 2px solid pink;
+		/* border: 2px solid pink; */
 		clear: both;
 		margin-bottom: 50px;
+		height: auto;
 	}
 	
 	#recoment_title{
 		margin-bottom: 20px;
 	}
 	
+	/*댓글*/
 	.rec{
-		border: 2px red solid;
+		margin-top: 15px;
+		width: 799px;
+		padding-top: 20px;
+		padding-left: 20px;
+		border-radius: 10px;
+		height: 120px;
+		border: 1px solid #BDBDBD;
+		box-shadow: 3px 3px 4px rgba(26, 26, 26, 0.1);
+		background-color: #F6F6F6;
+		
 	}
+	
+	/* #list_container{
+		width: 840px;
+		margin-bottom: 50px;
+		
+	} */
+	
+	#listRecoment{
+		clear: both;
+		margin-top: 30px;
+		overflow: hidden;
+	}
+	#write{
+	
+		margin-bottom: 30px;
+		overflow: hidden;
+		width: 800px;
+	}
+	
+	
 	#updateRecoment{
 		display: none;
 	}
@@ -120,38 +187,35 @@
 	
 	.btn{
 		border: 2px solid grey;
-		width: 110px;
-		margin-left: 20px;
-		margin-bottom: 20px;
-		height: 40px;
+		width: 70px;
+		padding: auto;
+		height: 30px;
+		margin-left: 5px;
+		line-height: 10px;
+	}
+	
+	#insertRecoment{
+		width: 100px;
+		float: right;
+		margin-right: 3px;
 	}
 	
 	#btn_recoment_container{
-		width: 335px;
+		width: 158px;
 		height: 50px;
-		
-		
-		margin-bottom: 20px;
-		margin-top: 20px;
-		padding-left: 20px;
 		padding-top: 3px;
-		float: right;
-		margin-right: 140px;
 		padding-top: 10px;
+		float: right;
+		margin-bottom: 10px;
 	}
 	
-	#write{
-		margin-bottom: 30px;
-	}
+
 	
 	#text_container{
 		float: left;
 	}
 	
-	#listRecoment{
-		clear: both;
-		margin-top: 30px;
-	}
+
 	
 		/* 찜 */
 	input[type=checkbox] {
@@ -175,13 +239,7 @@
 	    background-image: url('/images/heart_liked.png');
 	}
 	
-	#liked_container{
-		border: 2px solid blue;
-		width: 100px;
-		height: 40px;
-		margin-bottom: 200px;
-		margin-right: 20px;
-	}
+
 	
 	#info{
 		/* text-align: center; */
@@ -208,6 +266,22 @@
 	}
 	
 
+	#cntLiked{
+		 margin-right: 5px;
+		 margin-bottom: 30px;
+		 margin-top: 3px;
+		 /* border: 2px solid black; */
+		 float: left;
+	}
+	
+	#btnList{
+		margin-left: 135px;
+	}
+	a{
+		text-decoration: none;
+		color: black;
+	}
+
 	
 </style>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
@@ -220,8 +294,12 @@
 		console.log("member_id:" + member_id);
 		
 		if(login != member_id){
-			$("#edit").css("display", "none");
+			$("#btn_container").css("display", "none");
 		}
+		$("#rec_form_id").html(login);
+		console.log(";");
+			
+		
 		
 		
 
@@ -237,11 +315,31 @@
 					$.each(arr, function(){
 						var div = $("<div></div>").addClass("rec");
 						
-						var rec_no = $("<p></p>").html(this.recNo);
-						var member_id = $("<p></p>").html(this.member_id);
-						var content = $("<p></p>").html(this.rec_content);
-						var rec_date = $("<p></p>").html(this.rec_date);
-						$(div).append(rec_no, member_id, content, rec_date);
+						var rec_no = $("<p></p>").html(this.recNo).css("display", "none");
+						var member_id = $("<div></div>").html(this.member_id).css({
+							"font-weight": "bold",
+							"float": "left"
+						});
+						var content = $("<div></div>").html(this.rec_content).css({
+							"clear": "both",
+							"width": "500px",
+							"height": "50px",
+							"float": "left",
+							"margin-top": "10px"
+						});
+						var rec_date = $("<div></div>").html(this.rec_date).css({
+							"float": "right",
+							"margin-right": "30px"
+						});
+						$(div).append(rec_no, member_id, rec_date, content);
+						
+						var div2 = $("<div></div>").css({
+							"text-align": "right",
+							"height": "30px",
+							"float": "right",
+							"padding-top": "30px",
+							"margin-right": "30px"
+						});
 						if(login == this.member_id){
 							var btnUpdate = $("<button id='btnUpdate'>수정</button>").attr({
 								"recNo": this.recNo,
@@ -251,7 +349,8 @@
 								"recNo": this.recNo,
 								"class": "btn"
 							});
-							$(div).append(btnUpdate, btnDelete);
+							$(div2).append(btnUpdate, btnDelete);
+							$(div).append(div2);
 						}
 						
 						$("#listRecoment").append(div);
@@ -294,7 +393,8 @@
 		
 			
 			//수정
-			$("#updateRecoment").click(function(){
+			$("#updateRecoment").click(function(e){
+				e.preventDefault();
 				console.log("click");
 				var data = $("#writeRecoment").serializeArray();
 				console.log(data);
@@ -339,6 +439,7 @@
 					data: data,
 					success: function(re){
 						listRecoment(no);
+						$("#rec_content").val("");
 					}
 				});
 				
@@ -476,9 +577,7 @@
 </script>
 </head>
 <body>
-	<h2>여행계획 상세</h2>
-	로그인한 유저 : <input type="text" name="login_user" id="login_user" value="hong">
-	<a href="/plan/list">목록</a>
+	<input type="hidden" name="login_user" id="login_user" value="hong">
 	
 	<!-- 헤더 -->
 	<header>
@@ -489,13 +588,21 @@
 	<!-- 본문 -->
 	<section>
 		<!-- 버튼 박스 -->
-		<div id="btn_container">
-			<button class="btn" th:onclick="|location.href='/plan/update/${plan.planNo}'|" th:text="수정"></button>
-			<button class="btn" th:onclick="|location.href='/plan/delete/${plan.planNo}'|" th:text="삭제"></button>
-			<!-- <a th:href="@{'/plan/update/'+${plan.planNo}}" th:text="수정"></a>
-			<a th:href="@{'/plan/delete/'+${plan.planNo}+'/'+${plan.member_id}}" th:text="삭제" id="deletePlan"></a> -->
-		</div>
+		<div>
+			<div id="btn_container2">
+			
+					<button id="btnList" class="btn" th:onclick="|location.href='/plan/list'|" th:text="목록"></button>
+			</div>
+			
+			<div id="btn_container">
+				<button class="btn" th:onclick="|location.href='/plan/update/${plan.planNo}'|" th:text="수정"></button>
+				<button class="btn" th:onclick="|location.href='/plan/delete/${plan.planNo}'|" th:text="삭제"></button>
+				<!-- <a th:href="@{'/plan/update/'+${plan.planNo}}" th:text="수정"></a>
+				<a th:href="@{'/plan/delete/'+${plan.planNo}+'/'+${plan.member_id}}" th:text="삭제" id="deletePlan"></a> -->
+			</div>
+			
 		
+		</div>
 		<!-- 여행계획 기본정보 -->
 		<div id="content" th:each="p:${plan}">
 			<input type="hidden" th:value="${p.planNo}" id="plan_no">
@@ -505,7 +612,7 @@
 			<span style="font-size: 18px;">&nbsp;|&nbsp;</span>
 			<span th:text="${region}" id="plan_region" style="font-size: 18px;"></span>
 			<span style="font-size: 18px;">&nbsp;|&nbsp;</span>
-			<span th:text="${cnt}+'일'" style="font-size: 18px;"></span>
+			<span th:text="${cnt-1}+'박 '+${cnt}+'일'" style="font-size: 18px;"></span>
 			<br>
 			<br>
 			<!-- <hr style="margin-top: 30px; margin-bottom: 40px;"> -->
@@ -529,27 +636,34 @@
 				<img alt="${p.plan_img}" th:src="@{|/images/${p.plan_img}|}" id="plan_img"><br>
 			</div>
 
-			<div id="liked_container" style="float: right;">
-				<div id="cntLiked" style="display: inline-block; margin: auto; margin-right: 5px; margin-bottom: 20px; border: 2px solid black;"></div>
+			<div id="liked_container">
+				<div id="cntLiked"></div>
 				<input type="checkbox" id="liked" th:attr="likedTitle=${p.plan_title},likedImg=${p.plan_img},likedPlanNo=${p.planNo}">
-				<label for="liked" id="liked_label" th:attr="likedTitle=${p.plan_title},likedImg=${p.plan_img},likedPlanNo=${p.planNo}"></label>
+				<label style="float: right;" for="liked" id="liked_label" th:attr="likedTitle=${p.plan_title},likedImg=${p.plan_img},likedPlanNo=${p.planNo}"></label>
 			</div>
 			
-			<span style="clear: both;" th:text="'여행일정: ' + ${p.plan_start} + ' ~ ' + ${p.plan_end}"></span><br>
 			
 			
 		</div>
+		
+		<br><hr><br>
 
 		<!-- 날짜별 일정 -->
 		<div id="day" style="clear: both;">
+			<div style="font-size: 20px; font-weight: bold; margin: auto; text-align: center; margin-bottom: 50px;" th:text="'여행일정 : ' + ${plan.plan_start} + ' ~ ' + ${plan.plan_end}"></div>
 			<!-- day1 -->
 			<div id="day1" th:if="${detail1} != null" class="day_container">
 				<h2 class="day_title">DAY 1</h2>
-				<div class="card" style="width: 15rem;" th:each="d:${detail1}">
-					<img th:alt="${d.trip_img}" th:src="@{|/images/${d.trip_img}|}" id="trip_img">
+				<div class="card" style="width: 13rem; height: 17erm;" th:each="d:${detail1}">
+					<a th:href="@{'/trip/tripDetail/'+${d.trip_no}}" class="card_link" style="height: 150px;">
+						<img th:alt="${d.trip_img}" th:src="@{|/images/${d.trip_img}|}" id="trip_img" class="card-img-top" alt="...">
+					</a>
+					
 					<div class="card-body">
-						<h5 class="card-title" th:text="${d.trip_title}"></h5>
-					    <p class="card-text" th:text="${d.trip_no}" id="trip_no"></p>
+						<a th:href="@{'/trip/tripDetail/'+${d.trip_no}}" class="card_link">
+							<h5 style="font-weight: bold; font-size: 12pt" class="card-title" th:text="${d.trip_title}"></h5>
+						</a>
+					    <p style="display: none;" class="card-text" th:text="${d.trip_no}" id="trip_no"></p>
 					</div>
 				</div>		
 			</div>
@@ -558,63 +672,93 @@
 			<!-- day2 -->
 			<div id="day2" th:if="${detail2} != null" class="day_container">
 				<h2 class="day_title">DAY 2</h2>
-				<div class="card" style="width: 15rem;" th:each="d:${detail2}">
-					<img th:alt="${d.trip_img}" th:src="@{|/images/${d.trip_img}|}" id="trip_img">
+				<div class="card" style="width: 13rem;" th:each="d:${detail2}">
+					<a th:href="@{'/trip/tripDetail/'+${d.trip_no}}" class="card_link" style="height: 150px;">
+						<img th:alt="${d.trip_img}" th:src="@{|/images/${d.trip_img}|}" id="trip_img" class="card-img-top" alt="...">
+					</a>
+					
 					<div class="card-body">
-						<h5 class="card-title" th:text="${d.trip_title}"></h5>
-					    <p class="card-text" th:text="${d.trip_no}" id="trip_no"></p>
+						<a th:href="@{'/trip/tripDetail/'+${d.trip_no}}" class="card_link">
+							<h5 style="font-weight: bold; font-size: 12pt" class="card-title" th:text="${d.trip_title}"></h5>
+						</a>
+					    <p style="display: none;" class="card-text" th:text="${d.trip_no}" id="trip_no"></p>
 					</div>
 				</div>
 			</div>
 			<!-- day3 -->
 			<div id="day3" th:if="${detail3} != null" class="day_container">
 				<h2 class="day_title">DAY 3</h2>
-				<div class="card" style="width: 15rem;" th:each="d:${detail3}">
-					<img th:alt="${d.trip_img}" th:src="@{|/images/${d.trip_img}|}" id="trip_img">
+				<div class="card" style="width: 13rem;" th:each="d:${detail3}">
+					<a th:href="@{'/trip/tripDetail/'+${d.trip_no}}" class="card_link" style="height: 150px;">
+						<img th:alt="${d.trip_img}" th:src="@{|/images/${d.trip_img}|}" id="trip_img" class="card-img-top" alt="...">
+					</a>
+					
 					<div class="card-body">
-						<h5 class="card-title" th:text="${d.trip_title}"></h5>
-					    <p class="card-text" th:text="${d.trip_no}" id="trip_no"></p>
+						<a th:href="@{'/trip/tripDetail/'+${d.trip_no}}" class="card_link">
+							<h5 style="font-weight: bold; font-size: 12pt" class="card-title" th:text="${d.trip_title}"></h5>
+						</a>
+					    <p style="display: none;" class="card-text" th:text="${d.trip_no}" id="trip_no"></p>
 					</div>
 				</div>
 			</div>
 			<!-- day4 -->
 			<div id="day4" th:if="${detail4} != null" class="day_container">
 				<h2 class="day_title">DAY 4</h2>
-				<div class="card" style="width: 15rem;" th:each="d:${detail4}">
-					<img th:alt="${d.trip_img}" th:src="@{|/images/${d.trip_img}|}" class="card-img-top" alt="..." id="trip_img">
+				<div class="card" style="width: 13rem;" th:each="d:${detail4}">
+					<a th:href="@{'/trip/tripDetail/'+${d.trip_no}}" class="card_link" style="height: 150px;">
+						<img th:alt="${d.trip_img}" th:src="@{|/images/${d.trip_img}|}" id="trip_img" class="card-img-top" alt="...">
+					</a>
+					
 					<div class="card-body">
-						<h5 class="card-title" th:text="${d.trip_title}"></h5>
-					    <p class="card-text" th:text="${d.trip_no}" id="trip_no"></p>
+						<a th:href="@{'/trip/tripDetail/'+${d.trip_no}}" class="card_link">
+							<h5 style="font-weight: bold; font-size: 12pt" class="card-title" th:text="${d.trip_title}"></h5>
+						</a>
+					    <p style="display: none;" class="card-text" th:text="${d.trip_no}" id="trip_no"></p>
 					</div>
 				</div>
 			</div>
 		</div>
+		<br><hr><br>
 	</section>
+	
+	
 	
 	<article>
 		<!-- 댓글 -->
 		<div id="recoment">
-			<h2 id="recoment_title">댓글</h2>
-			<div id="write">
+			<h2 style="font-weight: bold;" id="recoment_title">댓글</h2>
+			
+			<div style="margin: auto; width: 800px;">
+				<div id="write" style="margin-bottom: 30px;">
 				<form action="" id="writeRecoment">
-					아이디 : <input type="text" name="member_id" id="rec_member_id"><br>
+					<input type="hidden" name="member_id" id="rec_member_id">
 					<input type="hidden" name="no" th:value="${plan.planNo}" id="no">
 					<input type="hidden" name="type" value="plan" id="type"><br>
-					
-					<div id="text_container">
-						<textarea rows="4" cols="70" name="rec_content" id="rec_content"></textarea>
-					</div>
-					
 					<div id="btn_recoment_container">
 						<button id="insertRecoment" class="btn">댓글쓰기</button>
-						<button id="updateRecoment" class="btn">댓글수정</button>
+						<button id="updateRecoment" class="btn">수정</button>
 						<button id="updateReset" class="btn">취소</button>
+					</div>
+					<div style="font-weight: bold; float: left; padding-top: 20px;" id="rec_form_id">아이디</div>
+					<div style="float: left;" id="text_container">
+						<textarea rows="4" cols="105" name="rec_content" id="rec_content"></textarea>
 					</div>
 				</form>
 			</div>
-
-			<div id="listRecoment"></div>
+			
+			<div id="list_container">
+				<div id="listRecoment"></div>
+			</div>
+			</div>
+			
+			
+			
+			
 		</div>
+		
+		<article>
+		
+		</article>
 	
 	</article>
 
