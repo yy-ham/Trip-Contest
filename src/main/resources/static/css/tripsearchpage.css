@@ -215,10 +215,6 @@
     box-shadow: 4px 5px 12px 0px rgba(19, 41, 75, 0.3);
 }
 
-.zone_wrap .list_zone .swiper-slide.on button:focus {
-    outline: 2px solid red;
-}
-
 
 .zone_wrap .list_zone .box_logo {
     width: 100%;

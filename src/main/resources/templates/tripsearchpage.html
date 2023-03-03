@@ -26,9 +26,11 @@
   $(function(){
     
     $(".region-btn").click(function(){
-        var korea_code = $(this).attr("korea_code");       //버튼이 클릭 되었을 시, 개별 버튼의 값이 kind 변수에 담겨집니다.
+        var korea_code = $(this).attr("korea_code");//버튼이 클릭 되었을 시, 개별 버튼의 값이 kind 변수에 담겨집니다.
       	console.log(korea_code);
       	
+      	
+        
         $.ajax({
             
             url : "/tripajax",
@@ -43,7 +45,9 @@
                 $("#trip_container").empty(); 
                 $.each(data, function(){
                 	var trip_list = $("<div></div>").addClass("trip_list");
-                	var card= $("<div></div>").css({'width': '340px', 'height':'300px', 'float': 'left', 'margin-right': '24px', 'margin-bottom': '30px', 'border': '0.75px solid #eaeaea', 'box-shadow': '3px 3px 4px rgba(26, 26, 26, 0.1)'}).addClass("card");
+                	var card= $("<div></div>").css({'width': '340px', 'height':'300px', 'float': 'left', 'margin-right': '24px', 'margin-bottom': '30px', 'border': '0.75px solid #eaeaea', 'box-shadow': '3px 3px 4px rgba(26, 26, 26, 0.1)','cursor':'pointer'}).addClass("card").click(function() {
+                		  window.location.href = 'http://localhost:8080/mainpage'; // 이동하고자 하는 사이트의 URL로 설정
+                	});
 					var card_img = $("<img/>").addClass("card-img-top").attr({src:"images/"+this.trip_img}) 
                 	var card_body = $("<div></div>").addClass("card-body");
 					var card_title=	$("<h5></h5>").addClass("card title").html(this.trip_title);
@@ -80,7 +84,7 @@
             cache : false,
             headers : {"cache-control":"no-cache","pragma":"no-cache"},
             data : {
-                "korea_code":korea_code   // 버튼의 value값에 따라 작동합니다.
+                "korea_code":korea_code 
                 
             },
             success : function(data){
@@ -99,12 +103,12 @@
 					$(action).append(addr);
 					$(list_group).append(action);
 					$("#plan_container").append(list_group);
-					/* $("#plan_list").append(list_group); */
+					
 
                 	
                 	
                 })
-              //  $("#trip_container").append(data); // 성공 시, body부분에 data라는 html 문장들을 다 적용시킵니다.
+             
             },
             error : function(data){
                 alert('error');
@@ -142,15 +146,15 @@
                 $("#trip_container").empty(); 
                 $.each(data, function(){
                 })
-              //  $("#trip_container").append(data); // 성공 시, body부분에 data라는 html 문장들을 다 적용시킵니다.
+              
             },
             error : function(data){
                 alert('error');
             }//error
         })//ajax
-    });//button click
+    });//button click 
+ 
 }); 
-</script>
 </script>
 </head>
 <body>
