@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>관심목록</title>
+<style type="text/css">
+	
+	
+	
+	.like_no{
+		visibility: hidden;
+	}
+	
+	.card_text{
+		width:300px;
+		/* border: 1px solid; */
+		margin-left: 15px;
+		margin-top: -20px;
+	}
+	
+	html{
+		overflow-y:scroll; 
+		height:100%;
+		width:100%;
+	}
+	
+	
+	.main{
+		padding-top:20px;
+		margin-top: 20px;
+		margin-left: 60px;
+		margin-right: 60px;
+		padding-bottom: 60px;
+	}
+	
+	
+	.selectBox{
+		position: absolute;
+		width:500px;
+		height: 40px;
+		right: 287px;
+		top: 125px;
+		
+	}
+	
+	.allCheck{
+		width:200px;
+		margin-left: 50px;
+		float: left;
+		font-size: 23px;
+		font-weight: 3px;
+		margin-bottom: -20px;
+	}
+	.delBtn{
+		width:200px;
+		margin-right:5px;
+		float: right;
+		
+	}
+	
+	#deleteBtn{
+		/* margin-top: 5px; */
+		width:150px;
+		height: 35px;
+		background: white;
+		font-size: 23px;
+		border: 0.5px solid white;
+		margin-bottom: -15px;
+	}
+	
+	
+	#trash{
+		font-size: 23px;
+   		 line-height: 23px;
+	}
+	
+	
+	 #allCheck{
+		
+		margin-left: 15px;
+		
+		margin-top: 9px;
+		
+		width: 20px; /*Desired width*/
+		
+		height: 20px; /*Desired height*/
+		
+	/* 	cursor: pointer;
+		
+		-webkit-appearance: none;
+		
+		appearance: none; */
+
+	}
+	
+	
+	
+	#planbox{
+		margin-bottom: 10px;
+		
+	}
+	
+	
+	 #checkboxNoLabel{
+	 	
+	 	width: 20px;
+	 	
+	 	height: 20px;
+	 	
+	 	margin-bottom: 10px;
+	 
+	 	margin-left: 13px;
+	 }	
+	
+	
+	.slider{
+		/* border: 3px solid #f1f3f5; */
+		margin-bottom: 10px;
+		margin-top:10px;
+		
+		
+		
+		
+	}
+	
+	.sider-title{
+		  text-align:left;
+		 /*  margin:25px auto; */
+		  margin-top: 25px;
+		  margin-left:300px;
+		  margin-bottom:25px;
+		  height:30px;
+		  font-size: 30px;
+		  font-weight: 3px;
+		}
+	
+	
+	
+	#check_item{	
+		  width:70%;
+		  margin:0px auto;
+		  margin-top:5px;
+		  margin-bottom:5px;
+		  position:relative;
+		
+		  
+	}
+	
+	.card{
+		width: 45%;
+		margin-left:20px;
+		margin-right: 20px;
+		border-radius: 100px;
+		float: left;
+		font-size: 20px;
+		border-radius: 30px var(--bs-card-border-radius);
+	}
+	
+	
+	
+	.card-body{
+	 	position : relative;
+	 	width : 700px;
+	 	height : 400px;	
+	 	border-radius: 50%; 
+	 	
+	 	
+	}
+	
+	
+	
+	.card-body img{
+		position : relative;
+	    margin-left : 15px; 
+	    margin-bottom: 10px;
+		width : 320px;
+		height : 270px;
+		border-radius: 20px;
+		
+	}
+	
+	
+	 .slick-prev{
+		float: left;
+		position: absolute;
+		left:200px;
+		top:330px;
+		background: white;
+		border: none;
+		/* width: 100px;
+		height: 100px; */
+	}	 
+	
+	
+	#pleft{
+    font-size: 55px;
+    line-height: 55px;
+    /* color:crimson; */
+}
+	
+		
+	.slick-next{
+		float: right;
+		position: absolute;
+		right:190px;
+		top:330px;
+		background: white;
+		border: none;
+	}	 
+	
+	
+	#pright{
+	    font-size: 55px;
+	    line-height: 55px;
+	    /* color:crimson; */
+	}
+	
+	
+	/* 플랜 박스 */
+	
+	
+	.trip{
+		margin: 100px auto;
+	}
+	
+	
+	
+	.selectBox_trip{
+		position: absolute;
+		width:500px;
+		height: 40px;
+		right: 287px;
+		top: 745px;
+	}
+	
+	
+	 #allChecked{
+		
+		margin-left: 15px;
+		
+		margin-top: 9px;
+		
+		margin-bottom:-20px;
+		
+		width: 20px; /*Desired width*/
+		
+		height: 20px; /*Desired height*/
+		
+	/* 	cursor: pointer;
+		
+		-webkit-appearance: none;
+		
+		appearance: none; */
+
+	}
+	
+	#delete_Btn{
+		/* margin-top: 5px; */
+		width:150px;
+		height: 35px;
+		background: white;
+		font-size: 23px;
+		border: 0.5px solid white;
+		margin-bottom: -20px;
+	}
+	
+	
+	#trash-trip{
+		font-size: 23px;
+   		 line-height: 23px;
+	}
+	
+	
+	#check_items{	
+		  width:70%;
+		  margin:0px auto;
+		  position:relative;
+		/*   border: 3px solid pink; */
+	}
+	
+	
+	#prev-trip{
+		float: left;
+		position: absolute;
+		left:200px;
+		top:900px;
+	}	 
+	
+	#next-trip{
+		float: right;
+		position: absolute;
+		right:195px;
+		top:900px;
+	}	 
+	
+	 #tright{
+		font-size: 55px;
+	    line-height: 55px;
+	} 
+	
+	#tleft{
+		font-size: 55px;
+	    line-height: 55px;
+	
+	}
+	
+	.line{
+		margin: 50px;
+	}
+	
+
+	
+</style>
+</head>
+ <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.6.0/font/bootstrap-icons.css" />
+ <link rel="stylesheet" type="text/css" href="http://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+  <link rel="stylesheet" type="text/css" href="/css/mainpage.css"/>
+ <link rel="stylesheet" type="text/css" href="/css/header.css"/>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script type="text/javascript" src="http://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+<script type="text/javascript">
+ 
+ $(function(){
+	 
+	 
+	 	
+	 
+	 	 $('#check_item').slick({
+		  infinite: true,
+		  slidesToShow: 3,
+		  slidesScroll: 1,
+		  speed : 100,
+		  arrows:true,
+		  dots: false,
+		  autoplay: false,
+		  pauseOnHover:true,
+		  vertical:false,
+		  prevArrow : $('.prev'),        // 이전 화살표 모양 설정
+          nextArrow : $('.next'),  
+          
+		});  
+	 	 
+	 	 
+	 	$('#check_items').slick({
+			  infinite: true,
+			  slidesToShow: 3,
+			  slidesScroll: 1,
+			  speed : 100,
+			  arrows:true,
+			  dots: false,
+			  autoplay: false,
+			  pauseOnHover:true,
+			  vertical:false,
+			  prevArrow : $('.prev_trip'),        // 이전 화살표 모양 설정
+	          nextArrow : $('.next_trip'),  
+	          
+			});  
+	 	 
+	 	 
+	 	
+	 	 
+	 	 
+	 	 
+	 	 
+	 	 /* slidesToShow: 3,
+  slidesToScroll: 1,
+  autoplay: true,
+  autoplaySpeed: 2000,
+  nextArrow:$('.next'),
+  prevArrow:$('.prev'), */
+	 	 
+	 	 
+	 
+	 	/* $('.slider-wrap').slick('slickRkuemove',0);	 */
+	 
+	    var chk_arr = new Set(); 
+
+	    $("#allCheck").click(function(){
+	        if(this.checked){
+	            $("#check_item").find("input[type=checkbox]").prop("checked",true);
+	            $("#check_item").find("input[type=checkbox]").each(function(){
+	                chk_arr.add($(this).val()); // 체크된 체크박스의 값을 Set에 추가
+	            });
+	        }else{
+	            $("#check_item").find("input[type=checkbox]").prop("checked",false);
+	            $("#check_item").find("input[type=checkbox]").each(function(){
+	                chk_arr.delete($(this).val()); // 체크가 해제된 체크박스의 값을 Set에서 삭제
+	            });
+	        }
+	    });
+
+	    $(".checked").click(function(){
+	        var total = $("input[type=checkbox]").length;
+	        var checked = $("input[type=checkbox]:checked").length;
+	        if(total != checked){
+	            $("#allCheck").prop("checked", false);
+	        }else{
+	            $("#allCheck").prop("checked",true);
+	        }
+	        if($(this).is(":checked")){
+	            chk_arr.add($(this).val());
+	            console.log(chk_arr);
+	        }
+	        if($(this).is(":checked")==false){
+	            chk_arr.delete($(this).val());
+	        }
+	    });
+
+	  //  $("#deleteBtn").on("click",function(){
+		  $("#deleteBtn").click(function(){
+			  
+		  
+	        console.log(chk_arr);
+	        
+	        for (let item of chk_arr) {
+	        
+	             $.ajax({
+	                url:`/Liked/deleteLiked/${item}`, // {like_no} 대신 변수를 지정
+	                data: { likes: Array.from(chk_arr) }, // 객체 형태로 데이터 전송
+	                success: function(re){
+	                	if(re>0){
+	                		location.href="/liked/likeList/hong";
+	                	}else{
+	                		alert("삭제 실패하였습니다.")
+	                	}
+	                }
+	            }) 
+	        } 
+	    });
+		  
+		  
+		  $("#allChecked").click(function(){
+		        if(this.checked){
+		            $("#check_items").find("input[type=checkbox]").prop("checked",true);
+		            $("#check_items").find("input[type=checkbox]").each(function(){
+		                chk_arr.add($(this).val()); // 체크된 체크박스의 값을 Set에 추가
+		            });
+		        }else{
+		            $("#check_items").find("input[type=checkbox]").prop("checked",false);
+		            $("#check_items").find("input[type=checkbox]").each(function(){
+		                chk_arr.delete($(this).val()); // 체크가 해제된 체크박스의 값을 Set에서 삭제
+		            });
+		        }
+		    });
+
+		    $(".checked").click(function(){
+		        var total = $("input[type=checkbox]").length;
+		        var checked = $("input[type=checkbox]:checked").length;
+		        if(total != checked){
+		            $("#allChecked").prop("checked", false);
+		        }else{
+		            $("#allChecked").prop("checked",true);
+		        }
+		        if($(this).is(":checked")){
+		            chk_arr.add($(this).val());
+		            console.log(chk_arr);
+		        }
+		        if($(this).is(":checked")==false){
+		            chk_arr.delete($(this).val());
+		        }
+		    });
+
+		  //  $("#deleteBtn").on("click",function(){
+			  $("#delete_Btn").click(function(){
+				  
+			  
+		        console.log(chk_arr);
+		        
+		        for (let item of chk_arr) {
+		        
+		             $.ajax({
+		                url:`/Liked/deleteLiked/${item}`, // {like_no} 대신 변수를 지정
+		                data: { likes: Array.from(chk_arr) }, // 객체 형태로 데이터 전송
+		                success: function(re){
+		                	if(re>0){
+		                		location.href="/liked/likeList/hong";
+		                	}else{
+		                		alert("삭제 실패하였습니다.")
+		                	}
+		                }
+		            }) 
+		        } 
+		    });
+		  
+		  
+		  
+		  
+		  
+		  
+	});
+
+</script>
+<body>
+		<div id="header">
+		<div class="wrap">
+			<h1 class="logo fl" alt="전국여행자랑">
+				<a href="#">
+					<img src="/images/전국여행자랑.jpg" alt="전국여행자랑" >
+				</a>
+			</h1>
+		<div class="dropdown">
+		  <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+		    플래너
+		  </button>
+		  <ul class="dropdown-menu">
+		    <li><a class="dropdown-item" href="#">플래너 리스트</a></li>
+		    <li><a class="dropdown-item" href="#">플래너 작성</a></li>
+		  </ul>
+		  <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+		    여행지
+		  </button>
+		  <ul class="dropdown-menu">
+		    <li><a class="dropdown-item" href="#">여행지 탐색</a></li>
+		    <li><a class="dropdown-item" href="#">여행지 리스트</a></li>
+		  </ul>
+		  <button class="btn btn-secondary dropdown-toggle" type="button"><a href="#">관심목록</a></button>
+		</div> 
+
+
+		
+		<div class="fr gnb_box">
+			<a href="#" class="fr">
+				<div class ="f1 gnb_login_btn">로그인</div>
+			</a>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+	
+
+   	
+
+
+
+	<div class="main">
+	
+	<div class="plan">
+	<div class="selectBox">
+	  <div class="allCheck">
+	   <input type="checkbox" name="allCheck" id="allCheck" /><label for="allCheck">모두 선택/해제</label> 
+	  </div>
+  
+	  <div class="delBtn">
+	   <button type="button" id="deleteBtn"><i class="bi bi-trash-fill" id="trash"></i>선택 삭제</button> 
+	  </div>
+   </div>
+
+	<div id="planbox">
+		<div class="slider">
+        <h1 class="sider-title">여행계획</h1>
+        	<div class="prev">
+					<button type='button' class='slick-prev' id='prev'><i class="bi bi-arrow-left-circle" id="pleft"></i></button>
+				</div>
+				<div class="next">
+					<button type='button' class='slick-next' id='next'><i class="bi bi-arrow-right-circle" id="pright"></i></button>
+				</div>	
+        <div id="check_item">
+          	<div class="card" style="width: 18rem;" th:each="lp:${likedListPlan}">
+			 			 <div class="card-body">
+			   		
+		   				<p><input class="form-check-input checked" type="checkbox" id="checkboxNoLabel"  th:value="${lp.like_no}" aria-label="..."></p>
+		   				<img th:src="@{|/images/${lp.like_img}|}" class="card-img-top" alt="...">
+						<p name="like_no" class="like_no" th:text=${lp.like_no} > </p>
+						<p class="card_text" th:text="${lp.liked_title}" ></p>
+	 				 	</div>
+		    		</div>
+       	 </div>
+		</div>
+	</div>
+</div>	
+	
+	<hr class="line" color="gray">
+
+	<!--여행지소개  -->
+	
+	<div class="trip">
+	<div class="selectBox_trip">
+	  <div class="allCheck">
+	   <input type="checkbox" name="allCheck" id="allChecked" /><label for="allCheck">모두 선택/해제</label> 
+	  </div>
+  
+	  <div class="delBtn">
+	   <button type="button" id="delete_Btn"><i class="bi bi-trash-fill" id="trash-trip"></i>선택 삭제</button> 
+	  </div>
+   </div>
+
+	<div id="tripbox">
+		<div class="slider">
+        <h1 class="sider-title">여행지소개</h1>
+        	<div class="prev_trip">
+					<button type='button' class='slick-prev' id='prev-trip'><i class="bi bi-arrow-left-circle" id="tleft"></i></button>
+				</div>
+				<div class="next_trip">
+					<button type='button' class='slick-next' id='next-trip'><i class="bi bi-arrow-right-circle" id="tright"></i></button>
+				</div>	
+       		<div id="check_items">
+			<div class="card" style="width: 18rem;" th:each="la:${likedListTrip}">
+			  <div class="card-body">
+	   				<p><input class="form-check-input checked" type="checkbox" id="checkboxNoLabel"  th:value="${la.like_no}" aria-label="..."></p>
+	   				<img th:src="@{|/images/${la.like_img}|}" class="card-img-top" >
+					<p name="like_no" class="like_no" th:text=${la.like_no}> </p>
+					<p class="card_text" th:text="${la.liked_title}" ></p>
+			  </div>
+			</div>
+			</div>
+		</div>
+	</div>
+	</div>
+	
+	
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+  </body>
+</body>
+</html>

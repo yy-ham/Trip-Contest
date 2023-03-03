@@ -8,55 +8,206 @@
 		visibility:hidden;
 	}
 	
+	.main{
+		margin-top: 20px;
+		margin-left: 50px;
+		margin-right: 50px;
+	}
+	
 	
 	.selectBox{
 		border: 3px solid red;
-		width:1500px;
-		height: 30px;
+		width:100%;
+		height: 40px;
 		
 	}
 	
 	.allCheck{
 		width:200px;
-		margin-left: -5px;
+		margin-left: 5px;
 		float: left;
 	}
 	.delBtn{
 		width:200px;
-		margin-right:10px;
+		margin-right:5px;
 		float: right;
 	}
 	
-	.card{
-		float: left;
-		width: 50px;
-		height: 15px;
-		position: relative;
+	#deleteBtn{
+		margin-top: 5px;
+		width:40px;
+		height: 30px;
+	
 	}
 	
-	img{
-		width: 500px;
-		height: 300px;
+	 #allCheck{
+		
+		margin-left: 15px;
+		
+		margin-top: 9px;
+		
+		width: 15px; /*Desired width*/
+		
+		height: 15px; /*Desired height*/
+		
+	/* 	cursor: pointer;
+		
+		-webkit-appearance: none;
+		
+		appearance: none; */
+
 	}
 	
-	.slide{
-		border: 3px solid;
-		width:100%;
-		height: 600px; 
+	
+	#planbox{
+		margin-bottom: 10px;
+	}
+	
+	
+	 #checkboxNoLabel{
+	 	width: 20px;
+	 	
+	 	height: 20px;
+	 	
+	 	margin-bottom: 10px;
+	 
+	 }	
+	
+	
+	.slider{
+		border: 3px solid gray;
+		margin-bottom: 10px;
+		border-radius: 30px;
+		
 		
 	}
 	
-	.check_item{
-		width: 30px;
-		margin:10px;
-		float: center;
+	.sider-title{
+		  text-align:center;
+		  margin:10px auto;
+		  font-size: 30px;
+		  font-weight: 3px;
+		}
+	
+	
+	
+	#check_item{	
+		  width:70%;
+		  margin:0px auto;
+		  margin-top:5px;
+		  margin-bottom:5px;
+		  position:relative;
+		  border: 3px solid yellow;
+		  
 	}
 	
+	.card{
+		width: 45%;
+		margin-left:20px;
+		margin-right: 20px;
+		float: left;
+	}
+	
+	.card-body{
+	 	position : relative;
+	 	width : 700px;
+	 	height : 400px;	
+	 	
+	}
+	
+	.card-body img{
+		position : relative;
+	    margin-left : 15px; 
+	    margin-bottom: 10px;
+		width : 320px;
+		height : 270px;
+	}
+	
+	
+	 .slick-prev{
+		float: left;
+		position: absolute;
+		left:100px;
+		top:350px;
+		background: white;
+		border: none;
+		/* width: 100px;
+		height: 100px; */
+	}	 
+	
+	
+	#pleft{
+    font-size: 55px;
+    line-height: 55px;
+    /* color:crimson; */
+}
+	
+		
+	.slick-next{
+		float: right;
+		position: absolute;
+		right:100px;
+		top:350px;
+		background: white;
+		border: none;
+	}	 
+	
+	
+	#pright{
+	    font-size: 55px;
+	    line-height: 55px;
+	    /* color:crimson; */
+	}
+	
+	
+	
+	.selectBox_trip{
+		border: 3px solid red;
+		width:100%;
+		height: 40px;
+	}
+	
+	
+	#check_items{	
+		  width:70%;
+		  margin:0px auto;
+		  position:relative;
+		  border: 3px solid pink;
+	}
+	
+	
+	#prev-trip{
+		float: left;
+		position: absolute;
+		left:100px;
+		top:900px;
+	}	 
+	
+	#next-trip{
+		float: right;
+		position: absolute;
+		right:100px;
+		top:900px;
+	}	 
+	
+	 #tright{
+		font-size: 55px;
+	    line-height: 55px;
+	} 
+	
+	#tleft{
+		font-size: 55px;
+	    line-height: 55px;
+	
+	}
 	
 </style>
 </head>
  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.6.0/font/bootstrap-icons.css" />
  <link rel="stylesheet" type="text/css" href="http://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+  <link rel="stylesheet" type="text/css" href="/css/mainpage.css"/>
+ <link rel="stylesheet" type="text/css" href="/css/header.css"/>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
 <script type="text/javascript" src="http://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 <script type="text/javascript">
@@ -73,11 +224,40 @@
 		  autoplay: false,
 		  pauseOnHover:true,
 		  vertical:false,
-		  prevArrow : "<button type='button' class='slick-prev'>Previous</button>",        // 이전 화살표 모양 설정
-          nextArrow : "<button type='button' class='slick-next'>Next</button>",  
-          draggable: true,
+		  prevArrow : $('.prev'),        // 이전 화살표 모양 설정
+          nextArrow : $('.next'),  
           
 		});  
+	 	 
+	 	 
+	 	$('#check_items').slick({
+			  infinite: true,
+			  slidesToShow: 3,
+			  slidesScroll: 1,
+			  speed : 100,
+			  arrows:true,
+			  dots: false,
+			  autoplay: false,
+			  pauseOnHover:true,
+			  vertical:false,
+			  prevArrow : $('.prev_trip'),        // 이전 화살표 모양 설정
+	          nextArrow : $('.next_trip'),  
+	          
+			});  
+	 	 
+	 	 
+	 	 
+	 	 
+	 	 
+	 	 
+	 	 /* slidesToShow: 3,
+  slidesToScroll: 1,
+  autoplay: true,
+  autoplaySpeed: 2000,
+  nextArrow:$('.next'),
+  prevArrow:$('.prev'), */
+	 	 
+	 	 
 	 
 	 	/* $('.slider-wrap').slick('slickRkuemove',0);	 */
 	 
@@ -191,7 +371,48 @@
 
 </script>
 <body>
-	<div id = main>
+		<div id="header">
+		<div class="wrap">
+			<h1 class="logo fl" alt="전국여행자랑">
+				<a href="#">
+					<img src="/images/전국여행자랑.jpg" alt="전국여행자랑" >
+				</a>
+			</h1>
+		<div class="dropdown">
+		  <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+		    플래너
+		  </button>
+		  <ul class="dropdown-menu">
+		    <li><a class="dropdown-item" href="#">플래너 리스트</a></li>
+		    <li><a class="dropdown-item" href="#">플래너 작성</a></li>
+		  </ul>
+		  <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+		    여행지
+		  </button>
+		  <ul class="dropdown-menu">
+		    <li><a class="dropdown-item" href="#">여행지 탐색</a></li>
+		    <li><a class="dropdown-item" href="#">여행지 리스트</a></li>
+		  </ul>
+		  <button class="btn btn-secondary dropdown-toggle" type="button"><a href="#">관심목록</a></button>
+		</div> 
+
+
+		
+		<div class="fr gnb_box">
+			<a href="#" class="fr">
+				<div class ="f1 gnb_login_btn">로그인</div>
+			</a>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+	
+
+
+
+
+
+	<div class="main">
 	<div class="selectBox">
 	  <div class="allCheck">
 	   <input type="checkbox" name="allCheck" id="allCheck" /><label for="allCheck">모두 선택/해제</label> 
@@ -203,25 +424,35 @@
    </div>
 
 	<div id="planbox">
-		<div class="slide">
-  		 <div id="check_item">
-			<div class="card" style="width: 18rem;" th:each="lp:${likedListPlan}">
-			  <div class="card-body">
-			   <tr>
-	   				<td><input class="form-check-input checked" type="checkbox" id="checkboxNoLabel"  th:value="${lp.like_no}" aria-label="..."></td>
-	   				<img th:src="@{|/images/${lp.like_img}|}" class="card-img-top" alt="...">
-					<td name="like_no" id="like_no" th:text=${lp.like_no}> </td>
-					<td class="card_text" th:text="${lp.liked_title}" ></td>
-					<!-- <a class="delete" th:href="@{'/Liked/deleteLiked/'+${lp.like_no}}" th:text="삭제"></a> -->
-				</tr>
-	  </div>
-	</div>
-	</div>
+		<div class="slider">
+        <h1 class="sider-title">여행계획</h1>
+        	<div class="prev">
+					<button type='button' class='slick-prev' id='prev'><i class="bi bi-arrow-left-circle" id="pleft"></i></button>
+				</div>
+				<div class="next">
+					<button type='button' class='slick-next' id='next'><i class="bi bi-arrow-right-circle" id="pright"></i></button>
+				</div>	
+        <div id="check_item">
+          	<div class="card" style="width: 18rem;" th:each="lp:${likedListPlan}">
+			 			 <div class="card-body">
+			   			<tr>
+		   				<td><input class="form-check-input checked" type="checkbox" id="checkboxNoLabel"  th:value="${lp.like_no}" aria-label="..."></td>
+		   				<img th:src="@{|/images/${lp.like_img}|}" class="card-img-top" alt="...">
+						<td name="like_no" id="like_no" th:text=${lp.like_no}> </td>
+						<td class="card_text" th:text="${lp.liked_title}" ></td>
+						</tr>
+	 				 	</div>
+		    		</div>
+       	 </div>
 		</div>
 	</div>
+
+
+
+	<!--여행지소개  -->
 	
-	<div class="selectBox">
-	  <div class="allChecked">
+	<div class="selectBox_trip">
+	  <div class="allCheck">
 	   <input type="checkbox" name="allCheck" id="allChecked" /><label for="allCheck">모두 선택/해제</label> 
 	  </div>
   
@@ -229,11 +460,17 @@
 	   <button type="button" id="delete_Btn">삭제</button> 
 	  </div>
    </div>
-	
-	
-	
-	<div class="triplist">
-		  		 <div id="check_items">
+
+	<div id="tripbox">
+		<div class="slider">
+        <h1 class="sider-title">여행지소개</h1>
+        	<div class="prev_trip">
+					<button type='button' class='slick-prev' id='prev-trip'><i class="bi bi-arrow-left-circle" id="tleft"></i></button>
+				</div>
+				<div class="next_trip">
+					<button type='button' class='slick-next' id='next-trip'><i class="bi bi-arrow-right-circle" id="tright"></i></button>
+				</div>	
+       		<div id="check_items">
 			<div class="card" style="width: 18rem;" th:each="la:${likedListTrip}">
 			  <div class="card-body">
 			   <tr>
@@ -241,31 +478,13 @@
 	   				<img th:src="@{|/images/${la.like_img}|}" class="card-img-top" alt="...">
 					<td name="like_no" id="like_no" th:text=${la.like_no}> </td>
 					<td class="card_text" th:text="${la.liked_title}" ></td>
-					<!-- <a class="delete" th:href="@{'/Liked/deleteLiked/'+${lp.like_no}}" th:text="삭제"></a> -->
 				</tr>
-	  </div>
-	</div>
-	</div>
-	
-	</div> 
-	
-	<!-- <div class="triplist">
-		<div>
-			<h2>여행지♥</h2>
-			<table>
-			
-			< <tr th:each="lt:${likedListTrip}"></tr>
-			<td th:text=${lt.like_no}>
-			<td><img src="resources/templates/image/충남_예산시장.jpg"></td> 
-			<td th:text="${lt.liked_title}" ></td>
-			</tr>  
-			</table>
+			  </div>
+			</div>
+			</div>
 		</div>
 	</div>
-	
 	</div>
-	 -->
-	
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
   </body>
 </body>
