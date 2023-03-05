@@ -168,7 +168,6 @@
 	/* 찜 */
 	input[type=checkbox] {
    		display:none;
-   		/* cursor: pointer; */
 	}
 	
 	label {
@@ -440,12 +439,12 @@
 						</a>
 						<div class="card-body">
 							<a th:href="@{'/plan/detail/'+${p.plan_no}}" class="card_link">
-								<h3 class="card-title" th:text="${p.plan_title}"></h3>
+								<h3 style="font-size: 16pt; font-weight: bold; margin-bottom: 15px;" class="card-title" th:text="${p.plan_title}"></h3>
 							</a>
 							<input type="hidden" th:value="${p.plan_no}" id="plan_no">
 							<div id="info_container">
-								<p class="card-text" th:text="|작성자 : ${p.member_id}|"></p>
-								<p class="card-text korea_code" th:text="${p.korea_code}"></p>
+								<a style="font-size: 13pt;" class="card-text" th:text="|작성자 : ${p.member_id}|"></a><br>
+								<a style="font-size: 13pt;" class="card-text korea_code" th:text="${p.korea_code}"></a>
 							</div>
 							<div id="liked_container">
 								<input type="checkbox" class="planLiked" th:attr="likedTitle=${p.plan_title},likedImg=${p.plan_img},likedPlanNo=${p.plan_no}">

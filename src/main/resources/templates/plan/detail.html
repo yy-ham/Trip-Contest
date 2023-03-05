@@ -151,8 +151,8 @@
 		width: 799px;
 		padding-top: 20px;
 		padding-left: 20px;
-		border-radius: 10px;
 		height: 120px;
+		border-radius: 10px;
 		border: 1px solid #BDBDBD;
 		box-shadow: 3px 3px 4px rgba(26, 26, 26, 0.1);
 		background-color: #F6F6F6;
@@ -406,6 +406,7 @@
 					},
 					success: function(re){
 						console.log(re);
+						$("#rec_content").val("");
 						listRecoment(no);
 						
 					}
@@ -567,7 +568,8 @@
 			e.preventDefault();
 			var plan_no = $("#plan_no").val();
 			if(confirm("삭제하시겠습니까?")){
-			console.log("p:" + plan_no);
+				console.log("p:" + plan_no);
+				console.log("login:" + login);
 				//$("#submit").unbind('click').click();
 				location.href = "/plan/delete/"+plan_no+"/"+login;
 			}
@@ -596,7 +598,7 @@
 			
 			<div id="btn_container">
 				<button class="btn" th:onclick="|location.href='/plan/update/${plan.planNo}'|" th:text="수정"></button>
-				<button class="btn" th:onclick="|location.href='/plan/delete/${plan.planNo}'|" th:text="삭제"></button>
+				<button class="btn" id="deletePlan" th:text="삭제"></button>
 				<!-- <a th:href="@{'/plan/update/'+${plan.planNo}}" th:text="수정"></a>
 				<a th:href="@{'/plan/delete/'+${plan.planNo}+'/'+${plan.member_id}}" th:text="삭제" id="deletePlan"></a> -->
 			</div>
@@ -612,7 +614,9 @@
 			<span style="font-size: 18px;">&nbsp;|&nbsp;</span>
 			<span th:text="${region}" id="plan_region" style="font-size: 18px;"></span>
 			<span style="font-size: 18px;">&nbsp;|&nbsp;</span>
-			<span th:text="${cnt-1}+'박 '+${cnt}+'일'" style="font-size: 18px;"></span>
+			
+			<span th:if="${cnt} > 1" th:text="${cnt-1}+'박 '+${cnt}+'일'" style="font-size: 18px;"></span>
+			<span th:if="${cnt} == 1" th:text="당일치기" style="font-size: 18px;"></span>
 			<br>
 			<br>
 			<!-- <hr style="margin-top: 30px; margin-bottom: 40px;"> -->
@@ -654,9 +658,9 @@
 			<!-- day1 -->
 			<div id="day1" th:if="${detail1} != null" class="day_container">
 				<h2 class="day_title">DAY 1</h2>
-				<div class="card" style="width: 13rem; height: 17erm;" th:each="d:${detail1}">
+				<div class="card" style="width: 13rem; height: 14rem;" th:each="d:${detail1}">
 					<a th:href="@{'/trip/tripDetail/'+${d.trip_no}}" class="card_link" style="height: 150px;">
-						<img th:alt="${d.trip_img}" th:src="@{|/images/${d.trip_img}|}" id="trip_img" class="card-img-top" alt="...">
+						<img th:alt="${d.trip_img}" th:src="@{|/images/${d.trip_img}|}" id="trip_img" class="card-img-top" alt="..." style="height: 150px;">
 					</a>
 					
 					<div class="card-body">
@@ -672,9 +676,9 @@
 			<!-- day2 -->
 			<div id="day2" th:if="${detail2} != null" class="day_container">
 				<h2 class="day_title">DAY 2</h2>
-				<div class="card" style="width: 13rem;" th:each="d:${detail2}">
+				<div class="card" style="width: 13rem; height: 14rem;" th:each="d:${detail2}">
 					<a th:href="@{'/trip/tripDetail/'+${d.trip_no}}" class="card_link" style="height: 150px;">
-						<img th:alt="${d.trip_img}" th:src="@{|/images/${d.trip_img}|}" id="trip_img" class="card-img-top" alt="...">
+						<img th:alt="${d.trip_img}" th:src="@{|/images/${d.trip_img}|}" id="trip_img" class="card-img-top" alt="..." style="height: 150px;">
 					</a>
 					
 					<div class="card-body">
@@ -688,9 +692,9 @@
 			<!-- day3 -->
 			<div id="day3" th:if="${detail3} != null" class="day_container">
 				<h2 class="day_title">DAY 3</h2>
-				<div class="card" style="width: 13rem;" th:each="d:${detail3}">
+				<div class="card" style="width: 13rem; height: 14rem;" th:each="d:${detail3}">
 					<a th:href="@{'/trip/tripDetail/'+${d.trip_no}}" class="card_link" style="height: 150px;">
-						<img th:alt="${d.trip_img}" th:src="@{|/images/${d.trip_img}|}" id="trip_img" class="card-img-top" alt="...">
+						<img th:alt="${d.trip_img}" th:src="@{|/images/${d.trip_img}|}" id="trip_img" class="card-img-top" alt="..." style="height: 150px;">
 					</a>
 					
 					<div class="card-body">
@@ -704,12 +708,12 @@
 			<!-- day4 -->
 			<div id="day4" th:if="${detail4} != null" class="day_container">
 				<h2 class="day_title">DAY 4</h2>
-				<div class="card" style="width: 13rem;" th:each="d:${detail4}">
+				<div class="card" style="width: 13rem; height: 14rem;" th:each="d:${detail4}">
 					<a th:href="@{'/trip/tripDetail/'+${d.trip_no}}" class="card_link" style="height: 150px;">
-						<img th:alt="${d.trip_img}" th:src="@{|/images/${d.trip_img}|}" id="trip_img" class="card-img-top" alt="...">
+						<img th:alt="${d.trip_img}" th:src="@{|/images/${d.trip_img}|}" id="trip_img" class="card-img-top" alt="..." style="height: 150px;">
 					</a>
 					
-					<div class="card-body">
+					<div class="card-body" style="max-height: 200px;">
 						<a th:href="@{'/trip/tripDetail/'+${d.trip_no}}" class="card_link">
 							<h5 style="font-weight: bold; font-size: 12pt" class="card-title" th:text="${d.trip_title}"></h5>
 						</a>
@@ -741,7 +745,7 @@
 					</div>
 					<div style="font-weight: bold; float: left; padding-top: 20px;" id="rec_form_id">아이디</div>
 					<div style="float: left;" id="text_container">
-						<textarea rows="4" cols="105" name="rec_content" id="rec_content"></textarea>
+						<textarea rows="4" cols="105" name="rec_content" id="rec_content" style="resize: none; border-radius: 3px;"></textarea>
 					</div>
 				</form>
 			</div>

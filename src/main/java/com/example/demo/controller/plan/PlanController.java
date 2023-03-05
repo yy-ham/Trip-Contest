@@ -263,7 +263,7 @@ public class PlanController {
 				
 				if(request.getParameter(name) != null && !request.getParameter(name).equals("")) {
 					int trip_no = Integer.parseInt(request.getParameter(name));
-					System.out.println("trip_no:" + trip_no);
+					//System.out.println("trip_no:" + trip_no);
 					planDetailService.insertPlanDetail(p.getPlan_no(), i, trip_no);
 				}else {
 					break;
