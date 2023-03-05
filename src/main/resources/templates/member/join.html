@@ -170,7 +170,7 @@ $(function(){
 		      $("#id").focus();
 		      return false;
 		    }
-		     if($("#pwd").val == " "){
+		    if($("#pwd").val == " "){
 		      alert("비밀번호를 입력해주세요");
 		      $("#pwd").focus();
 		      return false;
@@ -218,7 +218,10 @@ $(function(){
 		     
 		    $('#jumin').val($('#jumin1').val()+"-"+$('#jumin2').val());
 		    $('#addr').val($('#addr1').val()+" "+$('#addr2').val());
+		    
+		    
 		  });
+		  
 		  
 		});
 	$(document).ready(function() {
@@ -279,17 +282,55 @@ $(function(){
 	    });
 	    
 	    
+	    //비밀번호 유효성검사
 	    $(document).ready(function() {
-	        $("#pwd-confirm").on("keyup", function() {
-	            var pwd = $("#pwd").val();
-	            var pwdConfirm = $("#pwd-confirm").val();
-	
-	            if (pwd === pwdConfirm) {
-	                $("#pwd-confirm-message").text("비밀번호가 일치합니다.").css("color", "green");
-	            } else {
-	                $("#pwd-confirm-message").text("비밀번호가 일치하지 않습니다.").css("color", "red");
-	            }
-	        });
+	    	  $("#pwd-confirm").on("keyup", function() {
+	    	    var pwd = $("#pwd").val();
+	    	    var pwdConfirm = $("#pwd-confirm").val();
+	    	    var regex = /^(?=.*?[A-Za-z])(?=.*?[0-9])(?=.*?[^\w\s]).{8,}$/;
+
+	    	    if (pwd === pwdConfirm) {
+	    	      if (regex.test(pwd)) {
+	    	        $("#pwd-confirm-message").text("비밀번호가 일치하며, 유효합니다.").css("color", "green");
+	    	      } else {
+	    	        $("#pwd-confirm-message").text("비밀번호는 영문자,숫자를 포함한8자리 이상이어야 하며, 특수문자는 최소 2개를 포함해야 합니다.").css("color", "red");
+	    	      }
+	    	    } else {
+	    	      $("#pwd-confirm-message").text("비밀번호가 일치하지 않습니다.").css("color", "red");
+	    	    }
+	    	  });
+	    	  $("#name").on("keyup", function() {
+	  	        var name = $(this).val();
+	  	        if (name.length >= 2) {
+	  	            $("#name-message").text("올바른 이름입니다.").css("color", "green");
+	  	        } else {
+	  	            $("#name-message").text("이름은 2글자 이상이어야 합니다.").css("color", "red");
+	  	        }
+	  	        
+	  	    });
+	  	    
+	  	    $("#mail").on("keyup", function() {
+	  	        var email = $(this).val();
+	  	        var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+	  	        if (emailRegex.test(email)) {
+	  	            $("#email-message").text("유효한 이메일 주소입니다.").css("color", "green");
+	  	        } else {
+	  	            $("#email-message").text("유효하지 않은 이메일 주소입니다.").css("color", "red");
+	  	        }
+	  	    });
+	  	    
+	  	  $("#id").on("keyup", function() {
+	          var id = $(this).val();
+	          var idRegex = /^[a-zA-Z0-9]{6,}$/; // id 정규식: 6자 이상, 영문자/숫자 포함
+	          
+	          if (idRegex.test(id)) {
+	              $("#id-message").text("사용 가능한 아이디입니다.").css("color", "green");
+	          } else {
+	              $("#id-message").text("아이디는 6자 이상이어야 하며, 영문자와 숫자로만 구성되어야 합니다.").css("color", "red");
+	          }
+	      });
+	  	    
 	    });
 		// 주소 가져오기
 		$("#addr1").on("click",function(){
@@ -372,7 +413,8 @@ $(document).ready(function() {
 			<div class="col-8">
                 <input type="text" name="id" id="id" th:value="${id}" th:readonly="${id != null}" required>
 				
-            	<button type="button" class="btn btn-outline-success" id="check-duplicate">중복확인</button>
+            	<button type="button" class="btn btn-outline-success" id="check-duplicate">중복확인</button><br>
+            	<span id="id-message" style="font-size: 12px;"></span>
             </div>        	
         </div>
 		<div class="form-group row">
@@ -392,6 +434,7 @@ $(document).ready(function() {
 			<label class="col-form-label col-4">이름</label>
 			<div class="col-8">
                 <input type="text" class="form-control" name="name" id="name" required="required">
+            	<span id="name-message"></span>
             </div>        	
         </div>
         <div class="form-group row">
@@ -437,6 +480,7 @@ $(document).ready(function() {
 			<label class="col-form-label col-4">이메일</label>
 			<div class="col-8">
                 <input type="email" class="form-control" name="mail" id="mail" required="required">
+          	 	<span id="email-message"></span>
             </div>        	
         </div>
         <div class="form-group row">
