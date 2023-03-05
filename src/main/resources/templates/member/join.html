@@ -22,7 +22,7 @@ body {
 	box-shadow: none !important;
 }
 .form-control:focus {
-	border-color: #5cd3b4;
+	border-color: #5DC8CD;
 }
 .form-control, .btn {        
 	border-radius: 3px;
@@ -36,8 +36,8 @@ body {
 	color: #333;
 	margin: 0 0 30px 0;
 	display: inline-block;
-	padding: 0 30px 10px 0;
-	border-bottom: 3px solid #5cd3b4;
+	padding: 0 3px 10px 0;
+	border-bottom: 3px solid #5DC8CD;
 }
 .signup-form form {
 	color: #999;
@@ -59,27 +59,28 @@ body {
 	position: relative;
 	top: 1px;
 }
-.signup-form .btn {        
+#btn_insertMember {        
 	font-size: 16px;
 	font-weight: bold;
-	background: #5cd3b4;
+	background: #5DC8CD;
 	border: none;
 	margin-top: 20px;
 	min-width: 140px;
 }
+
 .signup-form .btn:hover, .signup-form .btn:focus {
-	background: #41cba9;
+	background: #5DC8CD;
 	outline: none !important;
 }
 .signup-form a {
-	color: #5cd3b4;
+	color: #5DC8CD;
 	text-decoration: underline;
 }
 .signup-form a:hover {
 	text-decoration: none;
 }
 .signup-form form a {
-	color: #5cd3b4;
+	color: #5DC8CD;
 	text-decoration: none;
 }	
 .signup-form form a:hover {
@@ -97,15 +98,63 @@ body {
 	border-radius : 3px;
 }
 #phone1,#phone2,#phone3{
-	width : 70px;
+	width : 50px;
 	min-height: 41px;
 	border : none;
 	border : 1px solid #eee;
 	border-radius : 3px;
 }
 
-#jumin1:hover, #jumin2:hover,#phone1:hover,#phone2:hover,#phone3:hover{
-	border : 1px solid #5cd3b4;
+#jumin1:hover, #jumin2:hover,#phone1:hover,#phone2:hover,#phone3:hover,#authCode:hover {
+	border : 1px solid #5DC8CD;
+	outline-color: #5DC8CD;
+}
+#id{
+	width : 130px;
+	min-height: 41px;
+	border : none;
+	border : 1px solid #eee;
+	border-radius : 3px;
+}
+#check-duplicate{
+	position: absolute;
+	top: 2px;
+	left:157px;
+	color: #5DC8CD;
+	border-color: #5DC8CD;
+}
+#check-duplicate:focus, #btn_phone:focus, #btn_authCode:focus{
+	background-color: #5DC8CD;
+	color: #ffffff;
+	border: none;
+	outline:none;
+}
+#check-duplicate:hover ,#btn_phone:hover, #btn_authCode:hover{
+	color: #ffffff;
+}
+#btn_phone{
+	position: absolute;
+	top: 0px;
+	left: 204px;
+	height: 39px;
+	width: 90px;
+	color: #5DC8CD;
+	border-color: #5DC8CD;
+}
+#btn_authCode{
+	position: absolute;
+	top: 0px;
+	left:204px;
+	height: 39px;
+	color: #5DC8CD;
+	border-color: #5DC8CD;
+}
+#authCode{
+	width : 130px;
+	min-height: 41px;
+	border : none;
+	border : 1px solid #eee;
+	border-radius : 3px;
 }
 </style>
 </head>
@@ -120,7 +169,7 @@ $(function(){
 		      alert("아이디를 입력해주세요");
 		      $("#id").focus();
 		      return false;
-		       
+		    }
 		     if($("#pwd").val == " "){
 		      alert("비밀번호를 입력해주세요");
 		      $("#pwd").focus();
@@ -166,9 +215,11 @@ $(function(){
 		      $("#mail").focus();
 		      return false;
 		    }
-		      
-		      }
+		     
+		    $('#jumin').val($('#jumin1').val()+"-"+$('#jumin2').val());
+		    $('#addr').val($('#addr1').val()+" "+$('#addr2').val());
 		  });
+		  
 		});
 	$(document).ready(function() {
     	//휴대폰번호 입력시 다음으로 넘어감
@@ -241,11 +292,12 @@ $(function(){
 	        });
 	    });
 		// 주소 가져오기
-		$("#addr").on("click",function(){
+		$("#addr1").on("click",function(){
 			new daum.Postcode({
 				oncomplete: function(data){
 					var roadAddr = data.roadAddress; // 도로명주소
-					document.getElementById("addr").value = roadAddr;
+					document.getElementById("addr1").value = roadAddr;
+					document.querySelector("input[name=addr2]").focus(); //상세입력 포커싱
 				}
 			}).open();
 		});
@@ -289,6 +341,23 @@ $(function(){
 			});
 		})
 });
+$('#jumin').val(jumin);
+
+$(document).ready(function() {
+    $("#member_img").change(function() {
+      readURL(this);
+    });
+  });
+
+  function readURL(input) {
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        $("#preview").attr("src", e.target.result);
+      }
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
     </script>
 <body>
 <div class="signup-form">
@@ -301,9 +370,9 @@ $(function(){
 		<div class="form-group row">
 			<label class="col-form-label col-4">ID</label>
 			<div class="col-8">
-                <input type="text" class="form-control" name="id" id="id" th:value="${id}" th:readonly="${id != null}" required>
-                <!--  <input type="text" name="id" id="id" required th:value="${id}" th:readonly="${id != null}"><br>-->
-				<button type="button" id="check-duplicate">ID 중복 체크</button><br>
+                <input type="text" name="id" id="id" th:value="${id}" th:readonly="${id != null}" required>
+				
+            	<button type="button" class="btn btn-outline-success" id="check-duplicate">중복확인</button>
             </div>        	
         </div>
 		<div class="form-group row">
@@ -340,21 +409,28 @@ $(function(){
                 <input type="tel" class="phone" name="phone2" id="phone2" maxlength="4" required="required">-
                 <input type="tel" class="phone" name="phone3"  id="phone3" maxlength="4" required="required">
                 <input type="hidden" name="phone" id="phone">
-                <input type="button" value="휴대폰 인증" id='btn_phone'>
+                <button type="button" class="btn btn-outline-success" id="btn_phone">문자인증</button>
             </div>        	
         </div>
         <div class="form-group row">
 			<label class="col-form-label col-4">인증번호</label>
 			<div class="col-8">
-			<input type="text" id="authCode" name="authCode" required="required"><br>
-        	<input type="button" value="인증" id='btn_authCode'>
+			<input type="text" class="form-control" id="authCode" name="authCode" required="required"><br>
+        	<button type="button" class="btn btn-outline-success" id="btn_authCode">인증확인</button>
         	<span id="authResult"></span>
             </div>        	
         </div>
         <div class="form-group row">
 			<label class="col-form-label col-4">주소</label>
 			<div class="col-8">
-                <input type="text" class="form-control" name="addr" id="addr" readonly="readonly">
+                <input type="text" class="form-control" name="addr1" id="addr1" readonly="readonly">
+            </div>        	
+        </div>
+        <div class="form-group row">
+			<label class="col-form-label col-4">상세주소</label>
+			<div class="col-8">
+                <input type="text" class="form-control" name="addr2" id="addr2" required="required">
+                <input type="hidden" name="addr" id="addr">
             </div>        	
         </div>
         <div class="form-group row">
@@ -366,24 +442,18 @@ $(function(){
         <div class="form-group row">
 			<label class="col-form-label col-4">성별</label>
 			<div class="col-8">
-                남성<input type="radio"  name="gender" id="male" value="M" required="required"/><br>
-                
-                여성<input type="radio" name="gender" id="female" value="F" required="required"/>
-                
-            </div>        	
-        </div>
-        <div class="form-group row">
-			<label class="col-form-label col-4">등급</label>
-			<div class="col-8">
-			<select name="grade" id="grade" required>
-				<option value="bronze">일반회원</option>
-			</select>
+                남성&nbsp;&nbsp;<input type="radio"  name="gender" id="male" value="M" required="required"/><br>
+                여성&nbsp;&nbsp;<input type="radio" name="gender" id="female" value="F" required="required"/>
+                <select name="grade" id="grade" required hidden selected>
+				<option value="member">일반회원</option>
+				</select>
             </div>        	
         </div>
         <div class="form-group row">
 			<label class="col-form-label col-4">사진</label>
 			<div class="col-8">
                 <input type="file" class="form-control" name="member_img" id="member_img" required="required">
+                
             </div>        	
         </div>
         
@@ -391,12 +461,14 @@ $(function(){
 		<div class="form-group row">
 			<div class="col-8 offset-4">
 				<p><label class="form-check-label"><input type="checkbox" required="required"> I accept the <a href="#">Terms of Use</a> &amp; <a href="#">Privacy Policy</a>.</label></p>
-				<button type="submit" class="btn btn-primary btn-lg" id="btn_insertMember">Sign Up</button>
+				<button type="submit" class="btn btn-primary btn-lg" id="btn_insertMember">회원가입</button>
 				<!-- <input type="submit" value="create" id="btn_insertMember">-->
 			</div>  
 		</div>		      
     </form>
-	<div class="text-center">Already have an account? <a href="/login">Login here</a></div>
+	<div class="text-center">계정이 있으신가요? <a href="/login">Login here</a></div>
+	<div id="preview"></div>
+	
 </div>
 </body>
 </html>
