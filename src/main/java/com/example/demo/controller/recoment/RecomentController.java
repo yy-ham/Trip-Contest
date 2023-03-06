@@ -25,9 +25,14 @@ public class RecomentController {
 	private RecomentService recomentService;
 	
 	@GetMapping("/recoment/list")
-	public List<Recoment> list(int no) {
+	public List<Recoment> planList(int no) {
 //		model.addAttribute("list", recomentService.findByNoAndType(no, "plan"));
 		return recomentService.findByNoAndType(no, "plan");
+	}
+	
+	@GetMapping("/recoment/tripList")
+	public List<Recoment> tripList(int no) {
+		return recomentService.findByNoAndType(no, "trip");
 	}
 	
 	@GetMapping("/recoment/insert")

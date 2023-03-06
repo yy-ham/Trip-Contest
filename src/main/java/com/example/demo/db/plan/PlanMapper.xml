@@ -48,6 +48,10 @@
 	and l.type = 'plan' and l.member_id = #{id}
   </select>
   
+   <select id="findMyPlanByMemberId" resultType="planVO">
+  	select * from plan where member_id=#{id}
+  </select>
+  
   <select id="NextNo" resultType="java.lang.Integer">
   	select nvl(max(plan_no), 0) + 1 from plan
   </select>

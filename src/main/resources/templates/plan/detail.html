@@ -236,14 +236,14 @@
 		</tr>
 			
 		<tr th:each="p:${plan}">
-			<td th:text="${p.plan_title}" id="plan_title"></td>
+			<td th:text="${p.planTitle}" id="plan_title"></td>
 			<td th:text="${region}"></td>
-			<td th:text="${p.member_id}"></td>
-			<td th:text="${p.plan_date}"></td>
-			<td th:text="${p.plan_hit}"></td>
-			<td th:text="${p.plan_img}" id="plan_img"></td>
-			<td th:text="${p.plan_start}"></td>
-			<td th:text="${p.plan_end}"></td>
+			<td th:text="${p.memberId}"></td>
+			<td th:text="${p.planDate}"></td>
+			<td th:text="${p.planHit}"></td>
+			<td th:text="${p.planImg}" id="plan_img"></td>
+			<td th:text="${p.planStart}"></td>
+			<td th:text="${p.planEnd}"></td>
 		</tr>
 	</table>
 	<br>
@@ -260,9 +260,9 @@
 		<div th:if="${detail1} != null">
 		<h2>DAY 1</h2>
 			<div th:each="d:${detail1}">
-				<span th:text="${d.trip_no}" id="trip_no"></span><br>
-				<span th:text="${d.trip_title}"></span><br>
-				<span th:text="${d.trip_img}"></span><br>
+				<span th:text="${d.tripNo}" id="trip_no"></span><br>
+				<span th:text="${d.tripTitle}"></span><br>
+				<span th:text="${d.tripImg}"></span><br>
 				<br>
 			</div>
 		</div>
@@ -270,9 +270,9 @@
 		<div th:if="${detail2} != null">
 		<h2>DAY 2</h2>
 			<div th:each="d:${detail2}">
-				<span th:text="${d.trip_no}"></span><br>
-				<span th:text="${d.trip_title}"></span><br>
-				<span th:text="${d.trip_img}"></span><br>
+				<span th:text="${d.tripNo}"></span><br>
+				<span th:text="${d.tripTitle}"></span><br>
+				<span th:text="${d.tripImg}"></span><br>
 				<br>
 			</div>
 		</div>
@@ -280,9 +280,9 @@
 		<div th:if="${detail3} != null">
 		<h2>DAY 3</h2>
 			<div th:each="d:${detail3}">
-				<span th:text="${d.trip_no}"></span><br>
-				<span th:text="${d.trip_title}"></span><br>
-				<span th:text="${d.trip_img}"></span><br>
+				<span th:text="${d.tripNo}"></span><br>
+				<span th:text="${d.tripTitle}"></span><br>
+				<span th:text="${d.tripImg}"></span><br>
 				<br>
 			</div>
 		</div>
@@ -290,9 +290,9 @@
 		<div th:if="${detail4} != null">
 		<h2>DAY 4</h2>
 			<div th:each="d:${detail4}">
-				<span th:text="${d.trip_no}"></span><br>
-				<span th:text="${d.trip_title}"></span><br>
-				<span th:text="${d.trip_img}"></span><br>
+				<span th:text="${d.tripNo}"></span><br>
+				<span th:text="${d.tripTitle}"></span><br>
+				<span th:text="${d.tripImg}"></span><br>
 				<br>
 			</div>
 		</div>

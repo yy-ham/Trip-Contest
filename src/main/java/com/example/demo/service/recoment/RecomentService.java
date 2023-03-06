@@ -24,14 +24,6 @@ public class RecomentService {
 		return dao.findByNoAndType(no, type);
 	}
 	
-	public void saveRecoment(Recoment re) {
-		dao.save(re);
-	}
-	
-	public void deleteByRecNo(int rec_no) {
-		dao.deleteById(rec_no);
-	}
-	
 	public int insertRecoment(RecomentVO r) {
 		return RecomentDBManager.insertRecoment(r);
 	}

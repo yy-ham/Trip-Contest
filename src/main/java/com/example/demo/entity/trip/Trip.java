@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.entity.korea.Korea;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -19,11 +19,8 @@ public class Trip {
     @Column(name = "trip_title")
     private String tripTitle;
 
-    @Column(name = "korea_code")
-    private int koreaCode;
-
     @ManyToOne
-    @JoinColumn(name = "code")
+    @JoinColumn(name = "korea_code", insertable=true, updatable=true)
     private Korea korea;
 
     @Column(name = "trip_addr")
@@ -62,5 +59,10 @@ public class Trip {
 
     private String state;
 
-    private Date writedate;
+    private LocalDateTime writedate;
+    
+    @PrePersist
+    public void writedate() {
+        this.writedate = LocalDateTime.now();
+    }
 }

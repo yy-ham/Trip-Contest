@@ -5,7 +5,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
-import com.example.demo.vo.trip.ImgVO;
+import com.example.demo.vo.img.ImgVO;
 import com.example.demo.vo.trip.TripVO;
 
 import java.io.InputStream;
@@ -70,8 +70,8 @@ public class TripDBManager {
         return tripImgList;
     }
 
-    // 나머지 이미지들 저장
-    public static int insert(ImgVO imgVO){
+ // 나머지 이미지들 저장
+    public static int insertTripImg(ImgVO imgVO){
         int re = -1;
         SqlSession session = sqlSessionFactory.openSession(true);
         re = session.insert("trip.insertTripImg", imgVO);
@@ -90,24 +90,34 @@ public class TripDBManager {
         return re;
     }
 
-
-    // 찜하기
-    public static int updateTripLiked(int tripNo){
+    // 파일명으로 이미지 테이블의 이미지들 삭제
+    public static int deleteTripImgByFname(String fname){
         int re = -1;
         SqlSession session = sqlSessionFactory.openSession(true);
-        re = session.update("trip.updateTripLiked", tripNo);
+        re = session.delete("trip.deleteTripImgByFname", fname);
         session.close();
 
         return re;
     }
 
-    // 찜 취소
-    public static int updateTripNoLiked(int tripNo){
-        int re = -1;
-        SqlSession session = sqlSessionFactory.openSession(true);
-        re = session.update("trip.updateTripNoLiked", tripNo);
+   // tripNo로 지역명 찾기
+    public static String getRegionByTripNo(int tripNo) {
+    	SqlSession session = sqlSessionFactory.openSession();
+    	String region = "";
+    	region = session.selectOne("trip.getRegionByTripNo", tripNo);
         session.close();
 
-        return re;
+    	return region;
     }
+    
+    // 지역명으로 koreaCode 찾기
+    public static int getKoreaCodeByRegion(String region) {
+    	SqlSession session = sqlSessionFactory.openSession();
+    	int koreaCode = 0;
+    	koreaCode = session.selectOne("trip.getKoreaCodeByRegion", region);
+    	session.close();
+    	
+    	return koreaCode;
+    }
+   
 }

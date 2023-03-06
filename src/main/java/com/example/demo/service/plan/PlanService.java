@@ -73,6 +73,11 @@ public class PlanService {
 		return PlanDBManager.likedFindByMemberId(member_id);
 	}
 	
+	//회원의 여행계획 목록
+		public List<PlanVO> findMyPlanByMemberId(String member_id){
+			return PlanDBManager.findMyPlanByMemberId(member_id);
+		}
+	
 	//여행일수 계산
 	public int countDaysByPlanNo(int plan_no) {
 		return dao.countDaysByPlanNo(plan_no);

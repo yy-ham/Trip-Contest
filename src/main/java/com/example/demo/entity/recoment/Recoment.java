@@ -25,9 +25,12 @@ public class Recoment {
 	@Column(name = "rec_no")
 	private int recNo;
 	
-	private String member_id;
-	private String rec_content;
+	@Column(name = "member_id")
+	private String memberId;
+	@Column(name = "rec_content")
+	private String recContent;
 	private int no;
 	private String type;
-	private Date rec_date;
+	@Column(name = "rec_date")
+	private Date recDate;
 }

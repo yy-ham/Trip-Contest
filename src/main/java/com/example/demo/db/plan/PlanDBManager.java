@@ -73,6 +73,14 @@ public class PlanDBManager {
 		return list;
 	}
 	
+	///회원의 여행계획 목록
+		public static List<PlanVO> findMyPlanByMemberId(String member_id) {
+			List<PlanVO> list = null;
+			SqlSession session = sqlSessionFactory.openSession();
+			list = session.selectList("plan.findMyPlanByMemberId", member_id);
+			session.close();
+			return list;
+		}
 	
 	//여행계획 검색
 	public static List<Plan> searchPlan(HashMap<String, Object> map){
