@@ -4,7 +4,8 @@
 .gnb_box{height:62px;position:relative;}
 .gnb_login_btn{width:63px;height:29px;line-height:29px;border:solid #f7870f 1px;border-left:0px;margin-top:29%;text-align:center;color:#fff;cursor:pointer;background:#ff9320;}
 body{font-family:nanum;}
-.wrap {margin: 0% 7%; position: relative;}
+.header2{margin: 0% 7%; position: relative;}
+.wrap{width:1092px;margin:0 auto;position:relative;}
 .fl{float:left;}
 .fr{float:right;}
 .dropdown {
