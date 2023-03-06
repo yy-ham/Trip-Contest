@@ -16,7 +16,6 @@
         <if test="region != null and region != '' and region != 0">
             AND p.korea_code = #{region}
         </if>
-        
         <if test="orderColumn != null and orderColumn != ''">
             order by ${orderColumn} desc
         </if>
