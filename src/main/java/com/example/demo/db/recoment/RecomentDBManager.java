@@ -2,14 +2,12 @@ package com.example.demo.db.recoment;
 
 import java.io.InputStream;
 import java.util.HashMap;
-import java.util.List;
 
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
-import com.example.demo.entity.plan.Plan;
 import com.example.demo.vo.recoment.RecomentVO;
 
 public class RecomentDBManager {
@@ -25,6 +23,7 @@ public class RecomentDBManager {
 		}
 	}
 	
+	//댓글 등록하기
 	public static int insertRecoment(RecomentVO r) {
 		int re = -1;
 		SqlSession session = sqlSessionFactory.openSession();
@@ -34,6 +33,7 @@ public class RecomentDBManager {
 		return re;
 	}
 	
+	//댓글 수정하기
 	public static int updateRecoment(HashMap<String, Object> map) {
 		int re = -1;
 		SqlSession session = sqlSessionFactory.openSession();

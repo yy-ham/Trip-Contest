@@ -3,11 +3,13 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="recoment">
+	<!-- 댓글 등록하기 -->
 	<insert id="insertRecoment" parameterType="recomentVO">
 		insert into recoment(rec_no, member_id, rec_content, no, type, rec_date) 
 		values(seq_recoment.nextval, #{member_id}, #{rec_content}, #{no}, #{type}, sysdate)
 	</insert>
 	
+	<!-- 댓글 수정하기 -->
 	<update id="updateRecoment" parameterType="recomentVO">
 		update recoment set rec_content = #{rec_content} where rec_no = #{rec_no}
 	</update>

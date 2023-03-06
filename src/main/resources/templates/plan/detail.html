@@ -297,12 +297,8 @@
 			$("#btn_container").css("display", "none");
 		}
 		$("#rec_form_id").html(login);
-		console.log(";");
-			
-		
-		
-		
 
+		
 		//댓글 목록 가져오기
 		function listRecoment(no){
 			$.ajax({
@@ -408,7 +404,7 @@
 						console.log(re);
 						$("#rec_content").val("");
 						listRecoment(no);
-						
+						$("#insertRecoment").css("display", "inline-block");
 					}
 				});
 	

@@ -4,6 +4,8 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="plan"> 
   <!-- 여행계획 목록 페이지 -->
+  	
+  	<!-- 여행계획 전체 목록 불러오기 -->
 	<select id="findAll" resultType="planVO">
         select * from(select rownum n, a.* from(select * from plan p where p.plan_hit >=0
         <if test="keyword != null and keyword != ''">
@@ -21,8 +23,8 @@
          )a) where n between #{start} and #{end}
     </select>
   
-
- <select id="totalRecord" resultType="java.lang.Integer">
+<!-- 여행계획 목록 전체 레코드 수 가져오기 -->
+ <select id="getTotalRecord" resultType="java.lang.Integer">
   	select count(*) from plan 
         <if test="keyword != null and keyword != ''">
             where (plan_title like '%' || #{keyword} || '%' or (select distinct  k.code  from plan p , korea k where p.korea_code = k.code 
@@ -38,16 +40,12 @@
         </if>
   </select>
   
-  <select id="likedFindByMemberId" resultType="planVO">
+ <!--  <select id="likedFindByMemberId" resultType="planVO">
 	select p.* from plan p, liked l
 	where p.plan_no = l.NO
 	and l.type = 'plan' and l.member_id = #{id};
-  </select>
+  </select> -->
   
-  <select id="NextNo" resultType="java.lang.Integer">
-  	select nvl(max(plan_no), 0) + 1 from plan;
-  </select>
-   
   <update id="insertLiked" parameterType="planVO">
   	update plan set plan_liked = plan_liked + 1 where plan_no = #{plan_no};
   </update>
@@ -56,6 +54,7 @@
   	update plan set plan_liked = plan_liked - 1 where plan_no = #{plan_no}
   </update>
    
+   <!-- 여행계획 등록 -->
    <insert id="insertPlan" parameterType="planVO">
 	insert into Plan(plan_no, member_id, plan_title, plan_date, plan_start, plan_end, 
 	plan_hit, plan_liked, plan_img, korea_code)
@@ -63,13 +62,15 @@
 	0, 0, #{plan_img}, #{korea_code})
    </insert>
    
+   <!-- 여행계획 수정 -->
    <update id="updatePlan" parameterType="planVO">
    	update plan set plan_title = #{plan_title}, plan_date = sysdate, plan_start = #{plan_start},
    	plan_end = #{plan_end}, plan_img = #{plan_img}, korea_code = #{korea_code}
    	where plan_no = #{plan_no}
    </update>
    
-   <select id="count" resultType="java.lang.Integer">
+   <!-- 여행계획 작성 - 날짜 변경하면 여행일수 가져오기 -->
+   <select id="countDaysInInsert" resultType="java.lang.Integer">
    	SELECT TO_DATE(#{plan_end}, 'YYYY-MM-DD') - TO_DATE(#{plan_start}, 'YYYY-MM-DD') + 1 FROM dual
    </select>
    
@@ -91,9 +92,5 @@
         order by trip_no) a) where n between #{start} and #{end}
     </select>
   
-  <!-- 여행계획 수정 시 이미 선택한 목록 불러오기 -->
-  <select id="findByTripNoInUpdate" resultType="tripVO">
-  	select * from trip where trip_no = #{trip_no}
-  
-  </select>
+
 </mapper>

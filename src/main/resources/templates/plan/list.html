@@ -210,6 +210,11 @@
 		margin-top: 40px;
 	}
 	
+	.highlight{
+		font-weight: bold;
+		color: #5CD1E5;
+	}
+	
 	
 </style>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
@@ -217,9 +222,9 @@
 	$(function(){
 		var login = $("#login_user").val();
 		
-		$("#header_title").click(function(){
+		/* $("#header_title").click(function(){
 			location.href = "/plan/list";
-		});
+		}); */
 			
 		//로그인한 아이디가 찜한 게시물 표시
 		function getUserLiked(login){
@@ -367,6 +372,48 @@
 			}
 		});
 		
+		//페이징 상태유지
+		var num = $("#num").val();
+		$("li[num="+num+"]").addClass("active");
+				
+		/* var page_item = $(".page-item");
+		$(page_item).each(function(){
+			console.log(this);
+			console.log($(this).attr("num"));
+		}); */
+		//orderColumn 상태유지
+		var order = $("#order").val();
+		$("#"+order).addClass("highlight");
+		
+		//
+		$("#region").change(function(){
+			var korea_code = $("#region").val();
+			var src ="/images/main.png";
+			var region = "";
+			switch(korea_code){
+				case "1": region = "서울"; src = "/images/main.png"; break;
+				case "2": region = "경기"; src = "/images/main_gyeonggi.jpeg"; break;
+				case "3": region = "인천"; src = "/images/main_incheon.jpeg"; break;
+				case "4": region = "강원"; src = "/images/main_gangwon.jpeg"; break;
+				case "5": region = "충남"; src = "/images/main_chungnam.jpeg"; break;
+				case "6": region = "세종"; src = "/images/main_sejong.jpeg"; break;
+				case "7": region = "대전"; src = "/images/main_daejeon.jpeg"; break;
+				case "8": region = "충복"; src = "/images/main_chungbuk.jpeg"; break;
+				case "9": region = "경북"; src = "/images/main_gyeongbuk.jpeg"; break;
+				case "10": region = "대구"; src = "/images/main_daegu.jpeg"; break;
+				case "11": region = "울산"; src = "/images/main_ulsan.jpeg"; break;
+				case "12": region = "경남"; src = "/images/main_gyeongnam.jpg"; break;
+				case "13": region = "부산"; src = "/images/main_busan.jpeg"; break;
+				case "14": region = "전북"; src = "/images/main_jeonbuk.jpeg"; break;
+				case "15": region = "전남"; src = "/images/main_jeonnam.jpg"; break;
+				case "16": region = "광주"; src = "/images/main_gwangju.jpeg"; break;
+				case "17": region = "제주"; src = "/images/main_jeju.jpg"; break;
+				default: region = "전국"; src = "/images/main.png"; break;
+			}
+			console.log("지역:" + region);
+			$("#header_title").html(region);
+			$("#banner").attr("src", src);
+		});
 		
 	});
 </script>
@@ -389,7 +436,7 @@
 	<!-- 헤더 이미지 박스 -->
 	<div id="header_img">
 		<h1 id="header_title">전국</h1>
-		<img alt="" src="/images/main.png" style="width: 100%; height: 100%; z-index: 1; margin: auto;">
+		<img id="banner" alt="" src="/images/main.png" style="width: 100%; height: 100%; z-index: 1; margin: auto;">
 	</div>
 	
 	<div id="search_order_container">
@@ -412,17 +459,17 @@
 					
 			</form>
 		</div>
-	
+		<input type="hidden" id="order" th:value=${orderColumn}>
 		<div id="order_container" th:if="${keyword == null}">
-			<a th:href="@{|/plan/list?orderColumn=plan_date&pageNUM=${pageNUM}&amp;region=${region}|}" th:text="업데이트순"></a>&nbsp;&nbsp;
-		 	<a th:href="@{|/plan/list?orderColumn=plan_hit&pageNUM=${pageNUM}&amp;region=${region}|}" th:text="조회순"></a>&nbsp;&nbsp;
-			<a th:href="@{|/plan/list?orderColumn=plan_liked&pageNUM=${pageNUM}&amp;region=${region}|}" th:text="좋아요순"></a>
+			<a class="order" id="plan_date" th:href="@{|/plan/list?orderColumn=plan_date&pageNUM=${pageNUM}&amp;region=${region}|}" th:text="업데이트순"></a>&nbsp;&nbsp;
+		 	<a class="order" id="plan_hit" th:href="@{|/plan/list?orderColumn=plan_hit&pageNUM=${pageNUM}&amp;region=${region}|}" th:text="조회순"></a>&nbsp;&nbsp;
+			<a class="order" id="plan_liked" th:href="@{|/plan/list?orderColumn=plan_liked&pageNUM=${pageNUM}&amp;region=${region}|}" th:text="좋아요순"></a>
 		</div>
 		
 		<div id="order_container" th:if="${keyword != null}">
-			<a th:href="@{|/plan/list?orderColumn=plan_date&pageNUM=${pageNUM}&keyword=${keyword}&amp;region=${region}|}" th:text="업데이트순"></a>&nbsp;&nbsp;
-		 	<a th:href="@{|/plan/list?orderColumn=plan_hit&pageNUM=${pageNUM}&keyword=${keyword}&amp;region=${region}|}" th:text="조회순"></a>&nbsp;&nbsp;
-			<a th:href="@{|/plan/list?orderColumn=plan_liked&pageNUM=${pageNUM}&keyword=${keyword}&amp;region=${region}|}" th:text="좋아요순"></a>
+			<a class="order" id="plan_date" th:href="@{|/plan/list?orderColumn=plan_date&pageNUM=${pageNUM}&keyword=${keyword}&amp;region=${region}|}" th:text="업데이트순"></a>&nbsp;&nbsp;
+		 	<a class="order" id="plan_hit" th:href="@{|/plan/list?orderColumn=plan_hit&pageNUM=${pageNUM}&keyword=${keyword}&amp;region=${region}|}" th:text="조회순"></a>&nbsp;&nbsp;
+			<a class="order" id="plan_liked" th:href="@{|/plan/list?orderColumn=plan_liked&pageNUM=${pageNUM}&keyword=${keyword}&amp;region=${region}|}" th:text="좋아요순"></a>
 		</div>
 	
 	</div>
@@ -432,7 +479,7 @@
 		<!-- 여행계획 목록 -->
 		<div id="content" class="container">
 			<div class="row row-cols-md-4 row-cols-2 g-4" style="">
-				<div class="col-3" th:each="p:${list}" style="width: 17rem;margin: auto;">
+				<div class="col-3" th:each="p:${list}" style="width: 17rem; margin-right: 20px; margin-left: 28px;">
 					<div class="card" style="width: 17rem; height: 21rem;">
 						<a th:href="@{'/plan/detail/'+${p.plan_no}}" class="card_link" style="height: 200px;">
 							<img th:src="@{|/images/${p.plan_img}|}" class="card-img-top" alt="...">
@@ -463,18 +510,44 @@
 	
  	<div id="page_container">
  		<div id="page">
-		 	<span th:if="${startPage} > 1 ">
+		 	<!-- <span th:if="${startPage} > 1">
 				<a th:href="@{|/plan/list?region=${region}&orderColumn=${orderColumn}&pageNUM=${startPage-1}|}" th:text="|<|"></a>&nbsp;&nbsp;
 			</span>
-			<span th:each="page : ${#numbers.sequence(startPage,endPage)}" th:if="${keyword != null } ">
+	
+			<span th:each="page : ${#numbers.sequence(startPage,endPage)}" th:if="${keyword != null}">
 				<a id="page_num" th:text="${page}" th:href="@{|/plan/list?keyword=${keyword}&amp;region=${region}&orderColumn=${orderColumn}&pageNUM=${page}|}"></a>&nbsp;&nbsp;
 			</span>
-			<span th:each="page : ${#numbers.sequence(startPage,endPage)}" th:if="${keyword == null} ">
+			<span th:each="page : ${#numbers.sequence(startPage,endPage)}" th:if="${keyword == null}">
 				<a id="page_num" th:text="${page}" th:href="@{|/plan/list?region=${region}&orderColumn=${orderColumn}&pageNUM=${page}|}"></a>&nbsp;&nbsp;
 			</span>
-			<span th:if="${endPage} < ${totalPage }">
+			<span th:if="${endPage} < ${totalPage}">
 				<a id="page_num" th:href="@{|/plan/list?region=${region}&orderColumn=${orderColumn}&pageNUM=${endPage+1}|}" th:text="|>|"></a>&nbsp;&nbsp;
-			</span>
+			</span> -->
+			
+			
+			
+			<nav aria-label="Page navigation example">
+				<input type="hidden" id="num" th:value="${pageNUM}">
+			  <ul class="pagination">
+			    <li class="page-item" th:if="${startPage} > 1">
+			      <a class="page-link" th:href="@{|/plan/list?region=${region}&orderColumn=${orderColumn}&pageNUM=${startPage-1}|}" aria-label="Previous">
+			        <span aria-hidden="true">&laquo;</span>
+			      </a>
+			    </li>
+			    <li th:num="${page}" class="page-item" th:each="page : ${#numbers.sequence(startPage,endPage)}" th:if="${keyword != null}">
+			    	<a id="page_num" th:text="${page}" class="page-link" th:href="@{|/plan/list?keyword=${keyword}&amp;region=${region}&orderColumn=${orderColumn}&pageNUM=${page}|}"></a>
+			    </li>
+			    <li th:num="${page}" class="page-item" th:each="page : ${#numbers.sequence(startPage,endPage)}" th:if="${keyword == null}">
+			    	<a id="page_num" th:text="${page}" class="page-link" th:href="@{|/plan/list?region=${region}&orderColumn=${orderColumn}&pageNUM=${page}|}"></a>
+			    </li>
+
+			    <li class="page-item" th:if="${endPage} < ${totalPage}">
+			      <a id="page_num" th:href="@{|/plan/list?region=${region}&orderColumn=${orderColumn}&pageNUM=${endPage+1}|}" class="page-link" href="#" aria-label="Next">
+			        <span aria-hidden="true">&raquo;</span>
+			      </a>
+			    </li>
+			  </ul>
+			</nav>
  		</div>
 	</div> 
 	

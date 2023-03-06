@@ -35,22 +35,13 @@ public class PlanDBManager {
 		session.close();
 		return list;
 	}
-	
 
-	//여행계획 목록 (지역별)
-	public static List<Plan> findByRegion(HashMap<String, Object> map){
-		List<Plan> list = null;
-		SqlSession session = sqlSessionFactory.openSession();
-		list = session.selectList("plan.findByRegion", map);
-		session.close();
-		return list;
-	}
 	
 	//여행계획 목록 전체 레코드 수 가져오기
 	public static int getTotalRecord(HashMap<String, Object> map) {
 		int total = -1;
 		SqlSession session = sqlSessionFactory.openSession();
-		total = session.selectOne("plan.totalRecord", map);
+		total = session.selectOne("plan.getTotalRecord", map);
 		session.close();
 		return total;
 	}
@@ -64,14 +55,6 @@ public class PlanDBManager {
 		return no;
 	}
 	
-	//회원이 찜한 여행계획 목록
-	public static List<Plan> likedFindByMemberId(String member_id) {
-		List<Plan> list = null;
-		SqlSession session = sqlSessionFactory.openSession();
-		list = session.selectList("plan.NextNo", member_id);
-		session.close();
-		return list;
-	}
 	
 	//여행일수 계산
 	public static int countDaysByPlanNo(int plan_no) {
@@ -82,35 +65,10 @@ public class PlanDBManager {
 		return cnt;
 	}
 	
-	//여행계획 검색
-	public static List<Plan> searchPlan(HashMap<String, Object> map){
-		List<Plan> list = null;
-		SqlSession session = sqlSessionFactory.openSession();
-		list = session.selectList("plan.searchPlan", map);
-		session.close();
-		return list;
-	}
 
-	//ajax?
-//	//여행계획 찜하기
-//	public static List<Plan> searchPlan(HashMap<String, Object> map){
-//		List<Plan> list = null;
-//		SqlSession session = sqlSessionFactory.openSession();
-//		list = session.selectList("plan.searchPlan", map);
-//		session.close();
-//		return list;
-//	}
-//	
-//	//여행계획 찜 취소하기
-//	public static List<Plan> searchPlan(HashMap<String, Object> map){
-//		List<Plan> list = null;
-//		SqlSession session = sqlSessionFactory.openSession();
-//		list = session.selectList("plan.searchPlan", map);
-//		session.close();
-//		return list;
-//	}
-	
-	public static int insert(PlanVO plan) {
+
+
+	public static int insertPlan(PlanVO plan) {
 		int re = -1;
 		SqlSession session = sqlSessionFactory.openSession();
 		re = session.insert("plan.insertPlan", plan);
@@ -128,10 +86,10 @@ public class PlanDBManager {
 		return re;
 	}
 	
-	public static int count(HashMap<String, Object> map) {
+	public static int countDaysInInsert(HashMap<String, Object> map) {
 		int re = -1;
 		SqlSession session = sqlSessionFactory.openSession();
-		re = session.selectOne("plan.count", map);
+		re = session.selectOne("plan.countDaysInInsert", map);
 		session.close();
 		return re;
 	}
@@ -152,12 +110,6 @@ public class PlanDBManager {
 		return list;
 	}
 
-	public static TripVO findByTripNoInUpdate(int trip_no) {
-		TripVO trip = null;
-		SqlSession session = sqlSessionFactory.openSession();
-		trip = session.selectOne("plan.findByTripNoInUpdate", trip_no);
-		session.close();
-		return trip;
-	}
+
 	
 }
