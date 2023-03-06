@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <title>Insert title here</title> 
 <link rel="stylesheet" type="text/css" href="/css/mainpage.css/">
- <link rel="stylesheet" type="text/css" href="/css/mainpage2.css/"> 
+<link rel="stylesheet" type="text/css" href="/css/header.css/">
+<link rel="stylesheet" type="text/css" href="/css/mainpage2.css/">
 <link rel="stylesheet" type="text/css" href="/css/tripsearchpage.css/">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous"/>
 <link rel="stylesheet" type="text/css" href="/css/header.css/">
@@ -20,6 +21,19 @@
 	height:200px;
 }	
 
+/* .list-group {
+    --bs-list-group-border-radius: 20px;
+    --bs-list-group-border-width: 4px;
+
+--bs-border-color: #E4E1FF;
+	margin-bottom: 15px;
+	border-width: 20px;
+}
+.mb-1 {
+    margin-bottom: 0.25rem!important;
+    margin-top: 4px;
+}
+0 */
 </style>
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.2.min.js"></script>
 <script type="text/javascript"> 
@@ -134,7 +148,7 @@
 
         $.ajax({
             
-            url : "/regionajax",
+            url : "/planajax",
             cache : false,
             headers : {"cache-control":"no-cache","pragma":"no-cache"},
             data : {
@@ -153,44 +167,61 @@
             }//error
         })//ajax
     });//button click 
- 
+    $(".zone_wrap .list_zone .swiper-slide").click(function(){
+    	  $(".zone_wrap .list_zone .swiper-slide").removeClass("on"); // 모든 버튼의 active 클래스를 제거합니다.
+    	  $(this).addClass("on"); // 클릭된 버튼에 active 클래스를 추가합니다.
+    	  
+    	  // 이하 코드 생략
+    	});
 }); 
 </script>
 </head>
 <body>
 <body>
  	<div id="header">
-		<div class="wrap">
+	
 			<h1 class="logo fl" alt="전국여행자랑">
 				<a href="#">
 					<img src="/images/전국여행자랑.jpg" alt="전국여행자랑" >
 				</a>
 			</h1>
 <div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+  <button class="btn btn-secondary dropdown-toggle disabled"  data-bs-toggle="dropdown" aria-expanded="false">
     플래너
   </button>
   <ul class="dropdown-menu">
     <li><a class="dropdown-item" href="#">플래너 리스트</a></li>
     <li><a class="dropdown-item" href="#">플래너 작성</a></li>
   </ul>
-  <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+</div>
+
+<div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle disabled" type="button" data-bs-toggle="dropdown" aria-expanded="false">
     여행지
   </button>
   <ul class="dropdown-menu">
     <li><a class="dropdown-item" href="#">여행지 탐색</a></li>
     <li><a class="dropdown-item" href="#">여행지 리스트</a></li>
   </ul>
-  <button class="btn btn-secondary dropdown-toggle" type="button"><a href="#">관심목록</a></button>
-</div> 
+</div>
+
+<div class="dropdown">
+  <a><button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" href="#">
+    관심목록
+  </button></a>
+  </ul>
+</div>
+
+
+		
 		<div class="fr gnb_box">
 			<a href="#" class="fr">
 				<div class ="f1 gnb_login_btn">로그인</div>
 			</a>
 			</div>
-			<div class="clear"></div> 
+			<div class="clear"></div>
 		</div>
-	</div>
+
 	<div class="clear"></div>
 	<div class="zone_wrap">
 		<div class="list_zone">
@@ -241,7 +272,7 @@
 						
 							</div>	
 					<div id="arearight">
-						<div class="page_desc" style="color: black;">여행지 플래너</div>
+						<div class="page_desc" style="color: black; padding-top: 0px;margin-bottom: 10px;">여행지 플래너</div>
 							<div id="plan_container">
 							<div class="list-group">
 							  <a href="#" class="list-group-item list-group-item-action" th:each="plan:${PlanSearch}" >
