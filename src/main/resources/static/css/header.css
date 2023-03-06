@@ -2,14 +2,13 @@
 .logo{margin-right:13px;padding-top:11px;cursor:pointer;}
 .gnb{height:62px;line-height:62px;font-family:nanum_b;font-size:16px; overflow:hidden;font-weight:bold;}
 .gnb_box{height:62px;position:relative;}
-.gnb_login_btn{width:63px;height:29px;line-height:29px;border:solid #f7870f 1px;border-left:0px;margin-top:17px;text-align:center;color:#fff;cursor:pointer;background:#ff9320;}
+.gnb_login_btn{width:63px;height:29px;line-height:29px;border:solid #f7870f 1px;border-left:0px;margin-top:29%;text-align:center;color:#fff;cursor:pointer;background:#ff9320;}
 body{font-family:nanum;}
-.wrap{width:1092px;margin:0 auto;position:relative;}
+.wrap {margin: 0% 7%; position: relative;}
 .fl{float:left;}
 .fr{float:right;}
 .dropdown {
-	
-	padding-left: 114px;
+  padding-left: 5.4%;
   position: relative;
   display: inline-block;
   
@@ -21,7 +20,7 @@ body{font-family:nanum;}
 }
 
 .dropdown-menu {
-  left: 100px;
+  left: 16%;
   position: absolute;
   top: 100%;
   z-index: 1000;
@@ -75,7 +74,7 @@ body{font-family:nanum;}
 }
 
 .btn {
-    --bs-btn-padding-x: 112px;
+    --bs-btn-padding-x: 9rem;
     --bs-btn-padding-y: 1.375rem;
 --bs-btn-font-size: 19px;
 --bs-btn-line-height: 16.5px;
