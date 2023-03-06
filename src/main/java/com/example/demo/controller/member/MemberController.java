@@ -81,7 +81,6 @@ public class MemberController {
 			//System.out.println("path:"+path);
 			
 	        String fname = "";
-	        
 	        List<String> fnameList = new ArrayList<>();
 	        //System.out.println("fileList:"+fileList);
 	        for(MultipartFile uploadFile : fileList) {
@@ -102,6 +101,8 @@ public class MemberController {
 				}
 
 	        }
+	        
+	        
 	        member.setMemberImg(fnameList.get(0));
 	        //System.out.println("첫번째 사진 이름: "+fnameList.get(0));
 	        if(fnameList.size()>1) {
@@ -112,6 +113,7 @@ public class MemberController {
 		        	memberService.insertMember(m1);
 		        }
 	        }else {
+		        member.setMemberImg("profile.png");
 	        	memberService.insertMember(member);
 	        }
 	        Optional<com.example.demo.entity.member.Member> insertedMember=memberService.findById(id);
@@ -119,6 +121,7 @@ public class MemberController {
 		    if (insertedMember.isPresent()) {
 		        mav.setViewName("redirect:/join_success");
 		    } else {
+		    	
 		        mav.setViewName("redirect:/join_fail");
 		    }
 			return mav;
@@ -339,7 +342,8 @@ public class MemberController {
 		            editedMember.setMemberImg(fnameList.get(0));
 //		            System.out.println("수정, 첫번째 사진 이름: "+fnameList.get(0));
 	    }
-	        memberService.updateMember(editedMember);
+	        	memberService.updateMember(editedMember);
+	        
           return mav;
 	    }
 //	  나의 여행계획 정보 getmapping

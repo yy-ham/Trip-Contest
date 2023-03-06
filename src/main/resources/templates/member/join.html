@@ -164,7 +164,7 @@ body {
 <script> 
 $(function(){
 	$(document).ready(function(){
-		  $("form").submit(function(){
+		  $("form").submit(function(event){
 		    if($("#id").val == " "){
 		      alert("아이디를 입력해주세요");
 		      $("#id").focus();
@@ -218,7 +218,6 @@ $(function(){
 		     
 		    $('#jumin').val($('#jumin1').val()+"-"+$('#jumin2').val());
 		    $('#addr').val($('#addr1').val()+" "+$('#addr2').val());
-		    
 		    
 		  });
 		  
@@ -496,7 +495,7 @@ $(document).ready(function() {
         <div class="form-group row">
 			<label class="col-form-label col-4">사진</label>
 			<div class="col-8">
-                <input type="file" class="form-control" name="member_img" id="member_img" required="required">
+                <input type="file" class="form-control" th:value="@{|/images/profile.png|}" name="member_img" id="member_img">
                 
             </div>        	
         </div>
@@ -504,7 +503,7 @@ $(document).ready(function() {
         
 		<div class="form-group row">
 			<div class="col-8 offset-4">
-				<p><label class="form-check-label"><input type="checkbox" required="required"> I accept the <a href="#">Terms of Use</a> &amp; <a href="#">Privacy Policy</a>.</label></p>
+				<p><label class="form-check-label"><input type="checkbox" required="required"> 회원가입에 동의합니다</label></p>
 				<button type="submit" class="btn btn-primary btn-lg" id="btn_insertMember">회원가입</button>
 				<!-- <input type="submit" value="create" id="btn_insertMember">-->
 			</div>  
