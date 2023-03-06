@@ -5,9 +5,12 @@
 <title>관심목록</title>
 <style type="text/css">
 	
+	* {
+		padding: 0;
+		margin: 0;
+	}
 	
-	
-	.like_no{
+	 .like_no{
 		visibility: hidden;
 	}
 	
@@ -117,7 +120,7 @@
 		/* border: 3px solid #f1f3f5; */
 		margin-bottom: 10px;
 		margin-top:10px;
-		
+		/* overflow: hidden; */
 		
 		
 		
@@ -148,12 +151,14 @@
 	
 	.card{
 		width: 45%;
+		margin: auto;
 		margin-left:20px;
 		margin-right: 20px;
 		border-radius: 100px;
-		float: left;
+		float: none;
 		font-size: 20px;
-		border-radius: 30px var(--bs-card-border-radius);
+		/* border-radius: 30px var(--bs-card-border-radius); */
+		box-shadow: 3px 3px 4px rgba(26,26,26,0.1);
 	}
 	
 	
@@ -162,7 +167,7 @@
 	 	position : relative;
 	 	width : 700px;
 	 	height : 400px;	
-	 	border-radius: 50%; 
+	 	/* border-radius: 50%; */ 
 	 	
 	 	
 	}
@@ -175,7 +180,7 @@
 	    margin-bottom: 10px;
 		width : 320px;
 		height : 270px;
-		border-radius: 20px;
+		border-radius: 5px;
 		
 	}
 	
@@ -307,7 +312,7 @@
 	.line{
 		margin: 50px;
 	}
-	
+	 
 
 	
 </style>
@@ -337,11 +342,36 @@
 		  pauseOnHover:true,
 		  vertical:false,
 		  prevArrow : $('.prev'),        // 이전 화살표 모양 설정
-          nextArrow : $('.next'),  
+          nextArrow : $('.next'),
+          
+          responsive: [ // 반응형 웹 구현 옵션
+              {  
+                breakpoint: 1700, //화면 사이즈 960px
+                settings: {
+                  slidesToShow: 3
+                } 
+              },
+              {  
+                  breakpoint: 1400, //화면 사이즈 960px
+                  settings: {
+                    slidesToShow: 2
+                  } 
+                },
+              { 
+                breakpoint: 768, //화면 사이즈 768px
+                settings: {    
+                  slidesToShow: 1
+                } 
+              }
+            ]
+           
+          
+          
           
 		});  
 	 	 
 	 	 
+	 
 	 	$('#check_items').slick({
 			  infinite: true,
 			  slidesToShow: 3,
@@ -355,8 +385,29 @@
 			  prevArrow : $('.prev_trip'),        // 이전 화살표 모양 설정
 	          nextArrow : $('.next_trip'),  
 	          
+	          responsive: [ // 반응형 웹 구현 옵션
+	              {  
+	                breakpoint: 1700, //화면 사이즈 960px
+	                settings: {
+	                  slidesToShow: 3
+	                } 
+	              },
+	              {  
+	                  breakpoint: 1400, //화면 사이즈 960px
+	                  settings: {
+	                    slidesToShow: 2
+	                  } 
+	                },
+	              { 
+	                breakpoint: 768, //화면 사이즈 768px
+	                settings: {    
+	                  slidesToShow: 1
+	                } 
+	              }
+	            ]
+	          
 			});  
-	 	 
+		  
 	 	 
 	 	
 	 	 
@@ -375,6 +426,8 @@
 	 	/* $('.slider-wrap').slick('slickRkuemove',0);	 */
 	 
 	    var chk_arr = new Set(); 
+	 	
+	 	
 
 	    $("#allCheck").click(function(){
 	        if(this.checked){
@@ -411,7 +464,7 @@
 		  $("#deleteBtn").click(function(){
 			  
 		  
-	        console.log(chk_arr);
+	        console.log("chk_arr"+chk_arr);
 	        
 	        for (let item of chk_arr) {
 	        
@@ -428,60 +481,65 @@
 	            }) 
 	        } 
 	    });
+  
 		  
 		  
-		  $("#allChecked").click(function(){
-		        if(this.checked){
-		            $("#check_items").find("input[type=checkbox]").prop("checked",true);
-		            $("#check_items").find("input[type=checkbox]").each(function(){
-		                chk_arr.add($(this).val()); // 체크된 체크박스의 값을 Set에 추가
-		            });
-		        }else{
-		            $("#check_items").find("input[type=checkbox]").prop("checked",false);
-		            $("#check_items").find("input[type=checkbox]").each(function(){
-		                chk_arr.delete($(this).val()); // 체크가 해제된 체크박스의 값을 Set에서 삭제
-		            });
-		        }
-		    });
-
-		    $(".checked").click(function(){
-		        var total = $("input[type=checkbox]").length;
-		        var checked = $("input[type=checkbox]:checked").length;
-		        if(total != checked){
-		            $("#allChecked").prop("checked", false);
-		        }else{
-		            $("#allChecked").prop("checked",true);
-		        }
-		        if($(this).is(":checked")){
-		            chk_arr.add($(this).val());
-		            console.log(chk_arr);
-		        }
-		        if($(this).is(":checked")==false){
-		            chk_arr.delete($(this).val());
-		        }
-		    });
-
-		  //  $("#deleteBtn").on("click",function(){
-			  $("#delete_Btn").click(function(){
-				  
+		  // trip
+	 	  
+			 var  chk_arr_trip = new Set();
 			  
-		        console.log(chk_arr);
-		        
-		        for (let item of chk_arr) {
-		        
-		             $.ajax({
-		                url:`/Liked/deleteLiked/${item}`, // {like_no} 대신 변수를 지정
-		                data: { likes: Array.from(chk_arr) }, // 객체 형태로 데이터 전송
-		                success: function(re){
-		                	if(re>0){
-		                		location.href="/liked/likeList/hong";
-		                	}else{
-		                		alert("삭제 실패하였습니다.")
-		                	}
-		                }
-		            }) 
-		        } 
-		    });
+			  $("#allChecked").click(function(){
+			        if(this.checked){
+			            $("#check_items").find("input[type=checkbox]").prop("checked",true);
+			            $("#check_items").find("input[type=checkbox]").each(function(){
+			                chk_arr_trip.add($(this).val()); // 체크된 체크박스의 값을 Set에 추가
+			            });
+			        }else{
+			            $("#check_items").find("input[type=checkbox]").prop("checked",false);
+			            $("#check_items").find("input[type=checkbox]").each(function(){
+			                chk_arr_trip.delete($(this).val()); // 체크가 해제된 체크박스의 값을 Set에서 삭제
+			            });
+			        }
+			    });
+
+			    $(".checkedd").click(function(){
+			        var total = $("input[type=checkbox]").length;
+			        var checked = $("input[type=checkbox]:checked").length;
+			        if(total != checked){
+			            $("#allChecked").prop("checked", false);
+			        }else{
+			            $("#allChecked").prop("checked",true);
+			        }
+			        if($(this).is(":checked")){
+			            chk_arr_trip.add($(this).val());
+			            console.log(chk_arr_trip);
+			        }
+			        if($(this).is(":checked")==false){
+			            chk_arr_trip.delete($(this).val());
+			        }
+			    });
+
+			  //  $("#deleteBtn").on("click",function(){
+				  $("#delete_Btn").click(function(){
+					  
+				  
+			        console.log("chk_arr_trip:"+chk_arr_trip);
+			        
+			        for (let arr of chk_arr_trip) {
+			        
+			             $.ajax({
+			                url:`/Liked/deleteLiked/${arr}`, // {like_no} 대신 변수를 지정
+			                data: { likes: Array.from(chk_arr_trip) }, // 객체 형태로 데이터 전송
+			                success: function(re){
+			                	if(re>0){
+			                		location.href="/liked/likeList/hong";
+			                	}else{
+			                		alert("삭제 실패하였습니다.")
+			                	}
+			                }
+			            }) 
+			        } 
+			    });  
 		  
 		  
 		  
@@ -489,6 +547,7 @@
 		  
 		  
 	});
+	  
 
 </script>
 <body>
@@ -597,7 +656,7 @@
        		<div id="check_items">
 			<div class="card" style="width: 18rem;" th:each="la:${likedListTrip}">
 			  <div class="card-body">
-	   				<p><input class="form-check-input checked" type="checkbox" id="checkboxNoLabel"  th:value="${la.like_no}" aria-label="..."></p>
+	   				<p><input class="form-check-input checkedd" type="checkbox" id="checkboxNoLabel"  th:value="${la.like_no}" aria-label="..."></p>
 	   				<img th:src="@{|/images/${la.like_img}|}" class="card-img-top" >
 					<p name="like_no" class="like_no" th:text=${la.like_no}> </p>
 					<p class="card_text" th:text="${la.liked_title}" ></p>
