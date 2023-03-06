@@ -44,10 +44,10 @@ public class RecomentController {
 	}
 	
 	@GetMapping("/recoment/update")
-	public int updateRecoment(String recContent, int recNo) {
+	public int updateRecoment(String rec_content, int rec_no) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("rec_content", recContent);
-		map.put("rec_no", recNo);
+		map.put("rec_content", rec_content);
+		map.put("rec_no", rec_no);
 		
 		int re = recomentService.updateRecoment(map);
 		return re;

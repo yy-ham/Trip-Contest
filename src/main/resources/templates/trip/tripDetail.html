@@ -6,21 +6,184 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 <style type="text/css">
+	* {
+		padding: 0;
+		margin: 0;
+	}
+
+	article {
+		width: 80%;
+		margin: auto;
+	}
+
 	.carousel {
 	    position: relative;
-	    width: 50%;
+	    width: 60%;
 	    margin-left: auto;
 	    margin-right: auto;
+	    margin-bottom: 50px;
 	}
 	
 	.carousel-inner > .carousel-item > img {
 		top: 0;
 		left: 0;
 		min-width: 80%;
-		min-height: 200px;
+		min-height: 400px;
 		max-height: 400px;
   	} 
+  	
+  	#tripInfo {
+  		width: 85%;
+    	margin: auto;
+    	margin-bottom: 30px;
+  	}
+  	
+  	#tripDetailDiv {
+  		margin: 10px 0 40px 0;
+  	}
+  	
+  	.tripInfoLabel {
+  		font-weight: bolder;
+  		font-size: 15px;
+  	}
+  	
+  	th, td {
+	  padding-top: 10px;
+	  padding-bottom: 20px;
+	  vertical-align : top;
+	}
+	
+	a:link { 
+		color: black;
+		text-decoration: none;
+	}
+ 	a:visited { 
+ 		text-decoration: none;
+ 	}
+	a:hover { 
+		text-decoration: underline;
+	}
+	
+	/*댓글*/
+	section {
+		width: 70%;
+		margin: auto;
+		clear: both;
+		margin-bottom: 100px;
+		margin-top: 80px;
+	}
+	
+	#recoment{
+		margin: auto;
+		clear: both;
+		margin-bottom: 50px;
+		height: auto;
+	}
 
+	#recoment_title{
+		margin-bottom: 20px;
+	}
+	
+	.rec{
+		margin-top: 15px;
+		width: 799px;
+		padding-top: 20px;
+		padding-left: 20px;
+		border-radius: 10px;
+		height: 120px;
+		border: 1px solid #BDBDBD;
+		box-shadow: 3px 3px 4px rgba(26, 26, 26, 0.1);
+		background-color: #F6F6F6;
+	}
+	
+	#listRecoment{
+		clear: both;
+		margin-top: 30px;
+		overflow: hidden;
+	}
+	
+	#write{
+		margin-bottom: 30px;
+		overflow: hidden;
+		width: 800px;
+	}
+	
+	#updateRecoment{
+		display: none;
+	}
+	
+	.btn{
+		border: 2px solid grey;
+		width: 70px;
+		padding: auto;
+		height: 30px;
+		margin-left: 5px;
+		line-height: 10px;
+	}
+
+	#insertRecoment{
+		width: 100px;
+		float: right;
+		margin-right: 3px;
+	}
+	
+	#btn_recoment_container{
+		width: 158px;
+		height: 50px;
+		padding-top: 3px;
+		padding-top: 10px;
+		float: right;
+		margin-bottom: 10px;
+	}
+	
+	#text_container{
+		float: left;
+	}
+	
+	/* 조회수 */
+	#hitDiv {
+		margin-left:997px;
+	}
+	
+	/* 찜 */
+	#liked_container{
+		width: 60px;
+		height: 40px;
+		margin-top: 2px;
+		margin-left: 990px;
+	}
+	
+	input[type=checkbox] {
+   		display:none;
+	}
+	
+	label {
+		width: 10px;
+	    height: 30px;
+		cursor: pointer;
+	}
+	
+	input[type=checkbox] + label { 
+	    padding-left: 35px; 
+	    background-repeat: no-repeat;
+	    background-image: url('/images/heart_default.png');
+	}
+	
+	input[type=checkbox]:checked + label {
+	    background-image: url('/images/heart_liked.png');
+	}
+	
+	#cntLiked {
+		float: right;
+    	margin-top: 3px;
+	}
+	
+	#adminBtn {
+		float: right;
+    	clear: both;
+	}
+	
+	
 </style>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f12cedc04a3b71edb51a90ae7835e50f"></script>
@@ -56,13 +219,73 @@
 			$.ajax({
 				url: "/trip/getTripLikedCnt/"+$("#tripLiked").attr("checkLikedNo"),
 				success: function(cnt){
-					$("#cntLiked").text(cnt);
+					$("#cntLiked").html(cnt);
 					console.log(cnt);
 				}
 			});
 		}
 
 		getLiked();
+		
+		$("#liked_label").click(function(){
+			var attr = $(this).attr("checkLikedNo");
+			var state = $("input[checkLikedNo="+attr+"]").prop("checked");
+			if(login == ""){
+				alert("로그인을 먼저 진행해 주세요");
+				//로그인 페이지 링크 연결
+				$("input[checkLikedNo="+attr+"]").prop("checked", false);
+			}else{
+				//찜X -> 찜O
+				if(state == false){
+					$("input[checkLikedNo="+attr+"]").prop("checked", true);
+					console.log($("input[checkLikedNo="+attr+"]").prop("checked"));
+					
+					$.ajax({
+						url:"/trip/tripLiked",
+						data:{
+							"memberId":"admin12",
+							"type":"trip",
+							"no": $("#tripLiked").val(),
+							"likeImg":$(this).attr("likeImg"),
+							"likedTitle": $(this).attr("likedTitle")
+						},
+						success:function(re){
+							if(re == 1){
+								alert("찜!!");
+								getLiked();
+							}
+						}
+					});
+					
+				}
+				
+				//찜O -> 찜X
+				if(state == true){
+					console.log("삭제");
+					$("input[checkLikedNo="+attr+"]").prop("checked", false);
+					console.log($("input[checkLikedNo="+attr+"]").prop("checked"));
+					console.log("-----");
+					$.ajax({
+						url:"/trip/tripUnliked",
+						data:{
+							"memberId":"admin12",
+							"type":"trip",
+							"no": $("#tripLiked").val(),
+							"likeImg":$(this).attr("likeImg"),
+							"likedTitle": $(this).attr("likedTitle")
+						},
+						success:function(re){
+							if(re == 1){
+								alert("찜취소!!");
+								getLiked();
+							}
+						}
+					});
+				}
+			}
+			
+		});
+	
 		
 		// 해당 아이디가 찜한 게시물 표시
 		function getUserLiked(login){
@@ -101,48 +324,19 @@
 		
 		getUserLiked(login);
 		
-		// 찜 기능
-		$("#tripLiked").click(function(){
-			if($(this).is(":checked")){
-				$.ajax({
-					url:"/trip/tripLiked",
-					data:{
-						"memberId":"admin12",
-						"type":"trip",
-						"no": $(this).val(),
-						"likeImg":$(this).attr("likeImg"),
-						"likedTitle": $(this).attr("likedTitle")
-					},
-					success:function(re){
-						if(re == 1){
-							alert("찜!!");
-						}
-					}
-				});
-			}
-
-			if($(this).is(":checked")==false){
-				$.ajax({
-					url:"/trip/tripUnliked",
-					data:{
-						"memberId":"admin12",
-						"type":"trip",
-						"no": $(this).val(),
-						"likeImg":$(this).attr("likeImg"),
-						"likedTitle": $(this).attr("likedTitle")
-					},
-					success:function(re){
-						if(re == 1){
-							alert("찜취소!!");
-						}
-					}
-				});
-			}
-		}); 
+		var login = $("#login_user").val();
+		var no = $("#no").val();
+		var member_id = $("#member_id").html();
+		console.log("login:" + login);
+		console.log("member_id:" + member_id);
+		
+		if(login != member_id){
+			$("#btn_container").css("display", "none");
+		}
+		$("#rec_form_id").html(login);
 		
 		//댓글 목록 가져오기
 		function listRecoment(no){
-
 			$.ajax({
 				url: "/recoment/tripList",
 				data: {
@@ -153,20 +347,48 @@
 					$.each(arr, function(){
 						var div = $("<div></div>").addClass("rec");
 
-						var rec_no = $("<p></p>").html(this.recNo);
-						var member_id = $("<p></p>").html(this.memberId);
-						var content = $("<p></p>").html(this.recContent);
-						var rec_date = $("<p></p>").html(this.recDate);
-						$(div).append(rec_no, member_id, content, rec_date);
+						var rec_no = $("<p></p>").html(this.recNo).css("display", "none");
+						var member_id = $("<div></div>").html(this.memberId).css({
+							"font-weight": "bold",
+							"float": "left"
+						});
+						var content = $("<div></div>").html(this.recContent).css({
+							"clear": "both",
+							"width": "500px",
+							"height": "50px",
+							"float": "left",
+							"margin-top": "10px"
+						});
+						var rec_date = $("<div></div>").html(this.recDate).css({
+							"float": "right",
+							"margin-right": "30px"
+						});
+						$(div).append(rec_no, member_id, rec_date, content);
+						
+						var div2 = $("<div></div>").css({
+							"text-align": "right",
+							"height": "30px",
+							"float": "right",
+							"padding-top": "30px",
+							"margin-right": "30px"
+						});
 						if(login == this.memberId){
-							var btnUpdate = $("<button id='btnUpdate'>수정</button>").attr("recNo",this.recNo);
-							var btnDelete = $("<button id='btnDelete'>삭제</button>").attr("recNo",this.recNo);
-							$(div).append(btnUpdate, btnDelete);
+							var btnUpdate = $("<button id='btnUpdate'>수정</button>").attr({
+								"recNo": this.recNo,
+								"class": "btn"
+							});
+							var btnDelete = $("<button id='btnDelete'>삭제</button>").attr({
+								"recNo": this.recNo,
+								"class": "btn"
+							});
+							$(div2).append(btnUpdate, btnDelete);
+							$(div).append(div2);
 						}
-
+						
 						$("#listRecoment").append(div);
 					});
 					$("#updateRecoment").css("display", "none");
+					$("#updateReset").css("display", "none");
 				}
 			});
 		}
@@ -175,11 +397,15 @@
 
 		//댓글 수정
 		$(document).on("click","#btnUpdate", function(){
+			$("#rec_no").remove();
 			var recNo = $(this).attr("recNo");
 			console.log(recNo);
 			var data = $("#writeRecoment").serializeArray();
-			$("#writeRecoment").append($("<input>").attr("id", "rec_no").attr("name", "rec_no"));
-
+			$("#writeRecoment").append($("<input>").attr("id", "rec_no").attr({
+				"name": "rec_no",
+				"type": "hidden"
+			}));
+			
 			//input에 값 보여주기
 			$.ajax({
 				url: "/recoment/get",
@@ -188,51 +414,69 @@
 				},
 				success: function(re){
 					console.log(re.recNo);
-					$("#member_id").val(re.memberId);
+					$("#rec_member_id").val(re.memberId);
 					$("#rec_content").val(re.recContent);
 					$("#rec_no").val(re.recNo);
 					$("#insertRecoment").css("display", "none");
 					$("#updateRecoment").css("display", "inline-block");
+					$("#updateReset").css("display", "inline-block");
 				}
 			});
 
-
 			//수정
-			$("#updateRecoment").click(function(){
+			$("#updateRecoment").click(function(e){
+				e.preventDefault();
 				console.log("click");
 				var data = $("#writeRecoment").serializeArray();
 				console.log(data);
 				$.ajax({
 					url: "/recoment/update",
 					data: {
-						recContent: $("#rec_content").val(),
-						recNo: recNo
+						rec_content: $("#rec_content").val(),
+						rec_no: recNo
 					},
 					success: function(re){
 						console.log(re);
+						$("#rec_content").val("");
 						listRecoment(no);
-
+						$("#insertRecoment").css("display","inline-block");
 					}
 				});
-
+	
+			});
+			
+			//수정 취소 버튼 클릭 이벤트
+			$("#updateReset").click(function(e){
+				e.preventDefault();
+				$("#rec_content").val("");
+				$("#updateRecoment").css("display", "none");
+				$("#updateReset").css("display", "none");
+				$("#insertRecoment").css("display", "inline-block");
+				$("#rec_no").remove();
 			});
 		});
 
 
-
-		//등록
-		$("#insertRecoment").click(function(){
-			var data = $("#writeRecoment").serializeArray();
-			$.ajax({
-				url: "/recoment/insert",
-				data: data,
-				success: function(re){
-					listRecoment(no);
-				}
-			});
+		//댓글 등록
+		$("#insertRecoment").click(function(e){
+			e.preventDefault();
+			if(login == ""){
+				alert("로그인하세요.");
+			}else{
+				$("#rec_member_id").val(login);
+				var data = $("#writeRecoment").serializeArray();
+				$.ajax({
+					url: "/recoment/insert",
+					data: data,
+					success: function(re){
+						listRecoment(no);
+						$("#rec_content").val("");
+					}
+				});
+			}
 		});
 
-		//삭제
+		//댓글 삭제
 		$(document).on("click","#btnDelete",function(){
 			var recNo = $(this).attr("recNo");
 			if(confirm("삭제하시겠습니까?")){
@@ -248,109 +492,145 @@
 				});
 			}
 		}); //end 삭제
+		
+		$("#btnTripDelete").click(function(){
+			if(confirm("삭제하시겠습니까?")){
+				location.href='/trip/tripDelete/'+$("#tripNo").val();
+			}
+		});
 	});
 </script>
 </head>
 <body>
-	<h1>여행지 상세</h1>
-	<hr>
-	로그인한 유저 : <input type="text" name="login_user" id="login_user" value="admin12">
-	<hr>
-	<div>
-		<label th:for="hit">조회수 : </label> 
-		<span th:text="${trip.hit}"></span>
-	</div>
-	<hr>
-	찜 <input type="checkbox" id="tripLiked" th:value="${trip.tripNo}" th:attr="likedTitle=${trip.tripTitle},likeImg=${trip.tripImg},checkLikedNo=${trip.tripNo}"><br>
-	좋아요수 <span id="cntLiked"></span>
-	<hr>
-	<div style="width: 80%; text-align: center; margin-left: auto; margin-right: auto;">
-		<!-- 관광지명 -->
-		<div th:text="${trip.tripTitle}" style="font-weight: bold; font-size: 36px; text-align: center;"></div>
-		<!-- 지역명 -->
-		<div th:text="${region}"></div>
-	</div> 
-	
-	<!-- 이미지 캐러셀 -->
-	<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
-		<div class="carousel-indicators">
-		  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-		  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-		  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+	<!-- <h1>여행지 상세</h1> -->
+	<input type="hidden" name="login_user" id="login_user" value="admin12">
+	<input type="hidden" name="tripNo" id="tripNo" th:value="${trip.tripNo}">
+	<article style="margin-top: 50px;">	
+		<!-- 관리자일 때, 수정, 삭제 버튼 보이게 -->
+		<div id="adminBtn">
+			<div th:if="${grade} == 'admin'">
+				<button th:text="수정" th:onclick="|location.href='@{|/trip/tripUpdate/${trip.tripNo}|}'|" class="w-20 btn btn-secondary btn-lg" style="height: 40px; width: 80px; text-align:center; line-height:15px; font-size:15px;"></button>
+				<button id="btnTripDelete" th:text="삭제" class="w-20 btn btn-secondary btn-lg" style="height: 40px; width: 80px; text-align:center; line-height:15px; font-size:15px;"></button>
+			</div>
 		</div>
-  		<div class="carousel-inner">
-	    	<div class="carousel-item active">
-	      		<img th:src="@{'/images/'+${trip.tripImg}}" class="d-block w-100" alt="...">
-	    	</div>
-	    	<div class="carousel-item" th:each="img:${imgList}">
-	      		<img th:src="@{'/images/'+${img.fname}}" class="d-block w-100" alt="...">
-	    	</div>
- 		</div>
-		<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-		  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-		  <span class="visually-hidden">Previous</span>
-		</button>
-		<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-		  <span class="carousel-control-next-icon" aria-hidden="true"></span>
-		  <span class="visually-hidden">Next</span>
-		</button>
-	</div>
-	
-	<div style="font-weight: bold; font-size: 30px;">상세정보</div>
-	<div th:text="${trip.tripDetail}"></div>
-	<div>
-		<label th:for="tripTel">전화번호 : </label> 
-		<span th:text="${trip.tripTel}"></span>
-	</div>
-	<div>
-		<label th:for="site">웹사이트 : </label> 
-		<span th:text="${trip.site}"></span>
-	</div>
-	<div>
-		<label th:for="tripAddr">주소 : </label> 
-		<span th:text="${trip.tripAddr}"></span>
-	</div>
-	<div>
-		<label th:for="closed">휴무일 : </label> 
-		<span th:text="${trip.closed}"></span>
-	</div>
-	<div>
-		<label th:for="opened">이용시간 : </label>
-		<span th:text="${trip.opened}"></span>
-	</div>
-	<div>
-		<label th:for="fare">이용요금 : </label>
-		<span th:text="${trip.fare}"></span>
-	</div>
-	
-	<div id="map" style="width:60%;height:350px; margin-left: auto; margin-right: auto;"></div>
-	<input type="hidden" th:value="${trip.lat}" id="lat">
-	<input type="hidden" th:value="${trip.lng}" id="lng">
-	
-	<!-- 관리자일 때, 수정, 삭제 버튼 보이게 -->
-	<div th:if="${grade} == 'admin'">
-		<a th:text="수정" th:href="@{|/trip/tripUpdate/${trip.tripNo}|}"></a>
-		<a th:text="삭제" th:href="@{|/trip/tripDelete/${trip.tripNo}|}"></a>
-	</div>
-	
-	<hr>
+		<br>
+		<div style="width: 80%; text-align: center; margin-left: auto; margin-right: auto; margin-bottom: 30px; margin-top: 40px;">
+			<!-- 관광지명 -->
+			<div th:text="${trip.tripTitle}" style="font-weight: bold; font-size: 36px; text-align: center;"></div>
+			<!-- 지역명 -->
+			<div th:text="${region}" style="font-size: 16px;"></div>
+		</div> 
+		<!-- 이미지 캐러셀 -->
+		<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
+			<div class="carousel-indicators">
+				<div th:each="i:${#numbers.sequence(0,imgList.size())}">
+				  <button type="button" data-bs-target="#carouselExampleIndicators" th:attr="data-bs-slide-to=${i}" class="active" aria-current="true"></button>
+				</div>
+			</div>
+	  		<div class="carousel-inner">
+		    	<div class="carousel-item active">
+		      		<img th:src="@{'/images/'+${trip.tripImg}}" class="d-block w-100" alt="...">
+		    	</div>
+		    	<div class="carousel-item" th:each="img:${imgList}">
+		      		<img th:src="@{'/images/'+${img.fname}}" class="d-block w-100" alt="...">
+		    	</div>
+	 		</div>
+			<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+			  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+			  <span class="visually-hidden">Previous</span>
+			</button>
+			<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+			  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+			  <span class="visually-hidden">Next</span>
+			</button>
+		</div>
+		<!-- 조회수 -->
+		<div id="hitDiv">
+			<label th:for="hit"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+  				<path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/><path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/></svg>
+  			</label>&nbsp;
+			<span style="margin-left: 10px;" th:text="${trip.hit}"></span>
+		</div>
+		
+		<!-- 찜 -->
+		<div id="liked_container">
+			<input type="checkbox" id="tripLiked" th:value="${trip.tripNo}" th:attr="likedTitle=${trip.tripTitle},likeImg=${trip.tripImg},checkLikedNo=${trip.tripNo}">
+			<label for="liked" id="liked_label" th:attr="likedTitle=${trip.tripTitle},likeImg=${trip.tripImg},checkLikedNo=${trip.tripNo}"></label>
+			<div id="cntLiked"></div>
+		</div>
+		<!-- 상세정보  -->
+		<div id="tripInfo">
+			<div style="font-weight: bold;font-size: 30px;">상세정보</div>
+			<hr>
+			<div th:text="${trip.tripDetail}" id="tripDetailDiv"></div>
+			<table style="width:100%">
+				<tr>
+					<th style="width:15%">전화번호</th>
+					<td><span th:text="${trip.tripTel}"></span></td>
+				</tr>
+				
+				<tr>
+					<th>웹사이트</th>
+					<td><a th:href="${trip.site}" th:text="${trip.site}"></a>&nbsp;
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="13" fill="currentColor" class="bi bi-box-arrow-up-right" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z"/><path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z"/></svg></td>
+				</tr>
+				
+				<tr>
+					<th>주소</th>
+					<td><span th:text="${trip.tripAddr}"></span></td>
+				</tr>
+				
+				<tr>
+					<th>휴무일</th>
+					<td><span th:text="${trip.closed}"></span></td>
+				</tr>
+				
+				<tr>
+					<th>이용시간</th>
+					<td><span th:text="${trip.opened}"></span></td>
+				</tr>
+				
+				<tr>
+					<th>이용요금</th>
+					<td><span th:text="${trip.fare}"></span></td>
+				</tr>
+			</table>
+			
+		</div>
+		
+		<!-- 지도 -->
+		<div id="map" style="width:60%;height:350px; margin-left: auto; margin-right: auto;">
+			<input type="hidden" th:value="${trip.lat}" id="lat">
+			<input type="hidden" th:value="${trip.lng}" id="lng">
+		</div>
+	</article>
 	<!-- 댓글 -->
-	<div id="recoment">
-		<h2>댓글</h2>
-		<div id="write">
-			<form action="" id="writeRecoment">
-				아이디 : <input type="text" name="member_id" id="member_id"><br>
-				<input type="text" name="no" th:value="${trip.tripNo}" id="no">
-				<input type="text" name="type" value="trip" id="type"><br>
-				<textarea rows="4" cols="70" name="rec_content" id="rec_content"></textarea>
-				<button id="insertRecoment">댓글쓰기</button>
-				<button id="updateRecoment">댓글수정</button>
-				<!-- <input type="submit" value="댓글쓰기" id="insertRecoment"> -->
-			</form>
+	<section>
+		<hr>
+		<div id="recoment">
+			<div style="font-weight: bold;font-size: 30px;margin-top:30px;" id="recoment_title">댓글</div>
+			<div style="margin: auto; width: 800px;">
+				<div id="write" style="margin-bottom: 30px;">
+				<form action="" id="writeRecoment">
+					<input type="hidden" name="member_id" id="rec_member_id">
+					<input type="hidden" name="no" th:value="${trip.tripNo}" id="no">
+					<input type="hidden" name="type" value="trip" id="type"><br>
+					<div id="btn_recoment_container">
+						<button id="insertRecoment" class="btn">댓글쓰기</button>
+						<button id="updateRecoment" class="btn">수정</button>
+						<button id="updateReset" class="btn">취소</button>
+					</div>
+					<div style="font-weight: bold; float: left; padding-top: 20px;" id="rec_form_id"></div>
+					<div style="float: left;" id="text_container">
+						<textarea rows="4" cols="92" name="rec_content" id="rec_content" style="resize: none; border-radius: 3px;"></textarea>
+					</div>
+				</form>
+				</div>
+				<div id="list_container">
+					<div id="listRecoment"></div>
+				</div>
+			</div>
 		</div>
-
-		<div id="listRecoment"></div>
-
-	</div>
+	</section>
 </body>
 </html>

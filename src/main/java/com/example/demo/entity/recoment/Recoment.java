@@ -32,5 +32,5 @@ public class Recoment {
 	private int no;
 	private String type;
 	@Column(name = "rec_date")
-	private Date recDate;
+	private String recDate;
 }
