@@ -14,6 +14,7 @@ import com.example.demo.vo.recoment.RecomentVO;
 @Service
 public class RecomentService {
 	@Autowired
+
 	private RecomentDAO dao;
 	
 	public List<Recoment> findAll(){
@@ -41,3 +42,4 @@ public class RecomentService {
 	}
 	
 }
+

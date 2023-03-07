@@ -1,5 +1,6 @@
 package com.example.demo.vo.trip;
 
+
 import java.util.Date;
 
 import lombok.Data;
@@ -25,4 +26,5 @@ public class TripVO {
 	private String state;
 	private Date writedate;
 	private String region;
+
 }

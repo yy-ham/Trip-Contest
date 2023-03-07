@@ -11,6 +11,5 @@
 	<update id="updateRecoment" parameterType="recomentVO">
 		update recoment set rec_content = #{rec_content} where rec_no = #{rec_no}
 	</update>
-	
-	
+
 </mapper>

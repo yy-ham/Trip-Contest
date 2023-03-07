@@ -3,7 +3,11 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+<<<<<<< HEAD
     <properties resource="com/example/demo/db/db.properties"/>
+=======
+    <properties resource="com/example/demo/trip/db/db.properties"/>
+>>>>>>> refs/remotes/origin/SoorinL
     <typeAliases>
         <typeAlias type="com.example.demo.trip.vo.TripVO" alias="tripVO"/>
         <typeAlias type="com.example.demo.trip.vo.ImgVO" alias="imgVO"/>

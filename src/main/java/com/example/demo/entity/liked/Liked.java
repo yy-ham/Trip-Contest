@@ -16,6 +16,7 @@ import lombok.EqualsAndHashCode;
 @SequenceGenerator(
 	name = "SEQ_GENERATOR",
 	sequenceName = "seq_liked",
+
 	initialValue = 1, //시작값
     allocationSize = 1 //메모리를 통해 할당할 범위 사이즈
 )
@@ -34,3 +35,4 @@ public class Liked {
 	@Column(name = "liked_title")
 	private String likedTitle;
 }
+

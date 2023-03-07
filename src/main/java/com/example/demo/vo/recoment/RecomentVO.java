@@ -10,4 +10,6 @@ public class RecomentVO {
 	private int no;
 	private String type;
 	private String rec_date;
+
 }
+
