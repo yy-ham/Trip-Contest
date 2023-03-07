@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700">
+<title>Bootstrap Sign up Form Horizontal</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<style>
+body {
+	color: #999;
+	background: #f3f3f3;
+	font-family: 'Roboto', sans-serif;
+}
+.form-control {
+	border-color: #eee;
+	min-height: 41px;
+	box-shadow: none !important;
+}
+.form-control:focus {
+	border-color: #5DC8CD;
+}
+.form-control, .btn {        
+	border-radius: 3px;
+}
+.signup-form {
+	width: 500px;
+	margin: 0 auto;
+	padding: 30px 0;
+}
+.signup-form h2 {
+	color: #333;
+	margin: 0 0 30px 0;
+	display: inline-block;
+	padding: 0 3px 10px 0;
+	border-bottom: 3px solid #5DC8CD;
+}
+.signup-form form {
+	color: #999;
+	border-radius: 3px;
+	margin-bottom: 15px;
+	background: #fff;
+	box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+	padding: 30px;
+}
+.signup-form .form-group row {
+	margin-bottom: 20px;
+}
+.signup-form label {
+	font-weight: normal;
+	font-size: 14px;
+	line-height: 2;
+}
+.signup-form input[type="checkbox"] {
+	position: relative;
+	top: 1px;
+}
+/*.signup-form .btn {        
+	font-size: 16px;
+	font-weight: bold;
+	background: #5cd3b4;
+	border: none;
+	margin-top: 20px;
+	min-width: 140px;
+}*/
+.signup-form .btn:hover, .signup-form .btn:focus {
+	background: #41cba9;
+	outline: none !important;
+}
+.signup-form a {
+	color: #5DC8CD;
+	text-decoration: underline;
+}
+.signup-form a:hover {
+	text-decoration: none;
+}
+.signup-form form a {
+	color: #5DC8CD;
+	text-decoration: none;
+}	
+.signup-form form a:hover {
+	text-decoration: underline;
+}
+#phone1,#phone2,#phone3{
+	width : 60px;
+	min-height: 41px;
+	border : none;
+	border : 1px solid #eee;
+	border-radius : 3px;
+}
+#phone1:hover,#phone2:hover,#phone3:hover,#authCode:hover{
+	border : 1px solid #5DC8CD;
+}
+#btn_phone{
+	position: absolute;
+	top: 0px;
+	left: 236px;
+	height: 39px;
+	width: 60px;
+	border-color: #5DC8CD;
+	color : #5DC8CD;
+}
+#authCode{
+	width : 150px;
+	min-height: 41px;
+	border : none;
+	border : 1px solid #eee;
+	border-radius : 3px;
+}
+#btn_authCode{
+	position: absolute;
+	top: 0px;
+	left:206px;
+	height: 39px;
+	border-color: #5DC8CD;
+	color : #5DC8CD;
+}
+#btn_findId {
+	  display: flex;
+	  justify-content: center;
+	  text-align: center;
+	  margin: auto;
+	  background: #5DC8CD;
+	  margin-top: 20px;
+	  border-color: #5DC8CD;
+	  
+}
+#btn_phone:hover, #btn_authCode:hover{
+	background: #5DC8CD;
+	outline-color: #5DC8CD;
+	color: #FFFFFF;
+	
+}
+</style>
+</head>
+<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+<!-- 주소등록 시 주소 찾기=>카카오 -->
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>   
+<script type="text/javascript">
+$(document).ready(function() {
+	//휴대폰번호 입력시 다음으로 넘어감
+	  $("#phone1, #phone2, #phone3").on("input", function() {
+	    var $this = $(this);
+	    if ($this.val().length == $this.attr("maxlength")) {
+	      $this.next().focus();
+	    }
+	  });
+	});
+$(document).ready(function() {
+    // 각 필드에서 값이 변경될 때마다 hidden 요소의 value 속성에 전화번호를 할당합니다.
+    $('input[type="tel"]').on('input', function() {
+      var phone1 = $('#phone1').val();
+      var phone2 = $('#phone2').val();
+      var phone3 = $('#phone3').val();
+      var phone = phone1+"-"+ phone2+"-"+ phone3;
+      $('#phone').val(phone);
+    });
+  });
+$(function(){
+	var code;
+	// 아이디 있는지 확인
+	
+	$('#btn_phone').click(function(){
+		$.ajax({
+			url : "/sendAuthCode",
+			data : {"phone": $('#phone').val() },
+			success : function(innerCode){
+				if(innerCode != null){
+					alert("코드 전송했습니다.")
+					code = innerCode;
+					console.log(code);
+					// 세션에 코드 저장
+					sessionStorage.setItem("code", code);
+				}
+			}
+		})
+	})
+	
+	$('#btn_authCode').click(function(){
+		var inputCode = $('#authCode').val();
+		// 세션에서 코드 값을 가져옴
+		var sessionCode = sessionStorage.getItem("code");
+		if(inputCode == sessionCode){
+			$.ajax({
+				url : "/authSuccess",
+				data : {"inputCode": inputCode},
+				success : function(){
+					$('input[name=result]').val('success');
+					alert("인증성공")
+					$('#authResult').text('인증 성공');
+				}
+			})
+		} else {
+			alert("인증번호가 일치하지 않습니다. 다시 시도해 주세요.")
+		}
+	});
+	
+	$("#btn_findId").click(function(e){
+		e.preventDefault();
+		$.ajax({
+			url : "/findIdResult",
+			data : {"name": $("#name").val(),
+					"phone" : $("#phone").val()	
+			},
+			success : function(data){
+				alert("아이디는 "+data+"입니다.")
+				location.href = "/login"
+			}
+		});
+	})
+})
+
+</script>
+<body>
+<div class="signup-form">
+    <form method="get" action="/findIdResult">
+      	<div class="row">
+        	<div class="col-8 offset-4">
+				<h2>ID찾기</h2>
+			</div>	
+      	</div>
+		
+		
+        <div class="form-group row">
+			<label class="col-form-label col-4">이름</label>
+			<div class="col-8">
+                <input type="text" class="form-control" name="name" id="name" required="required">
+            </div>        	
+        </div>
+        <div class="form-group row">
+			<label class="col-form-label col-4">연락처</label>
+			<div class="col-8">
+                <input type="tel" class="phone1" name="phone1" id="phone1" maxlength="3" required="required">-
+                <input type="tel" class="phone2" name="phone2" id="phone2" maxlength="4" required="required">-
+                <input type="tel" class="phone3" name="phone3"  id="phone3" maxlength="4" required="required">
+                <input type="hidden" name="phone" id="phone">
+                <button type="button" class="btn btn-outline-success" id='btn_phone'>인증</button>
+            </div>        	
+        </div>   
+        <div class="form-group row">
+			<label class="col-form-label col-4">인증번호</label>
+			<div class="col-8">
+			<input type="text" class="form-control" id="authCode" name="authCode" required="required"><br>
+        	<button type="button" class="btn btn-outline-success" id='btn_authCode'>인증확인</button>
+        	<span id="authResult"></span>
+            </div>        	
+        </div>
+        <button type="submit" class="btn btn-success"id="btn_findId">아이디 찾기</button>
+    </form>
+	<div class="text-center">계정이 있으신가요? <a href="/login">Login here</a></div>
+</div>
+</body>
+</html>

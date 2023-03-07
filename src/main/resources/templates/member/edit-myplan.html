@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>여행계획 목록</title>
+
+<style type="text/css">
+	
+	
+	* {
+		padding: 0;
+		margin: 0;
+	}
+	
+	#header{
+		width: 100%;
+		margin: auto;
+		margin-bottom: 30px;
+	}
+	
+	
+	
+	#header_container{
+		width: 80%;
+		margin: auto;
+		height: 60px;
+		margin-bottom: 50px;
+	}
+	
+	/*헤더 이미지 컨테이너*/
+	#header_img{
+ 		width: 80%;
+		margin: auto;
+		height: 400px;
+		position: relative;
+	}
+	
+	/*h1 전국*/
+	#header_title{
+		width: 220px;
+		/* height: 100%;
+		margin-left: 30px;
+		 */cursor: pointer;
+		font-size:30px;
+		position: absolute;
+	    top: 75%;
+	    left: 5%;
+	    /* transform: translate( -50%, -50% ); */
+	    color: white;
+	    z-index: 99;
+	    font-weight: bold;
+	}
+	
+	
+	#search_order_container{
+		width: 80%;
+		margin: auto;
+		margin-top: 20px;
+		/* border: 2px solid black; */
+		
+	}
+	
+	#order_container{
+		width: 280px;
+		height: 60px;
+		margin-top: 20px;
+		margin-bottom: 20px;
+		 border: 2px solid grey; 
+		padding-top: 14px;
+		padding-left: 10px;
+		float: right;
+	}
+	
+
+	
+	section{
+		width: 100%;
+		margin: auto;
+		clear: both;
+		 border: 2px solid grey; 
+		margin-bottom: 20px;
+	}
+	
+	
+	
+ 	.row{
+		/* border: 2px solid blue; */
+		padding: 30px;
+	}
+
+	
+	.card{
+		width: 17rem;
+		float: none;
+		border: 0.75px solid #eaeaea;
+		box-shadow: 3px 3px 4px rgba(26, 26, 26, 0.1);
+		margin: auto;
+		margin-bottom: 20px;
+		margin-top: 20px;
+		max-height: 350px;
+	}
+	
+	.card-img-top{
+		height: 200px;
+	}
+	
+	
+	#info_container{
+		 /*border: 2px solid pink; */
+		width: 70%;
+		float: left;
+	}
+	
+	#liked_container{
+		 /*border: 2px solid grey; */
+		width: 15%;
+		float: right;
+		margin-top: 15px;
+	}
+
+	/*페이징*/
+	
+	
+	
+	
+	a{
+		text-decoration: none;
+		color: black;
+		font-size: large;
+	}
+
+	/* 찜 */
+	input[type=checkbox] {
+   		display:none;
+   		/* cursor: pointer; */
+	}
+	
+	.card_link{
+		text-decoration: none;
+		color: black;
+	}
+	
+	#btnInsert{
+		float: right;
+		margin-top: 40px;
+	}
+	
+	#back{
+	font-size:40px;
+	color: #808080;
+	line-height: 116px;
+	
+}
+	
+</style>
+
+
+</head>
+<link href="/docs/5.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+<link rel="stylesheet" href="css/bootstrap.min.css">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.6.0/font/bootstrap-icons.css" />
+<link rel="stylesheet" type="text/css" href="/css/mainpage.css"/>
+<link rel="stylesheet" type="text/css" href="/css/header.css"/>
+
+<script src="js/bootstrap.bundle.min.js"></script>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		
+		 var id = sessionStorage.getItem("id");
+		 
+		 if(id == null || id==""){
+			 alert("먼저 로그인 해주세요.")
+			 location.href="/login"
+		 }
+		 
+		 if(id != null){
+				$("#login").empty();
+				var myPage = $("<a></a>").attr("href","/myPage").html("마이페이지")
+				var a = $("<a></a>").attr("href","/logout")
+				var btn = $("<button></button>").html(id).addClass("f1 gnb_login_btn").attr("id","logout")
+				$(a).append(myPage,btn );
+				$("#login").append(a)
+			}
+		
+		var login = $("#login_user").val();
+		
+		$("#header_title").click(function(){
+			location.href = "/findMyPlan";
+		});
+			
+		//로그인한 아이디가 찜한 게시물 표시
+		function getUserLiked(login){
+			var planLikedNoList = new Array();
+			var planLikedNoList2 = new Array();
+			
+			$.ajax({
+				url:"/plan/list/liked/"+login,
+				success:function(planLikedNoList){
+					if(planLikedNoList != null){
+						//console.log(planLikedNoList);
+						/* tripLikedNoList = tripLikedNoList; */
+						//console.log("찜번호리스트",planLikedNoList);
+						
+						for(i = 0; i < planLikedNoList.length; i++){
+							planLikedNoList2.push(planLikedNoList[i]);
+						}
+						
+					}
+					
+					//console.log("함수 밖, 찜 리스트",planLikedNoList.length);
+					
+					function isSelect(no){
+						re = false;
+						//console.log("isSelect() 동작함");
+						//console.log(planLikedNoList2.length);
+						
+						for(i = 0; i < planLikedNoList2.length; i++){
+							//console.log("isSelect()");
+							if(planLikedNoList2[i] == no){
+								//console.log("isSelect 함수 안,"+planLikedNoList2);
+								re = true;
+								break;
+							}
+						}
+						return re;
+					};
+					
+					$(".planLiked").each(function(){
+						//console.log("planLiked each 동작");
+						var likedPlanNoAttr = $(this).attr("LikedPlanNo");
+						var likedPlanNo = $(this).val();
+						
+						//console.log("isSelect()전"+likedPlanNo);
+						//console.log("isSelect()전"+planLikedNoList2);
+						
+						if(isSelect(likedPlanNoAttr)){
+							//console.log("isSelect()후"+likedPlanNo);
+							//console.log("likedPlanNoAttr"+likedPlanNoAttr);
+							$(this).attr("checked","checked");
+						}
+					});
+				} //end success: function()
+			}); //end ajax
+		}; //end getUserLiked()
+		
+		getUserLiked(login);
+		
+		
+		// 찜 기능
+		$(".planLiked_label").click(function(){
+			var attr = $(this).attr("likedPlanNo");
+			var state = $("input[likedPlanNo="+attr+"]").prop("checked");
+			console.log("State: " + state);
+			if(login == ""){
+				alert("로그인하세요");
+				//로그인 페이지 링크 연결
+			}else{
+				//찜 해제
+				if(state == true){
+					$("input[likedPlanNo="+attr+"]").prop("checked", false);
+					
+					$.ajax({
+						url: "/plan/detail/liked/delete",
+						data: {
+							no: $(this).attr("likedPlanNo")
+						},
+						success: function(re){
+							console.log("insert re:" + re);
+							if(re == 1){
+								console.log("찜취소!!");
+							}
+						}
+					});
+				}
+				if(state == false){
+					$("input[likedPlanNo="+attr+"]").prop("checked", true);
+					console.log("g");
+					console.log($(this).attr("likedPlanNo"));
+					console.log($(this).attr("likedImg"));
+					console.log($(this).attr("likedTitle"));
+					$.ajax({
+						url:"/plan/detail/liked/insert",
+						data: {
+							member_id: login,
+							no: $(this).attr("likedPlanNo"),
+							plan_img: $(this).attr("likedImg"),
+							liked_title: $(this).attr("likedTitle")
+						},
+						success: function(re){
+							console.log("insert re:" + re);
+							if(re == 1){
+								console.log("찜!!");
+							}
+						}
+					});
+				}
+			}
+		});
+		
+		
+		//korea_code로 region 가져오기
+		$(".korea_code").each(function(){
+			var korea_code = $(this).html();
+			var region = "";
+			//console.log("korea_code:" + korea_code);
+			switch(korea_code){
+				case "1": region = "서울"; $(this).html("여행지역 : "+ region); break;
+				case "2": region = "경기"; $(this).html("여행지역 : "+ region); break;
+				case "3": region = "인천"; $(this).html("여행지역 : "+ region); break;
+				case "4": region = "강원"; $(this).html("여행지역 : "+ region); break;
+				case "5": region = "충남"; $(this).html("여행지역 : "+ region); break;
+				case "6": region = "세종"; $(this).html("여행지역 : "+ region); break;
+				case "7": region = "대전"; $(this).html("여행지역 : "+ region); break;
+				case "8": region = "충복"; $(this).html("여행지역 : "+ region); break;
+				case "9": region = "경북"; $(this).html("여행지역 : "+ region); break;
+				case "10": region = "대구"; $(this).html("여행지역 : "+ region); break;
+				case "11": region = "울산"; $(this).html("여행지역 : "+ region); break;
+				case "12": region = "경남"; $(this).html("여행지역 : "+ region); break;
+				case "13": region = "부산"; $(this).html("여행지역 : "+ region); break;
+				case "14": region = "전북"; $(this).html("여행지역 : "+ region); break;
+				case "15": region = "전남"; $(this).html("여행지역 : "+ region); break;
+				case "16": region = "광주"; $(this).html("여행지역 : "+ region); break;
+				case "17": region = "제주"; $(this).html("여행지역 : "+ region); break;
+			}
+		});
+		
+		
+		$("#planInsert").click(function(e){
+			e.preventDefault();
+			if(login == ""){
+				alert("로그인하세요.");
+			}else{
+				$("#planInsert").unbind('click').click();
+			}
+		});
+		
+		
+	});
+</script>
+<body>
+	<!-- 헤더 -->
+<header>
+	<div id="header">
+		<div class="header2">
+			<h1 class="logo fl" alt="전국여행자랑">
+				<a href="/mainpage">
+					<img src="/images/전국여행자랑.png" alt="전국여행자랑" width="180px" height="50px" >
+				</a>
+			</h1>
+<div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle disabled"  data-bs-toggle="dropdown" aria-expanded="false">
+    플래너
+  </button>
+  <ul class="dropdown-menu">
+    <li><a class="dropdown-item" href="/plan/list">플래너 리스트</a></li>
+    <li><a class="dropdown-item" href="/plan/insert">플래너 작성</a></li>
+  </ul>
+</div>
+
+<div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle disabled" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    여행지
+  </button>
+  <ul class="dropdown-menu">
+    <li><a class="dropdown-item" href="/tripsearchpage">여행지 탐색</a></li>
+    <li><a class="dropdown-item" href="/trip/list">여행지 리스트</a></li>
+  </ul>
+</div>
+
+<div class="dropdown">
+  <a><button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="location.href='/liked/likeList'" >
+    관심목록
+  </button></a>
+  
+</div>
+	<div class="fr gnb_box login" id="login">
+			<a href="/login" class="fr">
+				<div class ="f1 gnb_login_btn">로그인</div>
+			</a>
+			</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+
+</header>	
+	<div id="header_container">
+		<a href="/myPage" id="back"><i class="bi bi-arrow-left-square"></i></a>
+		<!--  <button id="btnInsert" class="btn" onclick="location.href='/plan/insert'">여행계획 작성</button>-->
+	</div>
+	
+	<!-- 헤더 이미지 박스 -->
+	<div id="header_img">
+		<h1 id="header_title">내 여행계획</h1>
+		<img alt="" src="/images/main.png" style="width: 100%; height: 100%; z-index: 1; margin: auto;">
+	</div>
+	
+	<div id="search_order_container">
+	
+	</div>  
+
+	<!-- 본문 -->
+	<section>
+		<!-- 여행계획 목록 -->
+		<div id="content" class="container">
+			<div class="row row-cols-md-3 row-cols-2 g-4">
+				<div class="col-3" th:each="p:${plan}" style="width: 20rem; margin-right: 38px; margin-left: 28px;">
+					<div class="card" style="width: 22rem; height: 21rem;">
+						<a th:href="@{'/plan/detail/'+${p.plan_no}}" class="card_link" style="height: 200px;">
+							<img th:src="@{|/images/${p.plan_img}|}" class="card-img-top" alt="...">
+						</a>
+						<div class="card-body">
+							<a th:href="@{'/plan/detail/'+${p.plan_no}}" class="card_link">
+								<h3 class="card-title" th:text="${p.plan_title}" style="font-weight: bold; font-size: 16px;"></h3>
+							</a>
+							<input type="hidden" th:value="${p.plan_no}" id="plan_no">
+							<div id="info_container">
+								<p class="card-text korea_code" th:text="${p.korea_code}"></p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div> <!-- end #content -->
+	</section>	
+	
+
+
+	
+	<!--  
+ 	<div id="page_container">
+ 		<div id="page">
+		 	<span th:if="${startPage} > 1 ">
+				<a th:href="@{|/plan/list?region=${region}&orderColumn=${orderColumn}&pageNUM=${startPage-1}|}" th:text="|<|"></a>&nbsp;&nbsp;
+			</span>
+			<span th:each="page : ${#numbers.sequence(startPage,endPage)}" th:if="${keyword != null } ">
+				<a id="page_num" th:text="${page}" th:href="@{|/plan/list?keyword=${keyword}&amp;region=${region}&orderColumn=${orderColumn}&pageNUM=${page}|}"></a>&nbsp;&nbsp;
+			</span>
+			<span th:each="page : ${#numbers.sequence(startPage,endPage)}" th:if="${keyword == null} ">
+				<a id="page_num" th:text="${page}" th:href="@{|/plan/list?region=${region}&orderColumn=${orderColumn}&pageNUM=${page}|}"></a>&nbsp;&nbsp;
+			</span>
+			<span th:if="${endPage} < ${totalPage }">
+				<a id="page_num" th:href="@{|/plan/list?region=${region}&orderColumn=${orderColumn}&pageNUM=${endPage+1}|}" th:text="|>|"></a>&nbsp;&nbsp;
+			</span>
+ 		</div>
+	</div> -->
+	<footer>
+	
+	</footer>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+	
+</body>
+</html>

@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>여행계획 작성</title>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
+<!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
+<style type="text/css">
+	* {
+		padding: 0;
+		margin: 0;
+	}
+	
+	body{
+		width: 100%;
+	}
+	
+	section{
+		width: 90%;
+		margin: auto;
+		margin-bottom: 50px;
+		
+	}
+	
+	
+	#day2_box, #day2 {display: none}
+	#day3_box, #day3 {display: none}
+	#day4_box, #day4 {display: none}
+	
+	
+	#day{
+		width: 26%;
+		height: 700px;
+		float: left;
+		border-radius: 10px;
+		box-shadow: 3px 3px 4px rgba(26, 26, 26, 0.1);
+		background-color: #F6F6F6;
+		
+	}
+	
+	/* 여행지 목록 */
+	#trip_list{
+		width: 25%;
+		height: 700px;
+		display: inline-block;
+		margin-left: 20px;
+		overflow: scroll;
+		overflow-x: hidden;
+		margin-right: 10px;
+		border-radius: 10px;
+		box-shadow: 3px 3px 4px rgba(26, 26, 26, 0.1);
+		background-color: #F6F6F6;
+	}
+	
+	#page{
+		margin: auto;
+		text-align: center;
+		margin-bottom: 10px;
+	}
+	
+	a{
+		text-decoration: none;
+		color: black;
+	}
+	
+	#map{
+		width: 46%;
+		height: 700px;
+		float: right;
+		border-radius: 10px;
+		box-shadow: 3px 3px 4px rgba(26, 26, 26, 0.1);
+		background-color: #F6F6F6;
+	}
+	
+	
+	/* .trip{
+		border: 2px solid pink;
+		height: 70px;
+		margin-bottom: 10px;
+	} */
+	
+	.selected{
+		border: 2px solid blue;
+	}
+	
+	#info{
+		margin-bottom: 20px;
+		height: 250px;
+		border-radius: 10px;
+		border: 0.7px solid #BDBDBD;
+		box-shadow: 3px 3px 4px rgba(26, 26, 26, 0.1);
+		background-color: #F6F6F6;
+		margin-top: 50px;
+	}
+	
+	
+	
+	#label_container{
+		float: left;
+		width: 100px;
+		height: 100px;
+		padding-left: 30px;
+	}
+	
+	#title_region_container{
+		width: 765px;
+		margin-left: 144px;
+		height: 100px;
+	}
+	
+	#label_start{
+		float: left;
+		width: 120px;
+		height: 50px;
+		padding-left: 30px;
+		margin-top: 8px;
+		/* border: 2px solid blue; */
+	}
+	
+	#start_container{
+		width: 320px;
+		margin-left: 23px;
+		height: 50px;
+		float: left;
+		margin-top: 8px;
+	}
+	
+	#label_end{
+		width: 120px;
+		height: 50px;
+		padding-left: 30px;
+		/* border: 2px solid blue; */
+		float: left;
+		margin-left: 5px;
+		margin-top: 8px;
+		
+	}
+	
+	#end_container{
+		padding-top: 7px;
+		width: 320px;
+		margin-left: 610px;
+		height: 50px;
+		margin-top: 9px;
+	}
+	
+	label{
+		margin-bottom: 10px;
+		margin-top: 8px;
+		font-weight: bold;
+	}
+	
+	#submit{
+		border: 2px solid grey;
+		width: 70px;
+		padding: auto;
+		height: 30px;
+		margin-right: 15px;
+		line-height: 10px;
+		background: white;
+		border-radius: 5px;
+		float: right;
+		margin-top: 10px;
+		margin-bottom: 20px;
+	}
+	
+	#cancel{
+		border: 2px solid grey;
+		width: 70px;
+		padding: auto;
+		height: 30px;
+		margin-right: 30px;
+		line-height: 10px;
+		background: white;
+		border-radius: 5px;
+		float: right;
+		margin-top: 10px;
+		margin-bottom: 20px;
+	}
+	
+	.day_title{
+		font-weight: bold;
+	}
+
+	
+	footer{
+		clear: both;
+	}
+	
+	.btnReset{
+		width: 30px;
+		height: 30px;
+		float: right;
+		border: none;
+		background: none;
+	}
+	
+	#deleteDay1, #deleteDay2, #deleteDay3, #deleteDay4{
+		width: 30px;
+		height: 30px;
+		border: none;
+		background: none;
+		margin-left: 300px;
+	}
+	
+	
+</style>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=	2748bffb1c4bb28092f06206185586df"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script type="text/javascript">
+	$(function(){
+		
+		 var id = sessionStorage.getItem("id");
+		 
+		 if(id == null || id==""){
+			 alert("먼저 로그인 해주세요.")
+			 location.href="/login"
+		 }
+		 console.log(id)
+		
+		var login = $("#login_user").val(id);
+		//console.log("login:" + login);
+		$("#member_id").val(id);
+		
+		//카카오 맵
+		var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+		var options = { //지도를 생성할 때 필요한 기본 옵션
+			center: new kakao.maps.LatLng(37.5290321, 127.818683), //지도의 중심좌표.
+			level: 3 //지도의 레벨(확대, 축소 정도)
+		};
+		
+		var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+		
+		var markerPosition  = new kakao.maps.LatLng(37.5290321, 127.818683); 
+
+		// 마커를 생성
+		var marker = new kakao.maps.Marker({
+		    position: markerPosition
+		});
+
+		// 마우스 휠로 지도 확대,축소 기능 막기
+		map.setZoomable(false);  
+		
+		// 마커가 지도 위에 표시되도록 설정
+		marker.setMap(map);
+		
+		$("#day1").addClass("active");
+		
+		
+		//여행시작일, 여행종료일 선택 시 조건
+		$("#plan_start").datepicker({
+			dateFormat: "yy-mm-dd",
+		});
+		//$('#plan_start').datepicker("option", "maxDate", $("#plan_end").val());
+	    $('#plan_start').datepicker("option", "onClose", function ( selectedDate ) {
+	        $("#plan_end").datepicker( "option", "minDate", selectedDate );
+	        $("#plan_end").datepicker( "option", "maxDate", new Date(new Date(selectedDate).getTime() + 3*24*60*60*1000) );
+	    });
+	    
+		$("#plan_end").datepicker({
+			dateFormat: "yy-mm-dd"
+		});
+		$('#plan_end').datepicker("option", "minDate", $("#plan_start").val());
+	   
+		//날짜 변경 시 이벤트
+		$("#plan_start").change(function(){
+			var plan_start = new Date($("#plan_start").val()).getTime();
+		});
+		
+		$("#plan_end").change(function(){
+			var plan_start = $.datepicker.formatDate("yy-mm-dd", $("#plan_start").datepicker("getDate"));
+			var plan_end = $.datepicker.formatDate("yy-mm-dd", $("#plan_end").datepicker("getDate"));
+
+			$("#day2").css("display", "none");
+			$("#day3").css("display", "none");
+			$("#day4").css("display", "none");
+			
+			//여행날짜 변경 시 여행일수 가져오기
+			$.ajax({
+				url: "/plan/insert/count",
+				data: {
+					plan_start: plan_start,
+					plan_end: plan_end
+				},
+				success: function(cnt){
+					$("#count").val(cnt);
+					for(i = 1; i <= cnt; i++){
+						console.log(i);
+						console.log("#day"+i+"_box");
+						$("#day"+i).css("display", "inline-block");
+					}
+					
+				}
+			});
+		});
+	
+		
+		
+		var region = 0;
+		var pageNUM = 1;
+
+		getTotalRecord(region, pageNUM);
+		getTripList(pageNUM, region)
+		
+		$("#trip_region").change(function(){
+			region = $("#trip_region").val();
+			getTotalRecord(region, pageNUM);
+			getTripList(pageNUM, region);
+		});
+
+		//페이징 - 전체 레코드 수 가져오기
+		function getTotalRecord(region, pageNUM){
+			$.ajax({
+				url: "/plan/insert/list/record",
+				data: {
+					region: region
+				},
+				success: function(total){
+					$("#page").empty();
+					var totalPage = Math.ceil(total / 8);
+					var pageGROUP = 5;
+					if(totalPage > pageGROUP){
+						console.log("pageNUM:" + pageNUM);
+						
+						var startPage = (pageNUM-1)/pageGROUP*pageGROUP+1;
+						var endPage = startPage+pageGROUP-1;
+						if(totalPage < endPage) {
+							endPage = totalPage;
+						}
+						
+						console.log("sta:" + startPage);
+						console.log("end:" + endPage);
+						
+						if(startPage > 1){
+							var pre = $("<a></a>").html("<").attr({
+								"href": "#",
+								"pageNUM": startPage - 1
+							}).addClass("link").addClass("pre");
+							
+							$("#page").append(pre);
+							$("#page").append("&nbsp;&nbsp;");
+						}
+						
+						for(i = startPage; i <= endPage; i++){
+							var num = $("<a></a>").html(i).attr({
+								"href": "#",
+								"pageNUM": i
+							}).addClass("link");
+							
+							$("#page").append(num);
+							$("#page").append("&nbsp;&nbsp;");
+						}
+						
+						if(endPage < totalPage){
+							var next = $("<a></a>").html(">").attr({
+								"href": "#",
+								"pageNUM": endPage + 1
+							}).addClass("link").addClass("next");
+							$("#page").append(next);
+							$("#page").append("&nbsp;&nbsp;");
+						}
+						
+					}else{
+						for(i = 1; i <= totalPage; i++){
+							var num = $("<a></a>").html(i).attr({
+								"href": "#",
+								"pageNUM": i
+							}).addClass("link");
+							
+							$("#page").append(num);
+							$("#page").append("&nbsp;&nbsp;");
+						}
+						
+					}
+				}
+			});
+			
+		} //end getTotalRecord()
+		
+		//페이지 링크 클릭 시 이벤트
+		$(document).on("click", ".link", function(e){
+			e.preventDefault();
+			pageNUM = $(this).attr("pageNUM");
+			getTripList(pageNUM, region);
+		});
+		
+		// < 링크 클릭 이벤트
+		$(document).on("click", ".pre", function(e){
+			e.preventDefault();
+			pageNUM = $(this).attr("pageNUM");
+			getTotalRecord(region, pageNUM-4);
+		});
+		
+		// > 링크 클릭 이벤트
+		$(document).on("click", ".next", function(e){
+			e.preventDefault();
+			$("#page").empty();
+			pageNUM = $(this).attr("pageNUM");
+			getTotalRecord(region, pageNUM);
+		});
+		
+		//여행지 목록 가져오기
+		function getTripList(pageNUM, region){
+			$.ajax({
+				url: "/plan/insert/list",
+				data: {
+					pageNUM: pageNUM,
+					region: region
+				},
+				success: function(arr){
+					$("#trip").empty();
+					$.each(arr, function(){
+						//var div_trip = $("<div></div>").addClass("trip");
+						var div_card = $("<div></div>").addClass("card mb-3 trip").css({
+							"width": "20rem",
+							"cursor": "pointer",
+							"margin": "auto",
+							"height": "70px",
+							"overflow": "hidden"
+						}).attr({
+							"trip_no": this.trip_no,
+							"trip_title": this.trip_title,
+							"trip_img": this.trip_img,
+							"lat": this.lat,
+							"lng": this.lng
+						});
+						var div_row = $("<div></div>").addClass("row g-0");
+						var div_col4 = $("<div></div>").addClass("col-md-4");
+						var img = $("<img>").addClass("img-fluid rounded-start").attr({
+							"src": "/images/"+this.trip_img,
+							"alt": this.trip_img
+						}).css({
+							"height": "70px",
+							"width": "100px"
+						});						
+						var div_col8 = $("<div></div>").addClass("col-md-8");
+						var div_cardbody = $("<div></div>").addClass("card-body").css({
+							"max-height": "80px"
+						});
+						var h5 = $("<h5></h5>").addClass("card-title").html(this.trip_title).css({
+							"font-weight": "bold",
+							"font-size": "12pt",
+							"float": "left",
+							"width": "150px"
+						});
+						var p = $("<p></p>").addClass("card-text").html(this.trip_no).css("display", "none");
+						var btn = $("#btnDelete").clone().css({
+							"float": "right",
+							"background": "none",
+							"border": "none",
+							"display": "none"
+						});
+						
+						$(div_col4).append(img);
+						$(div_cardbody).append(h5, p, btn);
+						$(div_col8).append(div_cardbody);
+						$(div_row).append(div_col4, div_col8);
+						$(div_card).append(div_row);
+						//$(div_trip).append(div_card)
+						$("#trip").append(div_card);
+					});
+				}
+			});
+		}
+	
+	
+		//여행지 목록에서 여행지 클릭 시 이벤트
+		function clickList(){
+			var day = "day1";
+			$(".day_title").click(function(){
+				day = $(this).attr("id")
+				console.log("Day:" + day);
+				for(i = 1; i <= 4; i++){
+					$("#day"+i).removeClass("active");
+				}
+				$("#"+day).addClass("active");
+				
+				//$(".day_title").css("display", "none");
+				$(".box").css("display", "none");
+				
+				$("#"+day).css("display", "inline-block");
+				$("#"+day+"_box").css("display", "inline-block");
+			});
+	
+			var cnt = 1;
+			$(document).on("click", ".trip", function(){
+				var trip_no = $(this).attr("trip_no");
+				var trip_title = $(this).attr("trip_title");
+				var trip_img = $(this).attr("trip_img");
+				
+				var selected = $(".selected_"+day).length;
+				console.log("selected:"+selected);
+				if(selected < 5){
+					var div_add = $("<div></div>").addClass("add").attr({
+						"trip_no": trip_no,
+						"cnt": cnt
+					}).addClass("selected_"+day).attr({
+						"n": selected+1,
+						"day": day
+					});
+					
+					/* var btn = $("#btnDelete").clone().css({
+						"float": "right"
+					});
+					//var t = $(this).clone().find("#btnDelete").css("display", "inline-block");
+					$(div).append($(this).clone().addClass("selected_"+day).removeClass("trip").attr({
+						"n": selected+1,
+						"day": day
+					})); */
+					
+					var div_card = $("<div></div>").addClass("card mb-3").css({
+						"width": "20rem",
+						"cursor": "pointer",
+						"margin": "auto",
+						"height": "70px",
+						"overflow": "hidden"
+					});
+					var div_row = $("<div></div>").addClass("row g-0");
+					
+					var div_col4 = $("<div></div>").addClass("col-md-4");
+					
+					var img = $("<img>").addClass("img-fluid rounded-start").attr({
+						"src": "/images/"+trip_img,
+						"alt": trip_img
+					}).css({
+						"height": "70px",
+						"width": "100px"
+					});						
+					var div_col8 = $("<div></div>").addClass("col-md-8");
+					
+					var div_cardbody = $("<div></div>").addClass("card-body").css({
+						"max-height": "80px"
+					});
+					
+					var h5 = $("<h5></h5>").addClass("card-title").html(trip_title).css({
+						"font-weight": "bold",
+						"font-size": "12pt",
+						"float": "left",
+						"width": "150px"
+					});
+					var p = $("<p></p>").addClass("card-text").html(trip_no).css("display", "none");
+					var btn = $("<button></button>").attr({
+						"id": "btnDelete",
+						"trip_no": trip_no,
+						"cnt": cnt
+					}).css({
+						"background": "none",
+						"border": "none"
+					});
+					var btn_img = $("<img>").attr("src", "/images/trash.png").css({
+						"width": "17px",
+						"height": "17px"
+					});
+					$(btn).append(btn_img)
+					
+					$(div_col4).append(img);
+					$(div_cardbody).append(h5, p, btn);
+					$(div_col8).append(div_cardbody);
+					$(div_row).append(div_col4, div_col8);
+					$(div_card).append(div_row);
+					$(div_add).append(div_card);
+					//$("#trip").append(div_card);
+					
+					
+					//$(div_add).append(btn);
+					$("#"+day+"_box").append(div_add);
+					
+					//카카오맵
+					var lat = $(this).attr("lat");
+					var lng = $(this).attr("lng");
+					
+					var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+					var options = { //지도를 생성할 때 필요한 기본 옵션
+						center: new kakao.maps.LatLng(lat, lng), //지도의 중심좌표.
+						level: 3 //지도의 레벨(확대, 축소 정도)
+					};
+					var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+					
+					var markerPosition  = new kakao.maps.LatLng(lat, lng); 
+
+					// 마커를 생성
+					var marker = new kakao.maps.Marker({
+					    position: markerPosition
+					});
+
+					// 마우스 휠로 지도 확대,축소 기능 막기
+					map.setZoomable(false);  
+					
+					// 마커가 지도 위에 표시되도록 설정
+					marker.setMap(map);
+					
+				}else{
+					alert("최대 5개까지 선택할 수 있습니다.");
+				}
+				
+				//input에 trip_no 추가
+				var trip_no = $(this).attr("trip_no");
+				$("#"+day+"_"+(selected+1)).val(trip_no);
+				
+				cnt++;
+			});
+		}
+
+		clickList();
+		
+		//개별 삭제 버튼 클릭 이벤트
+		$(document).on("click", "#btnDelete", function(e){
+			e.preventDefault();
+			var active = $(".active").attr("id");
+			var cnt = $(this).attr("cnt");
+			$("#"+active+"_box").find("div[cnt="+cnt+"]").remove();
+			if($("#day1_1").val() == ""){
+				$("#plan_img").val("");
+			}
+		});
+
+		
+		//날짜별 전체 삭제
+		$(".deleteDay").click(function(e){
+			e.preventDefault();
+			//day1 전체 삭제 시 plan_img 삭제
+			if($(this).attr("id") == "deleteDay1"){
+				$("#plan_img").val("");
+			}
+			$(this).siblings("input").val("");
+			$(this).siblings(".add").remove();
+		});
+		
+		
+		//등록 버튼 클릭 이벤트
+		$("#submit").click(function(e){
+			e.preventDefault();
+			console.log($("#region").val());
+			
+			if($("#region").val() == ""){
+				alert("지역을 선택하세요.")
+			}else if($("#plan_title").val() == ""){
+				alert("제목을 입력하세요.");
+			}else if($("#plan_start").val() == ""){
+				alert("여행시작일을 입력하세요.");
+			}else if($("#plan_end").val() == ""){
+				alert("여행종료일을 입력하세요.");
+			}else{
+				var days = $("#count").val();
+				$(".day_input").val("");
+				
+				for(i = 1; i <= days; i++){
+					var arr = $("#day"+i+"_box").find(".selected_day"+i);
+					console.log("arr:" + arr);
+					$.each(arr, function(index, value){
+						console.log(this);
+						$("#day"+i+"_"+(index+1)).val("");
+						$("#day"+i+"_"+(index+1)).val($(this).attr("trip_no"));
+					});
+				}
+				
+				//이미지 가져오기
+				var trip_no = $("#day1_1").val();
+				$.ajax({
+					url: "/plan/detail/getImg",
+					data: {
+						trip_no: trip_no
+					},
+					success: function(img){
+						$("#plan_img").val(img);
+						$("#submit").unbind('click').click();
+					}
+				});	
+				
+			}
+			
+		}); //#submit 클릭
+		
+		//다시입력 누르면 선택된 여행지 선택해제
+		$(".btnReset").click(function(e){
+			e.preventDefault();
+			console.log("btnReset");
+			$(".add").remove();
+		});
+		
+		//취소 버튼 클릭 이벤트
+		$("#cancel").click(function(e){
+			e.preventDefault();
+			if(confirm("내용이 저장되지 않습니다. 작성을 취소하시겠습니까?")){
+				location.href = "/plan/list";
+			}
+		});
+		
+		
+	});
+</script>
+</head>
+<body>
+	<input type="hidden" name="login_user" id="login_user">
+	<!-- <h2>여행계획 작성</h2>
+	<a href="/plan/list">목록</a> -->
+	<!-- 헤더 -->
+	
+
+	<section>
+		<form action="/plan/insert" method="post" id="insert">
+			<!-- 여행계획 기본 정보 -->
+			<div id="info">
+				<input type="hidden" name="member_id" id="member_id"><br>
+				<input type="hidden" name="plan_no" th:value="${nextNo}">
+				
+				<div>
+					<div style="width: 950px; margin-top: 18px; float: left;">
+					
+						<div id="label_container">
+							<label for="title" class="form-label">제목</label><br>
+							<label for="region" class="form-label" style="padding-top: 15px;">지역</label>
+						</div>
+					
+						<div id="title_region_container">
+							<div class="mb-3">
+								<input type="text" name="plan_title" id="plan_title" class="form-control" placeholder="제목을 입력하세요.">
+							</div>
+							
+							<div class="mb-3">
+								<select id="region" name="korea_code" class="form-select" aria-label="Default select example">
+									<option value="" selected>지역선택</option>
+									<option th:each="r:${regionlist}" th:text="${r.region}" th:value="${r.code}"></option>
+								</select>
+							</div>
+						
+						</div>
+					
+						<div id="date_container" style="height: auto;">
+							<div id="label_start">
+								<label for="start" class="form-label">여행시작일</label>
+							</div>				
+						
+							<div id="start_container">
+								<div class="mb-3">
+									<input type="text" name="plan_start" id="plan_start" class="form-control" placeholder="여행시작일을 선택하세요." style="width: 300px;">
+								</div>
+							</div>
+			
+							<div id="label_end">
+								<label for="end" class="form-label">여행종료일</label>
+							</div>
+		
+							<div id="end_container">
+								<div class="mb-3">
+									<input type="text" name="plan_end" id="plan_end" class="form-control" placeholder="여행종료일을 선택하세요." style="width: 300px;">
+								</div>
+							</div>
+						
+						</div>
+					
+					</div>
+						
+					<button style="float: right; margin-top: 170px;" id="cancel">취소</button>
+					<button type="submit" id="submit" style="float: right; margin-top: 170px;">등록</button>
+				</div>
+				
+				<input type="hidden" name="plan_img" id="plan_img">
+				<input type="hidden" id="count">
+			</div>
+		
+			<!-- 여행계획 날짜별 일정 -->
+			<div id="day">
+			
+				<ul class="nav nav-tabs" id="day_title_container">
+				  <li class="nav-item">
+				    <a class="nav-link day_title" id="day1" aria-current="page" href="#">DAY 1</a>
+				  </li>
+				  <li class="nav-item">
+				    <a class="nav-link day_title" id="day2" href="#">DAY 2</a>
+				  </li>
+				  <li class="nav-item">
+				    <a class="nav-link day_title" id="day3" href="#">DAY 3</a>
+				  </li>
+				  <li class="nav-item">
+				    <a class="nav-link day_title" id="day4" href="#">DAY 4</a>
+				  </li>
+				</ul>
+
+
+				<div id="day1_box" class="box">
+					<button class="deleteDay" id="deleteDay1">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+						  <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
+						</svg>
+					</button>
+					<button class="btnReset">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
+						  <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"/>
+						  <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"/>
+						</svg>
+					</button><br>
+					
+					<input class="day_input" type="hidden" name="day1_1" id="day1_1" style="clear: both;">
+					<input class="day_input" type="hidden" name="day1_2" id="day1_2">
+					<input class="day_input" type="hidden" name="day1_3" id="day1_3">
+					<input class="day_input" type="hidden" name="day1_4" id="day1_4">
+					<input class="day_input" type="hidden" name="day1_5" id="day1_5"><br>
+				</div>
+				
+					
+				<div id="day2_box" class="box">
+					<button class="deleteDay" id="deleteDay2">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+						  <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
+						</svg>
+					</button>
+					<button class="btnReset">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
+						  <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"/>
+						  <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"/>
+						</svg>
+					</button><br>
+				
+					<input class="day_input" type="hidden" name="day2_1" id="day2_1" style="clear: both;">
+					<input class="day_input" type="hidden" name="day2_2" id="day2_2">
+					<input class="day_input" type="hidden" name="day2_3" id="day2_3">
+					<input class="day_input" type="hidden" name="day2_4" id="day2_4">
+					<input class="day_input" type="hidden" name="day2_5" id="day2_5"><br>
+				</div>
+				
+					
+				<div id="day3_box" class="box">
+					<button class="deleteDay" id="deleteDay3">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+						  <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
+						</svg>
+					</button>
+					<button class="btnReset">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
+						  <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"/>
+						  <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"/>
+						</svg>
+					</button><br>
+					<input class="day_input" type="hidden" name="day3_1" id="day3_1" style="clear: both;">
+					<input class="day_input" type="hidden" name="day3_2" id="day3_2">
+					<input class="day_input" type="hidden" name="day3_3" id="day3_3">
+					<input class="day_input" type="hidden" name="day3_4" id="day3_4">
+					<input class="day_input" type="hidden" name="day3_5" id="day3_5"><br>
+				</div>
+				
+					
+				<div id="day4_box" class="box">
+					<button class="deleteDay" id="deleteDay4">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+						  <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
+						</svg>
+					</button>
+					<button class="btnReset">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
+						  <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"/>
+						  <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"/>
+						</svg>
+					</button><br>
+					<input class="day_input" type="hidden" name="day4_1" id="day4_1" style="clear: both;">
+					<input class="day_input" type="hidden" name="day4_2" id="day4_2">
+					<input class="day_input" type="hidden" name="day4_3" id="day4_3">
+					<input class="day_input" type="hidden" name="day4_4" id="day4_4">
+					<input class="day_input" type="hidden" name="day4_5" id="day4_5"><br>
+				</div>
+			</div>
+		</form>
+		
+		<!-- 여행지 목록 -->
+		<div id="trip_list">
+			<select id="trip_region" name="korea_code" class="form-select" aria-label="Default select example" style="margin: auto; width: 323px; margin-bottom: 15px; margin-top: 15px; border: 2px solid #eaeaea;">
+				<option value="0" selected>전국</option>
+				<option th:each="r:${regionlist}" th:text="${r.region}" th:value="${r.code}"></option>
+			</select>
+			<div id="trip"></div>
+			<div id="page"></div>
+		</div>
+		
+		
+		<!-- 지도 -->
+		<div id="map"></div>
+		
+	</section>
+	
+	<footer>
+	
+	</footer>
+	
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+</body>
+</html>

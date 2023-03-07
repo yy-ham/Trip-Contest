@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MainPage">
+  <select id="Planerbest" resultType="planVO">
+  	select * from (select * from plan order by plan_hit desc) where rownum<![CDATA[ <= ]]>6 order by plan_hit desc
+  </select>
+  
+   <select id="Tripbest" resultType="tripVO">
+    select * from (select * from trip order by hit desc) where rownum<![CDATA[ <= ]]>6 order by hit desc
+  
+  </select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

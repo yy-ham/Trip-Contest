@@ -1,0 +1,421 @@
+.swiper-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-transition-property: -webkit-transform;
+    transition-property: -webkit-transform;
+    -o-transition-property: transform;
+    transition-property: transform;
+    transition-property: transform,-webkit-transform;
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
+
+
+.zone_cont .area_mid{float: left;width:257px;margin:0 0 26px;}
+.zone_cont .area_mid a{display:block;}
+
+.zone_cont .area_right{float: right;width:300px;}
+.zone_cont .area_right ul{padding: 0 0;}
+.zone_cont .area_right ul li{width: 100%;margin-top:10px;}
+.zone_cont .area_right ul li:first-child{margin-top:0;}
+.zone_cont .area_right ul li > div:hover{border:1px solid #666;}
+.zone_cont .area_right ul li > div{position:relative;overflow: hidden; width: 100%;height:100px;padding: 28px 45px 25px 20px;border: 1px solid #e6e6e6;box-sizing: border-box;border-radius:10px;}
+
+.zone_wrap {
+    background: #edeef2;
+    padding-top: 31px;
+    position: relative;
+}
+
+.zone_wrap:before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 10px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: #edeef2;
+    z-index: 10;
+}
+
+.zone_wrap .tit {
+    position: relative;
+    height: 59px;
+    overflow: hidden;
+}
+
+.zone_wrap .tit h2 {
+    float: left;
+    font-weight: 800;
+    font-size: 22px;
+    color: #333;
+    letter-spacing: -1px;
+    line-height: 59px;
+}
+
+.zone_wrap .switch_wrap {
+    float: left;
+    margin-top: 18px;
+}
+
+.zone_wrap .switch_wrap + .switch_wrap {
+    display: none;
+}
+
+.zone_wrap .switch_wrap em {
+    display: inline-block;
+    margin: 0 5px 0;
+    font-size: 14px;
+    color: #000;
+    vertical-align: middle;
+}
+
+.zone_wrap .tog_wrap {
+    position: relative;
+    display: inline-block;
+    width: 36px;
+    height: 21px;
+}
+
+.zone_wrap .tog_wrap input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.zone_wrap .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 34px;
+    background: #d3d3d3;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.zone_wrap .slider:before {
+    position: absolute;
+    content: "";
+    height: 17px;
+    width: 17px;
+    left: 2px;
+    top: 2px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+.zone_wrap .slider span {
+    font-size: 0;
+    text-indent: -9999px;
+}
+
+.zone_wrap .slider .on {
+    display: none;
+}
+
+.zone_wrap .slider .off {
+    display: block;
+}
+
+.zone_wrap .slider.on .on {
+    display: block;
+}
+
+.zone_wrap .slider.on .off {
+    display: none;
+}
+
+.zone_wrap .tog_wrap input:checked + .slider, .zone_wrap .tog_wrap .slider.on {
+    background: #13294b;
+}
+
+
+.zone_wrap .tog_wrap input:checked + .slider:before, .zone_wrap .tog_wrap .slider.on:before {
+    -webkit-transform: translateX(15px);
+    -ms-transform: translateX(15px);
+    transform: translateX(15px);
+}
+
+.zone_wrap .list_zone {
+    position: relative;
+    padding-bottom: 50px;
+    width: 940px;
+    margin: 0 auto;
+}
+
+.zone_wrap .list_zone .swiper-container2 {
+    border-top: 2px solid #333;
+    position: relative;
+    overflow: hidden;
+    height: 67px;
+    align-items: center;
+    background: none;
+}
+
+.zone_wrap .list_zone .swiper-container2 .swiper-wrapper {
+    width: 100%;
+    margin: 10px 0 0;
+    padding: 0 0 0 1px;
+}
+
+.zone_wrap .list_zone .swiper-slide {
+    position: relative;
+    width: 49px;
+    text-align: center;
+}
+
+.zone_wrap .list_zone .swiper-container2.type0 .swiper-slide {
+    width: 55px;
+}
+
+.zone_wrap .list_zone .swiper-container2.type1 .swiper-slide {
+    width: 52px;
+}
+
+.zone_wrap .list_zone .swiper-container2.type2 .swiper-slide {
+    width: 49px;
+}
+
+.zone_wrap .list_zone .swiper-container2.type3 .swiper-slide {
+    width: 47px;
+}
+
+.zone_wrap .list_zone .swiper-slide button {
+    display: block;
+    width: 100%;
+    height: 34px;
+    font-size: 16px;
+    color: #333;
+}
+
+.zone_wrap .list_zone .swiper-slide button:hover {
+    background: #13294b;
+    color: #fff;
+    border-radius: 50px;
+    box-shadow: 4px 5px 12px 0px rgba(19, 41, 75, 0.3);
+}
+
+.zone_wrap .list_zone .swiper-slide.on button {
+    background: #13294b;
+    color: #fff;
+    border-radius: 50px;
+    box-shadow: 4px 5px 12px 0px rgba(19, 41, 75, 0.3);
+}
+
+
+.zone_wrap .list_zone .box_logo {
+    width: 100%;
+    padding: 37px 0 26px;
+    float: none;
+    margin: 0;
+}
+
+.zone_wrap .list_zone .box_logo::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+.zone_wrap .list_zone .zone_top {
+    float: right;
+    width: 40%;
+    padding: 40px 0 26px;
+    text-align: right;
+}
+
+.zone_wrap .list_zone .zone_top .region-btn_all {
+    display: inline-block;
+    color: #000;
+    padding-left: 19px;
+    background: url(../images/sub/ico_moreplus.png) 0 4px no-repeat;
+    color: #000;
+}
+
+.zone_wrap .list_zone .zone_top .region-btn_mp_view {
+    display: inline-block;
+    margin-right: 25px;
+    padding-left: 22px;
+    background: url(../images/main/ico_lc.png) no-repeat 0 0/16px 16px;
+    color: #000;
+}
+
+.zone_wrap .zone_box {
+    padding: 0 30px 23px 30px;
+    background: #fff;
+    border-radius: 10px;
+}
+ .region-btn{
+	border: 0 none;
+	background-color: transparent; 
+} 
+
+
+
+#map{
+  postiion : relative;
+  
+}
+
+#서울 {
+  position: absolute;
+  top: 350px;
+  left : 175px;
+  width: "90";
+  padding: 4px 4px;
+  border: none;
+  
+}
+
+#경기 {
+  position: absolute;
+  top: 370px;
+  left : 190px;
+  padding: 5px 15px;
+  border: none;
+  
+}
+#인천 {
+  position: absolute;
+  top: 350px;
+  left : 150px;
+  width: "90";
+  padding: 4px 4px;
+  border: none;
+  
+}
+#강원{
+		position: absolute;
+	  top: 330px;
+	  left : 275px;
+	  padding: 8px 18px;
+	  border: none;
+	  
+}
+
+#충남{
+	  position: absolute;
+	  top: 450px;
+	  left : 155px;
+	  padding: 8px 20px;
+	  border: none;
+	  
+}
+#세종{
+	position: absolute;
+	  top: 	445px;
+	  padding: 4px 4px;
+	  left : 200px;
+	  border: none;
+	 
+
+
+}
+#대전{
+	position: absolute;
+	  top: 465px;
+	  left : 205px;
+	  padding: 8px 10px;
+	  border: none;
+	  
+}
+#충북{
+
+	position: absolute;
+	  top: 420px;
+	  left : 220px;
+	  padding: 8px 20px;
+	  border: none;
+	 
+
+}
+#경북{
+	position: absolute;
+	  top: 450px;
+	  left : 300px;
+	  padding: 8px 20px;
+	  border: none;
+	 
+}
+#대구{
+
+position: absolute;
+	  top: 500px;
+	  left : 285px;
+	  padding: 18px 18px;
+	  border: none;
+	  
+
+}
+#울산{
+	position: absolute;
+	  top: 535px;
+	  left : 350px;
+	  padding: 15px 15px;
+	  border: none;
+	 
+}
+#경남{
+	position: absolute;
+	  top: 560px;
+	  left : 265px;
+	  padding: 8px 20px;
+	  border: none;
+	  
+	
+}
+#부산{
+	  position: absolute;
+	  top: 575px;
+	  left : 335px;
+	  padding: 8px 20px;
+	  border: none;
+	  
+}
+#전북{
+	position: absolute;
+	  top: 520px;
+	  left : 185px;
+	  padding: 18px 18px;
+	  border: none;
+	  
+}
+#전남{
+	position: absolute;
+	  top: 610px;
+	  left : 152px;
+	  padding: 8px 20px;
+	  border: none;
+	 
+}
+#광주{
+	position: absolute;
+	  top: 585px;
+	  left : 152px;
+	  padding: 8px 20px;
+	  border: none;
+	 
+}
+#제주{
+	position: absolute;
+	  top: 693px;
+	  left : 95px;
+	  padding: 8px 20px;
+	  border: none;
+}
+.region-btn{
+	border: 0 none;
+	background-color: transparent;
+}

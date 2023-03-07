@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>여행계획 상세</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    
+<style type="text/css">
+	* {
+		padding: 0;
+		margin: 0;
+	}
+	
+	header{
+		width: 70%;
+		margin: auto;
+	}
+	
+	section{
+		width: 70%;
+		margin: auto;
+		clear: both;
+		/* border: 3px solid black; */
+		margin-bottom: 20px;
+		height: auto;
+	}
+	
+	article{
+		width: 70%;
+		margin: auto;
+		clear: both;
+		margin-bottom: 100px;
+	}
+	
+	#btn_container{
+		/* margin: auto; */
+		/* border: 2px solid grey; */
+		width: 330px;
+		height: 50px;
+		margin-bottom: 20px;
+		margin-top: 20px;
+		padding-left: 20px;
+		padding-top: 3px;
+		float: right;
+	}
+	
+	#btn_container2{
+		/* border: 2px solid grey; */
+		width: 330px;
+		height: 50px;
+		margin-bottom: 20px;
+		margin-top: 20px;
+		padding-left: 20px;
+		padding-top: 3px;
+		float: left;
+	}
+	
+	#content{
+		clear: both;
+		margin: auto;
+		/* border: 2px solid pink; */
+		text-align: center;
+		margin-bottom: 20px;
+		height: auto;
+	}
+	
+	#img_container{
+		margin: auto;
+		clear: both;
+		/* border: 2px solid red; */
+		width: 70%;
+	}
+	
+	#plan_img{
+		margin-top: 10px;
+		/* margin: auto;
+		margin-bottom: 20px; */
+		width: 100%;
+		display: inline-block;
+		text-align: center;
+	}
+	
+	#liked_container{
+		/* border: 2px solid blue; */
+		margin: auto;
+		width: 60px;
+		height: 40px;
+		margin-top: 50px;
+	}
+	
+	#day{
+		margin: auto;
+		/* border: 2px solid red; */
+		margin-bottom: 20px;
+		
+	}
+	
+	#day1{
+		/* border: 2px solid grey; */
+		overflow: hidden;
+	}
+	#day2{
+		/* border: 2px solid grey; */
+		overflow: hidden;
+	}
+	#day3{
+		/* border: 2px solid grey; */
+		overflow: hidden;
+	}
+	#day4{
+		/* border: 2px solid grey; */
+		overflow: hidden;
+	}
+	
+	.card{
+		float: left;
+		text-align: center;
+		margin-right: 15px;
+		margin-left: 15px;
+		border: 0.75px solid #eaeaea;
+		box-shadow: 3px 3px 4px rgba(26, 26, 26, 0.1);
+	}
+	
+	.day_title{
+		margin-bottom: 20px;
+		font-weight: bold;
+		margin-left: 13px;
+	}
+	.day_container{
+		clear: both;
+		margin-bottom: 40px;
+		
+	}
+	
+
+	/*댓글*/
+	#recoment{
+		margin: auto;
+		/* border: 2px solid pink; */
+		clear: both;
+		margin-bottom: 50px;
+		height: auto;
+	}
+	
+	#recoment_title{
+		margin-bottom: 20px;
+	}
+	
+	/*댓글*/
+	.rec{
+		margin-top: 15px;
+		width: 799px;
+		padding-top: 20px;
+		padding-left: 20px;
+		height: 120px;
+		border-radius: 10px;
+		border: 1px solid #BDBDBD;
+		box-shadow: 3px 3px 4px rgba(26, 26, 26, 0.1);
+		background-color: #F6F6F6;
+		
+	}
+	
+	/* #list_container{
+		width: 840px;
+		margin-bottom: 50px;
+		
+	} */
+	
+	#listRecoment{
+		clear: both;
+		margin-top: 30px;
+		overflow: hidden;
+	}
+	#write{
+	
+		margin-bottom: 30px;
+		overflow: hidden;
+		width: 800px;
+	}
+	
+	
+	#updateRecoment{
+		display: none;
+	}
+	#updateReset{
+		dsiplay: none;
+	}
+	
+	.btn{
+		border: 2px solid grey;
+		width: 70px;
+		padding: auto;
+		height: 30px;
+		margin-left: 5px;
+		line-height: 10px;
+	}
+	
+	#insertRecoment{
+		width: 100px;
+		float: right;
+		margin-right: 3px;
+	}
+	
+	#btn_recoment_container{
+		width: 158px;
+		height: 50px;
+		padding-top: 3px;
+		padding-top: 10px;
+		float: right;
+		margin-bottom: 10px;
+	}
+	
+
+	
+	#text_container{
+		float: left;
+	}
+	
+
+	
+		/* 찜 */
+	input[type=checkbox] {
+   		display:none;
+	}
+	
+	label {
+		width: 10px;
+	    height: 30px;
+		cursor: pointer;
+	}
+	
+	input[type=checkbox] + label { 
+	    padding-left: 35px; 
+	    background-repeat: no-repeat;
+	    background-image: url('/images/heart_default.png');
+
+	}
+	
+	input[type=checkbox]:checked + label {
+	    background-image: url('/images/heart_liked.png');
+	}
+	
+
+	
+	#info{
+		/* text-align: center; */
+		/* float: right; */
+		margin-right: 200px;
+		position: relative;
+		/* border: 2px solid pink; */
+		height: 30px;
+		margin: auto;
+		width: 70%;
+		
+	}
+	
+	#plan_date_container{
+		float: left;
+		/* border: 2px solid grey; */
+		/* position: absolute; */
+	}
+	
+	#plan_hit_container{
+		float: right;
+		/* border: 2px solid grey; */
+		/* position: absolute; */
+	}
+	
+
+	#cntLiked{
+		 margin-right: 5px;
+		 margin-bottom: 30px;
+		 margin-top: 3px;
+		 /* border: 2px solid black; */
+		 float: left;
+	}
+	
+	#btnList{
+		margin-left: 135px;
+	}
+	a{
+		text-decoration: none;
+		color: black;
+	}
+
+	
+</style>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		
+		var id = sessionStorage.getItem("id");
+		 $("#login_user").val(id);
+		 
+		if(id != null){
+			var login = $("#login_user").val();			
+		}
+		
+		var login = $("#login_user").val();
+		var no = $("#no").val();
+		var member_id = $("#member_id").html();
+		console.log("login:" + login);
+		console.log("member_id:" + member_id);
+		
+		if(login != member_id){
+			$("#btn_container").css("display", "none");
+		}
+		$("#rec_form_id").html(id);
+		console.log(";");
+			
+		
+		
+		
+
+		//댓글 목록 가져오기
+		function listRecoment(no){
+			$.ajax({
+				url: "/recoment/list",
+				data: {
+					no: no
+				},
+				success: function(arr){
+					$("#listRecoment").empty();
+					$.each(arr, function(){
+						var div = $("<div></div>").addClass("rec");
+						
+						var rec_no = $("<p></p>").html(this.recNo).css("display", "none");
+						var member_id = $("<div></div>").html(this.memberId).css({
+							"font-weight": "bold",
+							"float": "left"
+						});
+						var content = $("<div></div>").html(this.recContent).css({
+							"clear": "both",
+							"width": "500px",
+							"height": "50px",
+							"float": "left",
+							"margin-top": "10px"
+						});
+						var rec_date = $("<div></div>").html(this.recDate).css({
+							"float": "right",
+							"margin-right": "30px"
+						});
+						$(div).append(rec_no, member_id, rec_date, content);
+						
+						var div2 = $("<div></div>").css({
+							"text-align": "right",
+							"height": "30px",
+							"float": "right",
+							"padding-top": "30px",
+							"margin-right": "30px"
+						});
+						if(login == this.memberId){
+							var btnUpdate = $("<button id='btnUpdate'>수정</button>").attr({
+								"recNo": this.recNo,
+								"class": "btn"
+							});
+							var btnDelete = $("<button id='btnDelete'>삭제</button>").attr({
+								"recNo": this.recNo,
+								"class": "btn"
+							});
+							$(div2).append(btnUpdate, btnDelete);
+							$(div).append(div2);
+						}
+						
+						$("#listRecoment").append(div);
+					});
+					$("#updateRecoment").css("display", "none");
+					$("#updateReset").css("display", "none");
+				}
+			});
+		}
+		
+		listRecoment(no);
+		
+		//댓글 수정
+		$(document).on("click","#btnUpdate", function(){
+			$("#rec_no").remove();
+			var recNo = $(this).attr("recNo");
+			console.log(recNo);
+			var data = $("#writeRecoment").serializeArray();
+			$("#writeRecoment").append($("<input>").attr("id", "rec_no").attr({
+				"name": "rec_no",
+				"type": "hidden"
+			}));
+			
+			//input에 값 보여주기
+			$.ajax({
+				url: "/recoment/get",
+				data: {
+					recNo: recNo
+				},
+				success: function(re){
+					console.log(re.recNo);
+					$("#rec_member_id").val(re.memberId);
+					$("#rec_content").val(re.recContent);
+					$("#rec_no").val(re.recNo);
+					$("#insertRecoment").css("display", "none");
+					$("#updateRecoment").css("display", "inline-block");
+					$("#updateReset").css("display", "inline-block");
+				}
+			});
+		
+			
+			//수정
+			$("#updateRecoment").click(function(e){
+				e.preventDefault();
+				console.log("click");
+				var data = $("#writeRecoment").serializeArray();
+				console.log(data);
+				$.ajax({
+					url: "/recoment/update",
+					data: {
+						rec_content: $("#rec_content").val(),
+						rec_no: recNo
+					},
+					success: function(re){
+						console.log(re);
+						$("#rec_content").val("");
+						listRecoment(no);
+						
+					}
+				});
+	
+			});
+			
+			//수정 취소 버튼 클릭 이벤트
+			$("#updateReset").click(function(e){
+				e.preventDefault();
+				$("#rec_content").val("");
+				$("#updateRecoment").css("display", "none");
+				$("#updateReset").css("display", "none");
+				$("#insertRecoment").css("display", "inline-block");
+				$("#rec_no").remove();
+			});
+		});
+		
+
+		
+		//댓글 등록
+		$("#insertRecoment").click(function(e){
+			e.preventDefault();
+			if(login == ""){
+				alert("로그인하세요.");
+			}else{
+				$("#rec_member_id").val(login);
+				var data = $("#writeRecoment").serializeArray();
+				$.ajax({
+					url: "/recoment/insert",
+					data: data,
+					success: function(re){
+						listRecoment(no);
+						$("#rec_content").val("");
+					}
+				});
+				
+			}
+		});
+		
+		//댓글 삭제
+		$(document).on("click","#btnDelete",function(){
+			var recNo = $(this).attr("recNo");
+			if(confirm("삭제하시겠습니까?")){
+				$.ajax({
+					url: "/recoment/delete",
+					data: {
+						recNo: recNo
+					},
+					success: function(re){
+						console.log(re);
+						listRecoment(no);
+					}
+				});
+			}
+		}); //end 삭제
+		
+		
+		//좋아요
+		//좋아요 수 가져오기
+		function getLiked(){
+			$.ajax({
+				url: "/plan/detail/liked",
+				data: {
+					plan_no: no
+				},
+				success: function(re){
+					$("#cntLiked").html(re);
+				}
+			});
+		}
+		
+		getLiked();
+		
+		$("#liked_label").click(function(){
+			console.log("login:" + login);
+			console.log("no:" + no);
+			console.log("좋아요");
+			
+			var attr = $(this).attr("likedPlanNo");
+			var state = $("input[likedPlanNo="+attr+"]").prop("checked");
+			console.log("attr:" + attr);
+			console.log("state:" + state);
+			
+			if(login == null||login == ""){
+				alert("로그인하세요");
+				location.href = "/login"
+				$("input[likedPlanNo="+attr+"]").prop("checked", false);
+			}else{
+				//찜X -> 찜O
+				if(state == false){
+					$("input[likedPlanNo="+attr+"]").prop("checked", true);
+					console.log($("input[likedPlanNo="+attr+"]").prop("checked"));
+					
+					$.ajax({
+						url: "/plan/detail/liked/insert",
+						data: {
+							member_id: login,
+							no: no,
+							plan_img: $(this).attr("likedImg"),
+							liked_title: $(this).attr("likedTitle")
+						},
+						success: function(re){
+							console.log("insert re:" + re);
+							getUserLiked(login);
+							getLiked();
+						}
+					});
+					
+				}
+				
+				//찜O -> 찜X
+				if(state == true){
+					console.log("삭제");
+					$("input[likedPlanNo="+attr+"]").prop("checked", false);
+					console.log($("input[likedPlanNo="+attr+"]").prop("checked"));
+					console.log("-----");
+					$.ajax({
+						url: "/plan/detail/liked/delete",
+						data: {
+							no: no
+						},
+						success: function(re){
+							console.log("삭제결과:"+re);
+							getUserLiked(login);
+							getLiked();
+						}
+					});
+				}
+			}
+			
+		});
+		
+		//찜 눌러져 있는지 아닌지 보여주기
+		function getUserLiked(login){
+			$.ajax({
+				url: "/plan/detail/liked/"+login,
+				data: {
+					no: no
+				},
+				success: function(re){
+					console.log("user re:" + re);
+					if(re == 1){
+						console.log("get:" + $("input[likedPlanNo="+no+"]").prop("checked"));
+						$("input[likedPlanNo="+no+"]").prop("checked", true);
+					}else{
+						$("input[likedPlanNo="+no+"]").prop("checked", false);
+						
+					}
+				}
+			});
+		}
+		
+		getUserLiked(login);
+		
+		
+		//여행계획 삭제
+		$("#deletePlan").click(function(e){
+			e.preventDefault();
+			var plan_no = $("#plan_no").val();
+			if(confirm("삭제하시겠습니까?")){
+				console.log("p:" + plan_no);
+				console.log("login:" + login);
+				//$("#submit").unbind('click').click();
+				location.href = "/plan/delete/"+plan_no+"/"+login;
+			}
+		});
+		
+	});
+</script>
+</head>
+<body>
+	<input type="hidden" name="login_user" id="login_user" value="hong">
+	
+	<!-- 헤더 -->
+	
+
+	<!-- 본문 -->
+	<section>
+		<!-- 버튼 박스 -->
+		<div>
+			<div id="btn_container2">
+			
+					<button id="btnList" class="btn" th:onclick="|location.href='/plan/list'|" th:text="목록"></button>
+			</div>
+			
+			<div id="btn_container">
+				<button class="btn" th:onclick="|location.href='/plan/update/${plan.planNo}'|" th:text="수정"></button>
+				<button class="btn" id="deletePlan" th:text="삭제"></button>
+				<!-- <a th:href="@{'/plan/update/'+${plan.planNo}}" th:text="수정"></a>
+				<a th:href="@{'/plan/delete/'+${plan.planNo}+'/'+${plan.member_id}}" th:text="삭제" id="deletePlan"></a> -->
+			</div>
+			
+		
+		</div>
+		<!-- 여행계획 기본정보 -->
+		<div id="content" th:each="p:${plan}">
+			<input type="hidden" th:value="${p.planNo}" id="plan_no">
+			<div th:text="${p.planTitle}" id="plan_title" style="margin-top: 20px;margin-bottom:10px;text-align: center;font-size: 36px;font-weight: bold;"></div>
+			
+			<span th:text="${p.memberId}" id="member_id" style="font-size: 18px;"></span>
+			<span style="font-size: 18px;">&nbsp;|&nbsp;</span>
+			<span th:text="${region}" id="plan_region" style="font-size: 18px;"></span>
+			<span style="font-size: 18px;">&nbsp;|&nbsp;</span>
+			
+			<span th:if="${cnt} > 1" th:text="${cnt-1}+'박 '+${cnt}+'일'" style="font-size: 18px;"></span>
+			<span th:if="${cnt} == 1" th:text="당일치기" style="font-size: 18px;"></span>
+			<br>
+			<br>
+			<!-- <hr style="margin-top: 30px; margin-bottom: 40px;"> -->
+			
+			
+			
+			<div id="info">
+				<div id="plan_date_container">
+					<span th:text="${p.planDate}" id="plan_date" style="font-size: 18px;"></span><br>
+				</div>
+				<div id="plan_hit_container">
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16" style="margin-bottom: 5px; margin-right: 3px;">
+					  <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+					  <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+					</svg>
+					<span th:text="${p.planHit}" id="plan_hit" style="font-size: 18px;"></span><br>
+				</div>
+			</div>
+			
+			<div id="img_container">
+				<img alt="${p.planImg}" th:src="@{|/images/${p.planImg}|}" id="plan_img"><br>
+			</div>
+
+			<div id="liked_container">
+				<div id="cntLiked"></div>
+				<input type="checkbox" id="liked" th:attr="likedTitle=${p.planTitle},likedImg=${p.planImg},likedPlanNo=${p.planNo}">
+				<label style="float: right;" for="liked" id="liked_label" th:attr="likedTitle=${p.planTitle},likedImg=${p.planImg},likedPlanNo=${p.planNo}"></label>
+			</div>
+			
+			
+			
+		</div>
+		
+		<br><hr><br>
+
+		<!-- 날짜별 일정 -->
+		<div id="day" style="clear: both;">
+			<div style="font-size: 20px; font-weight: bold; margin: auto; text-align: center; margin-bottom: 50px;" th:text="'여행일정 : ' + ${plan.planStart} + ' ~ ' + ${plan.planEnd}"></div>
+			<!-- day1 -->
+			<div id="day1" th:if="${detail1} != null" class="day_container">
+				<h2 class="day_title">DAY 1</h2>
+				<div class="card" style="width: 13rem; height: 14rem;" th:each="d:${detail1}">
+					<a th:href="@{'/trip/detail/'+${d.trip_no}}" class="card_link" style="height: 150px;">
+						<img th:alt="${d.trip_img}" th:src="@{|/images/${d.trip_img}|}" id="trip_img" class="card-img-top" alt="..." style="height: 150px;">
+					</a>
+					
+					<div class="card-body">
+						<a th:href="@{'/trip/detail/'+${d.trip_no}}" class="card_link">
+							<h5 style="font-weight: bold; font-size: 12pt" class="card-title" th:text="${d.trip_title}"></h5>
+						</a>
+					    <p style="display: none;" class="card-text" th:text="${d.trip_no}" id="trip_no"></p>
+					</div>
+				</div>		
+			</div>
+			
+			
+			<!-- day2 -->
+			<div id="day2" th:if="${detail2} != null" class="day_container">
+				<h2 class="day_title">DAY 2</h2>
+				<div class="card" style="width: 13rem; height: 14rem;" th:each="d:${detail2}">
+					<a th:href="@{'/trip/detail/'+${d.trip_no}}" class="card_link" style="height: 150px;">
+						<img th:alt="${d.trip_img}" th:src="@{|/images/${d.trip_img}|}" id="trip_img" class="card-img-top" alt="..." style="height: 150px;">
+					</a>
+					
+					<div class="card-body">
+						<a th:href="@{'/trip/detail/'+${d.trip_no}}" class="card_link">
+							<h5 style="font-weight: bold; font-size: 12pt" class="card-title" th:text="${d.trip_title}"></h5>
+						</a>
+					    <p style="display: none;" class="card-text" th:text="${d.trip_no}" id="trip_no"></p>
+					</div>
+				</div>
+			</div>
+			<!-- day3 -->
+			<div id="day3" th:if="${detail3} != null" class="day_container">
+				<h2 class="day_title">DAY 3</h2>
+				<div class="card" style="width: 13rem; height: 14rem;" th:each="d:${detail3}">
+					<a th:href="@{'/trip/detail/'+${d.trip_no}}" class="card_link" style="height: 150px;">
+						<img th:alt="${d.trip_img}" th:src="@{|/images/${d.trip_img}|}" id="trip_img" class="card-img-top" alt="..." style="height: 150px;">
+					</a>
+					
+					<div class="card-body">
+						<a th:href="@{'/trip/detail/'+${d.trip_no}}" class="card_link">
+							<h5 style="font-weight: bold; font-size: 12pt" class="card-title" th:text="${d.trip_title}"></h5>
+						</a>
+					    <p style="display: none;" class="card-text" th:text="${d.trip_no}" id="trip_no"></p>
+					</div>
+				</div>
+			</div>
+			<!-- day4 -->
+			<div id="day4" th:if="${detail4} != null" class="day_container">
+				<h2 class="day_title">DAY 4</h2>
+				<div class="card" style="width: 13rem; height: 14rem;" th:each="d:${detail4}">
+					<a th:href="@{'/trip/detail/'+${d.trip_no}}" class="card_link" style="height: 150px;">
+						<img th:alt="${d.trip_img}" th:src="@{|/images/${d.trip_img}|}" id="trip_img" class="card-img-top" alt="..." style="height: 150px;">
+					</a>
+					
+					<div class="card-body" style="max-height: 200px;">
+						<a th:href="@{'/trip/detail/'+${d.trip_no}}" class="card_link">
+							<h5 style="font-weight: bold; font-size: 12pt" class="card-title" th:text="${d.trip_title}"></h5>
+						</a>
+					    <p style="display: none;" class="card-text" th:text="${d.trip_no}" id="trip_no"></p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<br><hr><br>
+	</section>
+	
+	
+	
+	<article>
+		<!-- 댓글 -->
+		<div id="recoment">
+			<h2 style="font-weight: bold;" id="recoment_title">댓글</h2>
+			
+			<div style="margin: auto; width: 800px;">
+				<div id="write" style="margin-bottom: 30px;">
+				<form action="" id="writeRecoment">
+					<input type="hidden" name="member_id" id="rec_member_id">
+					<input type="hidden" name="no" th:value="${plan.planNo}" id="no">
+					<input type="hidden" name="type" value="plan" id="type"><br>
+					<div id="btn_recoment_container">
+						<button id="insertRecoment" class="btn">댓글쓰기</button>
+						<button id="updateRecoment" class="btn">수정</button>
+						<button id="updateReset" class="btn">취소</button>
+					</div>
+					<div style="font-weight: bold; float: left; padding-top: 20px;" id="rec_form_id">아이디</div>
+					<div style="float: left;" id="text_container">
+						<textarea rows="4" cols="92" name="rec_content" id="rec_content" style="resize: none; border-radius: 3px;"></textarea>
+					</div>
+				</form>
+			</div>
+			
+			<div id="list_container">
+				<div id="listRecoment"></div>
+			</div>
+			</div>
+			
+			
+			
+			
+		</div>
+		
+		<article>
+		
+		</article>
+	
+	</article>
+
+	
+	
+
+	<footer>
+	
+	</footer>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>비밀번호 입력</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <h2>비밀번호 확인</h2>
+    <form method="post">
+        <label for="pwd">비밀번호를 입력하세요:</label>
+        <input type="password" id="pwd" name="pwd">
+        <input type="submit" value="확인">
+    </form>
+    <div th:if="${error}" style="color: red;">
+        [[${error}]]
+    </div>
+</body>
+</html>
