@@ -96,6 +96,9 @@
   <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
   <script>
   $(function(){
+	  
+	  sessionStorage.removeItem("id");
+	  
 		$("#btnLogin").click(function(e){
 			e.preventDefault();
 			$.ajax({
@@ -103,6 +106,12 @@
 				data:{"id": $('#id').val(), "pwd": $('#pwd').val()},
 				success:function(res){
 					if(res =="yes"){
+						sessionStorage.setItem("id",$("#id").val())
+						if(sessionStorage.getItem("id")=="admin12"){
+							sessionStorage.setItem("grade","admin")
+						}else{
+							sessionStorage.setItem("grade","member")
+						}
 						$("#btnLogin").unbind('click').click();
 					}
 					else{
@@ -169,7 +178,7 @@
             <div class="modal-header p-5 pb-4 border-bottom-0">
               <!-- <h1 class="modal-title fs-5" >Modal title</h1> -->
               <h1 class="fw-bold mb-0 fs-2">로그인</h1>
-              <button onclick="location.href='/main'" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <button onclick="location.href='/mainpage'" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
       
             <div class="modal-body p-5 pt-0">
@@ -201,21 +210,23 @@
                   <svg class="bi me-1" width="16" height="16"><use xlink:href="#github"></use></svg>
                   Sign up with GitHub
                 </button>-->
-              <form method="get" action="/findId" class="w-100 py-2 mb-2 btn btn-outline-dark rounded-3">
-	  			  <svg class="bi me-1" width="16" height="16"></svg>
-	  			  <input type="submit" id="idConfirm">
-	  			  <label>ID찾기</label>
-			  </form>
-			    <form method="get" action="/findPwd" class="w-100 py-2 mb-2 btn btn-outline-primary rounded-3">
-	  			  <svg class="bi me-1" width="16" height="16"></svg>
-	  			  <input type="submit" id="pwdConfirm">
-	  			  <label>PW찾기</label>
-			  </form>
-			  <form method="get" action="/join" class="w-100 py-2 mb-2 btn btn-outline-secondary rounded-3">
-	  			  <svg class="bi me-1" width="16" height="16"></svg>
-	  			  <input type="submit" id="joinConfirm">
-	  			  <label>회원가입</label>
-			 </form>
+              <button type="submit" form="findIdForm" class="w-100 py-2 mb-2 btn btn-outline-dark rounded-3">
+				    <svg class="bi me-1" width="16" height="16"></svg>
+				    ID찾기
+				</button>
+				<form id="findIdForm" method="get" action="/findId">
+				</form>
+			    <button type="submit" form="findPwdForm" class="w-100 py-2 mb-2 btn btn-outline-primary rounded-3">
+				    <svg class="bi me-1" width="16" height="16"></svg>
+				    PW찾기
+				</button>
+				<form id="findPwdForm" method="get" action="/findPwd">
+				</form>
+			  <button type="submit" form="joinForm" class="w-100 py-2 mb-2 btn btn-outline-secondary rounded-3">
+				    <svg class="bi me-1" width="16" height="16"></svg>회원가입
+				</button>
+				<form id="joinForm" method="get" action="/join">
+				</form>
             </div>
           </div>
         </div>

@@ -16,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.example.demo.db.liked.LikedDBManager;
 import com.example.demo.service.liked.LikedService;
 
-
+import jakarta.servlet.http.HttpSession;
 import lombok.Setter;
 
 
@@ -39,9 +39,11 @@ public class LikedController {
 	 * return "/Liked/likeList"; }
 	 */
 	
-	@GetMapping("/liked/likeList/{member_id}")
-	public ModelAndView list(@PathVariable String member_id) {
+	@GetMapping("/liked/likeList")
+	public ModelAndView list(HttpSession session) {
 		ModelAndView mav = new ModelAndView("/liked/likeList");
+		//임시 id 
+		String member_id = (String)session.getAttribute("id");
 		mav.addObject("likedListPlan", likedService.findByIdandPlan(member_id));
 		mav.addObject("likedListTrip", likedService.findByIdandTrip(member_id));
 		return mav;
@@ -53,10 +55,11 @@ public class LikedController {
 	
 	@GetMapping("/liked/deleteLiked/{like_no}")
 	@ResponseBody
-	public int deleteLiked(@PathVariable String like_no) {
+	public int deleteLiked(@PathVariable String like_no, String type ,String id) {
 		int no = Integer.parseInt(like_no);
 		System.out.println(like_no);
-		int re = likedService.deleteLiked(no);
+		System.out.println(id);
+		int re = likedService.deleteLiked(no, type, id);
 		
 		return re;
 	}

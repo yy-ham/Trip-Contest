@@ -3,55 +3,206 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" href="/css/mainpage.css">
-<link rel="stylesheet" href="/css/mainpage2.css">
-<link rel="stylesheet" href="/css/mainpage3.css">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="/css/mainpage.css"/>
+<link rel="stylesheet" type="text/css" href="/css/mainpage2.css"/>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous"/>
+<link rel="stylesheet" type="text/css" href="/css/header.css"/>
+<style type="text/css">
+	.card{
+	
+	--bs-card-border-color: none;
+	}
+	
+header{width:100%;height:64px;position:relative; }
+.logo{margin-right:13px;padding-top:11px;cursor:pointer;}
+.gnb{height:62px;line-height:62px;font-family:nanum_b;font-size:16px; overflow:hidden;font-weight:bold;}
+.gnb_box{height:62px;position:relative;}
+.gnb_login_btn{width:63px;height:29px;line-height:29px;border:solid #f7870f 1px;border-left:0px;margin-top:29%;text-align:center;color:#fff;cursor:pointer;background:#ff9320;}
+body{font-family:nanum;}
+.header2{margin: 0% 7%; position: relative;}
+.wrap{width:1092px;margin:0 auto;position:relative;}
+.fl{float:left;}
+.fr{float:right;}
+.dropdown {
+  padding-left: 5.4%;
+  position: relative;
+  display: inline-block;
+  max-width: 20rem;
+   height: 62px;
+    line-height: 62px;
+    font-family: nanum_b;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.dropdown-menu {
+  left: 20%;
+  position: absolute;
+  top: 100%;
+  z-index: 1000;
+    min-width: 10rem;
+  padding: 0.5rem 0;
+  margin: 0;
+  font-size: 1rem;
+  color: #212529;
+  text-align: left;
+  list-style: none;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 0.25rem;
+}
+
+.dropdown-menu a {
+	font-size: 17px;
+  display: block;
+  padding: 0.25rem 105px;
+  clear: both;
+  font-weight: 400;
+  color: #212529;
+  text-align: inherit;
+  white-space: nowrap;
+  background-color: transparent;
+  border: 0;
+}
+
+.dropdown-menu a:hover,
+.dropdown-menu a:focus {
+  background-color: #f8f9fa;
+  color: #16181b;
+  text-decoration: none;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.dropdown-toggle::after {
+    display: inline-block;
+       margin-left: none;
+     vertical-align: none;
+     content: none; 
+     border-top: none; 
+     border-right: none; 
+    border-bottom: none; 
+     border-left: none;
+ 
+}
+
+.btn {
+    --bs-btn-padding-x: 9rem;
+    --bs-btn-padding-y: 1.375rem;
+--bs-btn-font-size: 19px;
+--bs-btn-line-height: 16.5px;
+--bs-btn-disabled-opacity: 1.65;
+    margin: 5px;
+}
+
+.btn.disabled, .btn:disabled, fieldset:disabled .btn {
+	--bs-btn-disabled-color: Black;
+    --bs-btn-disabled-bg: white;
+    --bs-btn-disabled-border-color: white;
+    --bs-btn-active-color: white;
+    
+    
+    
+}
+
+
+.btn-secondary {
+	--bs-btn-color: Black;
+	--bs-btn-hover-color: Black;
+	--bs-btn-hover-bg: white
+	--bs-btn-active-bg: white;
+	--bs-btn-active-color: Black;
+    --bs-btn-bg: white;
+    --bs-btn-active-border-color: white;
+    --bs-btn-border-color: white;
+    border: none;
+    --bs-btn-hover-bg: white --bs-btn-active-bg: none;
+    --bs-btn-hover-bg: none;
+    --bs-btn-hover-border-color: none;
+    --bs-btn-active-bg : white;
+}
+
+</style>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script type="text/javascript">
+$(function(){
+	var id = sessionStorage.getItem("id");
+	if(id != null){
+		$("#login").empty();
+		var myPage = $("<a></a>").attr("href","/myPage").html("마이페이지")
+		var a = $("<a></a>").attr("href","/logout")
+		var btn = $("<button></button>").html(id).addClass("f1 gnb_login_btn").attr("id","logout")
+		$(a).append(myPage,btn );
+		$("#login").append(a)
+	}
+	
+});
+</script>
 </head>
 <body>
-	<div id="header">
-		<div class="wrap">
+ 	<div id="header">
+		<div class="header2">
 			<h1 class="logo fl" alt="전국여행자랑">
-				<a href="#">
-					<img src="/images/전국여행자랑.png" alt="전국여행자랑" width="150" height="75" >
+				<a href="/mainpage">
+					<img src="/images/전국여행자랑.png" alt="전국여행자랑" width="180px" height="50px" >
 				</a>
 			</h1>
-		<ul class="gnb fl">
-			<a href="/ko/area" class="fl">
-				<li>홈</li>
-			
-			</a>
-			<a href="/ko/plan" class="fl">
-				<li>플래너</li>
-			</a>
-			<a href="/ko/plan" class="fl">
-				<li>여행지</li>
-			</a>
-			<a href="/ko/plan" class="fl">
-				<li>관심목록</li>
-			</a>
-		</ul>
-		<div class="fr gnb_box">
-			<a href="#" class="fr">
-				<div class="f1 gnb_join_btn">회원가입</div>
-			</a>
-			<a href="#" class="fr">
+<div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle disabled"  data-bs-toggle="dropdown" aria-expanded="false">
+    플래너
+  </button>
+  <ul class="dropdown-menu">
+    <li><a class="dropdown-item" href="/plan/list">플래너 리스트</a></li>
+    <li><a class="dropdown-item" href="/plan/insert">플래너 작성</a></li>
+  </ul>
+</div>
+
+<div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle disabled" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    여행지
+  </button>
+  <ul class="dropdown-menu">
+    <li><a class="dropdown-item" href="/tripsearchpage">여행지 탐색</a></li>
+    <li><a class="dropdown-item" href="/trip/list">여행지 리스트</a></li>
+  </ul>
+</div>
+
+<div class="dropdown">
+  <a><button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="location.href='/liked/likeList'" >
+    관심목록
+  </button></a>
+  
+</div>
+	<div class="fr gnb_box login" id="login" style="float: right; margin-bottom:5px;">
+		<a href="/myPage">
+			마이페이지
+		</a>
+			<a href="/login" class="fr">
 				<div class ="f1 gnb_login_btn">로그인</div>
 			</a>
 			</div>
+			</div>
 			<div class="clear"></div>
 		</div>
-	</div>
+
 	<div class="clear"></div>
 	<div class="main_top" style="background:url('/images/배경화면.jpg') no-repeat;background-size:cover;">
 		<div class="wrap">
 			<div class="main_top_title">우리의 여행 전국여행자랑</div>
 			<div class="main_top_desc">당신의 여행을 자랑해보아요.</div>
 		<div class="search_area">
-			<form>
-				<input class="search_input" id="city_search" placeholder="국가명, 도시명으로 검색">
+			<form action="/search/result" method="get">
+				<input class="search_input" name="keyword" type="text" placeholder="지역명으로 검색해주세요." >
+				<button class="search-btn" type="submit" style="background-color:transparent; border: none; position:absolute; width:5px; top:34px; right:44px; margin: 0;">
+				<img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png" style=" width:20px; height: 20px;">
 			</form>
-			<a class="go_map" href="javascript:void(0)" onclick="et_full_modal('/ko/modal/world_map')">지도에서 검색 &gt;</a>
+			<input class="search_input" type="text" placeholder="지역명으로 검색해주세요." >
+			<button class="search-btn" type="submit" style="background-color:transparent; border: none; position:absolute; width:5px; top:34px; right:44px; margin: 0;">
+				<img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png" style=" width:20px; height: 20px;">
+			</button>
 			<div class="clear"></div>
 		</div>
 	</div>
@@ -61,45 +212,39 @@
 				<div class="clear">
 		</div>
 		<div class="intro_list">
-			<div class="intro_box" onclick="location.href='/ko/area';">
-				<img src="/res/img/main/intro_img/intro_1.jpg" alt="">
+			<div class="intro_box" onclick="location.href='/plan/list'">
+				<img src="/images/플래너.jpg" alt="">
 					<div class="intro_title">Planner</div>
 					<div class="intro_desc">당신의 여행계획을 자랑해보아요.</div>
 			</div>
-			<div class="intro_box" onclick="location.href='/ko/plan';">
-				<img src="/res/img/main/intro_img/intro_2.jpg" alt="">
+			<div class="intro_box" onclick="location.href='/trip/list';">
+				<img src="/images/trip.jpg" alt="">
 				<div class="intro_title">Trip</div>
 				<div class="intro_desc">전국 여행지 정보를 확인해 보아요.</div>
 			</div>
-			<div class="intro_box" onclick="location.href='/ko/community/qa';">
-				<img src="/res/img/main/intro_img/intro_3.jpg" alt="">
-				<div class="intro_title">전국여행자랑 인기 플래너</div>
+			<div class="intro_box" onclick="location.href='/liked/likeList';">
+				<img src="/images/관심목록.jpg" alt="">
+				<div class="intro_title">Interest</div>
 				<div class="intro_desc">당신의 좋아하는 여행지와 여행플랜너를 확인해요.</div>
 			</div>
 			<div class="clear"></div>
 			<div class="wrap">
 				<div class="page_title">인기 여행지</div>
 				<div class="page_desc">전국여행자랑이 추천하는 여행지</div>
-				
 						<div class="trip_list">
-							<div class="card" style="width: 340px; height: 300px; float: left; margin-right: 24px; margin-bottom: 30px;"  th:each="trip:${tripbest}">
-								<img src="..." class="card-img-top" height="200" alt="...">
+							<div class="card"  th:onclick="|location.href='@{|/trip/detail/${trip.trip_no}|}'|" style="width: 340px; height: 300px; float: left; margin-right: 24px; margin-bottom: 30px; border: 0.75px solid #eaeaea; box-shadow: 3px 3px 4px rgba(26, 26, 26, 0.1); cursor:pointer;"  th:each="trip:${tripbest}">
+								<img src="..." class="card-img-top" height="200" alt="..."  th:src="@{|/images/${trip.trip_img}|}">
 								<div class="card-body">
 									
 									<h5 class="card title" th:text="${trip.trip_title}"></h5> 
-									<p class="card-text"th:text="${trip.trip_addr}"></p>
-									<a href="#" class="btn btn-primary">Go somewhere</a>
+									<p class="card-text text-truncate" th:text="${trip.trip_detail}" style="max-width: 300px;"></p>
+									<p class="card-text"th:text="|지역 : ${trip.trip_addr}|"></p>
 								</div>
+							</div>
 						</div>
-							
-		
-	</div>
-			
-
+			</div>
 		</div>
-		</div>
-	</div>
-	<div class="more_btn" onclick="location.href='/ko/plan';">추천여행지 모두보기</div>
+	<div class="more_btn" onclick="location.href='/trip/list';">여행지 모두보기</div>
 </div>
 <div class="page white" style="padding-top: 20px;">
 		<div class="wrap">
@@ -108,30 +253,28 @@
 		<div class="intro_list">
 			<div class="wrap">
 				<div class="page_title">인기 플래너</div>
-				<div class="page_desc">전국여행자랑이 추천하는 여행지</div>
-				
-						<div class="plan_list">
-							<div class="card" style="width: 340px; height: 300px; float: left; margin-right: 24px; margin-bottom: 30px;"  th:each="plan:${planerbest}">
-								<img src="..." class="card-img-top" height="200" alt="...">
+				<div class="page_desc">전국여행자랑이 추천하는 플래너</div>
+					<div class="plan_list">
+						
+							<div class="card" th:onclick="|location.href='@{|/plan/detail/${plan.plan_no}|}'|" style="width: 340px; height: 300px; float: left; margin-right: 24px; margin-bottom: 30px; border: 0.75px solid #eaeaea; box-shadow: 3px 3px 4px rgba(26, 26, 26, 0.1); cursor:pointer;"  th:each="plan:${planerbest}">
+								<img src="..." class="card-img-top" height="200" alt="..." th:src="@{|/images/${plan.plan_img}|}">
 								<div class="card-body">
-									
-									<h5 class="card title" th:text="${plan.plan_title}"></h5> 
-									<p class="card-text"th:text="${plan.member_id}"></p>
-									<a href="#" class="btn btn-primary">Go somewhere</a>
+									<h5 class="card-title" th:text="${plan.plan_title}"></h5> 
+									<p class="card-text" th:text="|작성자 : ${plan.member_id}|"></p>
+									<p class="card-text" th:text="|여행지역 : ${plan.plan_region}|"></p>
 								</div>
-						</div>
+							</div>
 							
-		
-	</div>
-			
-
+							</div>
+					</div>
+				
+			</div>
 		</div>
-		</div>
 	</div>
-	<div class="more_btn" onclick="location.href='/ko/plan';">추천여행지 모두보기</div>
+	<div class="more_btn" onclick="location.href='/plan/list';">플래너 모두보기</div>
 </div>
-
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/boot
+strap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 </body>
 </html>

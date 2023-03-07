@@ -68,62 +68,65 @@ public class MemberController {
 			return "member/join2";
 		}
 		//회원가입 PostMapping
-		@PostMapping("/join")
-		public ModelAndView insertSubmit(org.springframework.ui.Model model,com.example.demo.entity.member.Member member, MultipartHttpServletRequest mtfRequest,HttpServletRequest request) throws Exception {
-			ModelAndView mav = new ModelAndView();
-			String id = member.getId();
-		    Optional<com.example.demo.entity.member.Member> checkId = memberService.findById(id);
+				@PostMapping("/join")
+				public ModelAndView insertSubmit(org.springframework.ui.Model model,com.example.demo.entity.member.Member member, MultipartHttpServletRequest mtfRequest,HttpServletRequest request) throws Exception {
+					ModelAndView mav = new ModelAndView();
+					String id = member.getId();
+				    Optional<com.example.demo.entity.member.Member> checkId = memberService.findById(id);
 
-			// 1. 전송받은 파일 및 파일설명 값 가져오기
-			List<MultipartFile> fileList = mtfRequest.getFiles("member_img");
-//			String path = request.getServletContext().getRealPath("/images");
-			String path = "C:/Users/jongchen/git/FinalProject/src/main/resources/static/images";
-			
-			//System.out.println("path:"+path);
-			
-	        String fname = "";
-	        
-	        List<String> fnameList = new ArrayList<>();
-	        //System.out.println("fileList:"+fileList);
-	        for(MultipartFile uploadFile : fileList) {
-	        	fname = uploadFile.getOriginalFilename();
-	        	//System.out.println("orginalFname:"+fname);
-	        	fnameList.add(fname);
-	        	
-	        	String safeFile = path + "/" +fname;
-	        	//System.out.println("safeFile: "+safeFile);
-	        	try {
-					uploadFile.transferTo(new File(safeFile));
-				} catch (IllegalStateException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					// 1. 전송받은 파일 및 파일설명 값 가져오기
+					List<MultipartFile> fileList = mtfRequest.getFiles("member_img");
+//					String path = request.getServletContext().getRealPath("/images");
+					String path = "C:/Users/jongchen/git/FinalProject/src/main/resources/static/images";
+					
+					//System.out.println("path:"+path);
+					
+			        String fname = "";
+			        List<String> fnameList = new ArrayList<>();
+			        //System.out.println("fileList:"+fileList);
+			        for(MultipartFile uploadFile : fileList) {
+			        	fname = uploadFile.getOriginalFilename();
+			        	//System.out.println("orginalFname:"+fname);
+			        	fnameList.add(fname);
+			        	
+			        	String safeFile = path + "/" +fname;
+			        	//System.out.println("safeFile: "+safeFile);
+			        	try {
+							uploadFile.transferTo(new File(safeFile));
+						} catch (IllegalStateException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+
+			        }
+			        
+			        
+			        member.setMemberImg(fnameList.get(0));
+			        //System.out.println("첫번째 사진 이름: "+fnameList.get(0));
+			        if(fnameList.size()>1) {
+			        	for(int i=1; i<fnameList.size(); i++) {
+				        	com.example.demo.entity.member.Member m1 = new com.example.demo.entity.member.Member();
+				        	m1.setMemberImg(fnameList.get(i));
+				        	//System.out.println("fnameList:"+fnameList.get(i));
+				        	memberService.insertMember(m1);
+				        }
+			        }else {
+				        member.setMemberImg("profile.png");
+			        	memberService.insertMember(member);
+			        }
+			        Optional<com.example.demo.entity.member.Member> insertedMember=memberService.findById(id);
+			        
+				    if (insertedMember.isPresent()) {
+				        mav.setViewName("redirect:/join_success");
+				    } else {
+				    	
+				        mav.setViewName("redirect:/join_fail");
+				    }
+					return mav;
 				}
-
-	        }
-	        member.setMemberImg(fnameList.get(0));
-	        //System.out.println("첫번째 사진 이름: "+fnameList.get(0));
-	        if(fnameList.size()>1) {
-	        	for(int i=1; i<fnameList.size(); i++) {
-		        	com.example.demo.entity.member.Member m1 = new com.example.demo.entity.member.Member();
-		        	m1.setMemberImg(fnameList.get(i));
-		        	//System.out.println("fnameList:"+fnameList.get(i));
-		        	memberService.insertMember(m1);
-		        }
-	        }else {
-	        	memberService.insertMember(member);
-	        }
-	        Optional<com.example.demo.entity.member.Member> insertedMember=memberService.findById(id);
-	        
-		    if (insertedMember.isPresent()) {
-		        mav.setViewName("redirect:/join_success");
-		    } else {
-		        mav.setViewName("redirect:/join_fail");
-		    }
-			return mav;
-		}
 		// 아이디 중복 체크 성공 뷰를 보여주는 매핑
 	    @GetMapping("/checkId")
 	    @ResponseBody
@@ -166,7 +169,7 @@ public class MemberController {
 	            
 	            redirectAttributes.addAttribute("id", member.get().getId());
 	            redirectAttributes.addAttribute("status", true);
-	            mav.setViewName("redirect:/login_success");
+	            mav.setViewName("redirect:/mainpage");
 	        } else {
 //	        	mav.setViewName("redirect:/login_fail");
 	        }
@@ -347,10 +350,10 @@ public class MemberController {
 	    @RequestMapping(value = "/findMyPlan", method = RequestMethod.GET)
 	    public String findMyPlan(org.springframework.ui.Model model,HttpSession session) {
 	    	String id =(String)session.getAttribute("id");
+	    	System.out.println("id="+id);
 	    	if(id ==null) {
 	    		return "redirect:/login";
 	    	}else {
-	    		planService.findMyPlanByMemberId(id);
 		    	List<PlanVO> plan =planService.findMyPlanByMemberId(id);
 		    	model.addAttribute("plan",plan);
 		    	return "member/edit-myplan";
@@ -363,26 +366,26 @@ public class MemberController {
 	    } 
 	    //id찾기 결과값
 	    @RequestMapping(value = "/findIdResult", method = RequestMethod.GET)
-	    public String findIdResult(org.springframework.ui.Model model,HttpSession session, String name, String phone) {
+	    @ResponseBody
+	    public String findIdResult(HttpSession session, String name, String phone) {
 	    	HashMap<String, Object> map = new HashMap<>();
 	    	map.put("name", name);
 	    	map.put("phone", phone);
 	    	MemberVO member = memberService.findByNameAndPhone(map);
 	    	String id = member.getId();
-	    	model.addAttribute("id", id);
-	        return "member/findIdResult";
+	        return id;
 	    }
 	    //pw찾기 결과값
 	    @RequestMapping(value = "/findPwdResult", method = RequestMethod.GET)
-	    public String findPwdResult(org.springframework.ui.Model model,HttpSession session, String id, String name, String phone) {
+	    @ResponseBody
+	    public String findPwdResult(HttpSession session, String id, String name, String phone) {
 	    	HashMap<String, Object> map = new HashMap<>();
 	    	map.put("name", name);
 	    	map.put("phone", phone);
 	    	map.put("id", id);
 	    	MemberVO member = memberService.findByIdAndNameAndPhone(map);
 	    	String pwd = member.getPwd();
-	    	model.addAttribute("pwd", pwd);
-	        return "member/findPwdResult";
+	        return pwd;
 	    }
 	    //인증 성공을 나타내는 ajax
 	    @RequestMapping("/authSuccess")

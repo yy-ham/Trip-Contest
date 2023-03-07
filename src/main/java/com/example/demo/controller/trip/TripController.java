@@ -9,6 +9,7 @@ import com.example.demo.vo.trip.RegionVO;
 import com.example.demo.vo.trip.TripVO;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.Setter;
 
 import java.io.File;
@@ -48,7 +49,7 @@ public class TripController {
     private LikedService likedService;
 
     @GetMapping("/trip/list")
-    public ModelAndView findAll(String keyword, @RequestParam(defaultValue = "writedate") String orderColumn, @RequestParam(defaultValue = "0") int region, @RequestParam(value = "pageNum",defaultValue = "1") int pageNUM) {
+    public ModelAndView findAll(HttpSession session ,String keyword, @RequestParam(defaultValue = "writedate") String orderColumn, @RequestParam(defaultValue = "0") int region, @RequestParam(value = "pageNum",defaultValue = "1") int pageNUM) {
     	HashMap<String, Object> map = new HashMap<>();  
     	map.put("keyword", keyword);
     	map.put("region", region);
@@ -99,7 +100,11 @@ public class TripController {
     	mav.addObject("tripList", tripService.findAll(map));
     	mav.addObject("koreaList", koreaList);
     	// 회원 등급
-    	mav.addObject("grade","admin");
+    	String grade = "";
+    	if(session.getAttribute("id")!=null && session.getAttribute("id").equals("admin12")) {
+    		grade = "admin";
+    	}
+    	mav.addObject("grade",grade);
 //    	mav.addObject("grade","users");
     	
     	return mav;
@@ -156,6 +161,7 @@ public class TripController {
     @PostMapping("/trip/insert")
     public ModelAndView insertSubmit(Trip trip, HttpServletRequest request, MultipartHttpServletRequest mtfRequest){
         ModelAndView mav = new ModelAndView("redirect:/trip/list");
+        String msg = "";
         int tripNo = tripService.getNextTripNo();
         int hit = 0;
         int tripLiked = 0;
@@ -163,15 +169,48 @@ public class TripController {
         trip.setType("trip");
         trip.setHit(hit);
         trip.setTripLiked(tripLiked);
-        String tripTel = trip.getTripTel();
-        if(tripTel.length() < 11) {
-        	trip.setTripTel(tripTel.substring(0, tripTel.length()-1));
-        }
-        if(trip.getState() == null || trip.getState().equals("")) {
-        	trip.setState("Y");
+        System.out.println("tripState:"+trip.getState());
+        if(trip.getState().equals("N")) {
+        	if(trip.getTripTitle() == null) {
+        		trip.setTripTitle(" ");
+        	}
+        	if(trip.getKorea().getCode() <= 0) {
+        		trip.getKorea().setCode(0);
+        	}
+        	if(trip.getTripAddr().equals("null")) {
+        		trip.setTripAddr("  ");
+        	}
+        	if(trip.getLat() == null || trip.getLat().equals("")) {
+        		trip.setLat(" ");
+        	}
+        	if(trip.getLng() == null || trip.getLng().equals("")) {
+        		trip.setLng(" ");
+        	}
+        	if(trip.getTripImg() == null || trip.getTripImg().equals("")) {
+        		trip.setTripImg("");
+        	}
+        	if(trip.getTripDetail() == null || trip.getTripDetail().equals("")) {
+        		trip.setTripDetail(" ");
+        	}
+        	if(trip.getOpened() == null || trip.getOpened().equals("")) {
+        		trip.setOpened(" ");
+        	}
+        	if(trip.getClosed() == null || trip.getClosed().equals("")){
+        		trip.setClosed(" ");
+        	}
+        	
+        }else {
+        	String tripTel = trip.getTripTel();
+            if(tripTel.length() < 11) {
+            	trip.setTripTel(tripTel.substring(0, tripTel.length()-1));
+            }
+            if(trip.getState() == null || trip.getState().equals("")) {
+            	trip.setState("Y");
+            }
+            
         }
         
-        // 다중 파일 업로드
+     // 다중 파일 업로드
         List<MultipartFile> fileList = mtfRequest.getFiles("uploadFile");
 //        String path = request.getServletContext().getRealPath("/images");
         String path = "/Users/soorin/git/FinalProject/src/main/resources/static/images";
@@ -179,25 +218,30 @@ public class TripController {
         String fname = "";
         List<String> fnameList = new ArrayList<>();
         System.out.println("fileList:"+fileList);
-        for(MultipartFile uploadFile : fileList) {
-        	fname = uploadFile.getOriginalFilename();
-        	System.out.println("orginalFname:"+fname);
-        	fnameList.add(fname);
-        	
-        	String safeFile = path + "/" +fname;
-        	System.out.println("safeFile: "+safeFile);
-        	try {
-				uploadFile.transferTo(new File(safeFile));
-			} catch (IllegalStateException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+        if(fnameList.size() >= 1) {
+        	for(MultipartFile uploadFile : fileList) {
+            	fname = uploadFile.getOriginalFilename();
+            	System.out.println("orginalFname:"+fname);
+            	fnameList.add(fname);
+            	
+            	String safeFile = path + "/" +fname;
+            	System.out.println("safeFile: "+safeFile);
+            	try {
+    				uploadFile.transferTo(new File(safeFile));
+    			} catch (IllegalStateException e) {
+    				// TODO Auto-generated catch block
+    				e.printStackTrace();
+    			} catch (IOException e) {
+    				// TODO Auto-generated catch block
+    				e.printStackTrace();
+    			}
+            }
+            if(!fnameList.get(0).equals("")) {
+            	trip.setTripImg(fnameList.get(0));
+            }
+            System.out.println("첫번째 사진 이름: "+fnameList.get(0));
         }
-        trip.setTripImg(fnameList.get(0));
-        System.out.println("첫번째 사진 이름: "+fnameList.get(0));
+        
         
         if(fnameList.size()>1) {
         	for(int i=1; i<fnameList.size(); i++) {
@@ -211,20 +255,30 @@ public class TripController {
 	        }
         }
         
+        if(trip.getTripImg() == null || trip.getTripImg().equals("")) {
+        	trip.setTripImg("basic.jpg");
+        }
+        
+        if(trip.getTripAddr() == null || trip.getTripAddr().equals("")) {
+        	trip.setTripAddr(" ");
+        }
+
         Trip checkTrip = tripService.save(trip);
-        String msg = "";
+        
         if(checkTrip != null){
             msg = "등록되었습니다!";
         }else{
             msg = "등록실패!";
         }
+        
+        
         System.out.println(msg);
         return mav;
     }
     
     
     @GetMapping("/trip/detail/{tripNo}")
-    public ModelAndView tripDetail(@PathVariable int tripNo) {
+    public ModelAndView tripDetail(@PathVariable int tripNo, HttpSession session) {
     	ModelAndView mav = new ModelAndView("trip/detail");
     	Trip trip = tripService.findByTripNo(tripNo);
     	String region = "";
@@ -238,7 +292,11 @@ public class TripController {
     	List<ImgVO> imgList = tripService.findTripImg(tripNo);
     	mav.addObject("imgList",imgList);
     	// 회원 등급
-    	mav.addObject("grade","admin");
+    	String grade = "";
+    	if(session.getAttribute("id")!=null && session.getAttribute("id").equals("admin12")) {
+    		grade = "admin";
+    	}
+    	mav.addObject("grade",grade);
 //    	mav.addObject("grade","users");
     	
     	return mav;
@@ -265,15 +323,23 @@ public class TripController {
     public ModelAndView updateSubmit(Trip trip, MultipartHttpServletRequest mtfRequest) {
     	int tripNo = trip.getTripNo();
     	Trip oldTrip = tripService.findByTripNo(tripNo);
+    	if(oldTrip.getKorea().getCode()!= 0) {
+    		trip.getKorea().setCode(oldTrip.getKorea().getCode());
+    	}
+    	if(oldTrip.getTripAddr()!=null) {
+    		trip.setTripAddr(oldTrip.getTripAddr());
+    	}
     	ModelAndView mav = new ModelAndView("redirect:/trip/detail/{tripNo}");
         trip.setTripNo(tripNo);
-        trip.setLat(oldTrip.getLat());
-        trip.setLng(oldTrip.getLng());
+        if(trip.getLat()==null|| trip.getLat().equals("")) {
+            trip.setLat(oldTrip.getLat());
+            trip.setLng(oldTrip.getLng());
+        }
         trip.setType(oldTrip.getType());
         trip.setHit(oldTrip.getHit());
         trip.setTripLiked(oldTrip.getTripLiked());
         trip.setState("Y");
-        trip.setKorea(oldTrip.getKorea());
+//        trip.setKorea(oldTrip.getKorea());
         trip.setWritedate(LocalDateTime.now());
        
         //        String path = request.getServletContext().getRealPath("/images");
@@ -397,6 +463,7 @@ public class TripController {
     @GetMapping("/trip/tripLiked")
     public int tripLiked(Liked liked) {
     	int re = -1;
+    	System.out.println(liked.getLikedTitle());
     	Liked checkLiked = likedService.save(liked);
     	if(checkLiked != null) {
     		re = 1;

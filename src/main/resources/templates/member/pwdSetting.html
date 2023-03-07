@@ -96,13 +96,17 @@ body {
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>   
 <script>
 $(function(){
-	sessionStorage.setItem("id",$("#id").val());
-	console.log(sessionStorage.getItem("id"))
+	 var id = sessionStorage.getItem("id");
+	 
+	 if(id == null || id==""){
+		 alert("먼저 로그인 해주세요.")
+		 location.href="/login"
+	 }
 	
 	$("#updteBtn").click(function(e){
 		if( $('#passwordMatch').html() == '비밀번호가 일치하지 않습니다.'){
 			e.preventDefault();
-			alsert("비밀번호가 일치하지 않습니다.")
+			alert("비밀번호가 일치하지 않습니다.")
 		}
 	});
 		
@@ -156,15 +160,10 @@ $(document).ready(function() {
         </div>
         <div>
        	 <input type="submit" value="수정" id="updteBtn">
-       	 <label id="passwordMatch" th:if="${param.errorMsg != null}" th:text="${param.errorMsg}" style="float: right; color: red;"></label>
+       	 <label id="passwordMatch" th:text="${param.errorMsg}" style="float: right; color: red;"></label>
         </div>
         </form>
       </div>
-<div>
-    <button onclick="location.href='/pwdSetting'">비밀번호 수정</button>
-    <!--  <button onclick="location.href='/pwdSetting'">비밀번호 수정</button>-->
-    <button onclick="showPasswordPrompt()">정보 수정</button>
-	<div class="text-center">Already have an account? <a href="/login">Login here</a></div>
-</div>
+
 </body>
 </html>

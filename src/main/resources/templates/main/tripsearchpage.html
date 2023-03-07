@@ -2,24 +2,158 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet" href="/css/tripsearchpage.css"> 
-<link rel="stylesheet" href="/css/mainpage.css">
-<link rel="stylesheet" href="/css/mainpage2.css">
-<link rel="stylesheet" href="/css/mainpage3.css">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-<style type="text/css">
+<title>Insert title here</title> 
+<link rel="stylesheet" type="text/css" href="/css/mainpage.css/">
+<link rel="stylesheet" type="text/css" href="/css/header.css/">
+<link rel="stylesheet" type="text/css" href="/css/mainpage2.css/">
+<link rel="stylesheet" type="text/css" href="/css/tripsearchpage.css/">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous"/>
+<link rel="stylesheet" type="text/css" href="/css/header.css/">
+
+<style>
 .card{
-	width: 340px; height: 300px; float: left; margin-right: 24px; margin-bottom: 30px;
+	
+	--bs-card-border-color: none;
+	}
+	
+.card-img-top{
+	
+	height:200px;
+}	
+
+	
+header{width:100%;height:64px;position:relative; }
+.logo{margin-right:13px;padding-top:11px;cursor:pointer;}
+.gnb{height:62px;line-height:62px;font-family:nanum_b;font-size:16px; overflow:hidden;font-weight:bold;}
+.gnb_box{height:62px;position:relative;}
+.gnb_login_btn{width:63px;height:29px;line-height:29px;border:solid #f7870f 1px;border-left:0px;margin-top:29%;text-align:center;color:#fff;cursor:pointer;background:#ff9320;}
+body{font-family:nanum;}
+.header2{margin: 0% 7%; position: relative;}
+.wrap{width:1092px;margin:0 auto;position:relative;}
+.fl{float:left;}
+.fr{float:right;}
+.dropdown {
+  padding-left: 5.4%;
+  position: relative;
+  display: inline-block;
+  max-width: 20rem;
+   height: 62px;
+    line-height: 62px;
+    font-family: nanum_b;
+    font-size: 16px;
+    font-weight: bold;
 }
+
+.dropdown-menu {
+  left: 20%;
+  position: absolute;
+  top: 100%;
+  z-index: 1000;
+    min-width: 10rem;
+  padding: 0.5rem 0;
+  margin: 0;
+  font-size: 1rem;
+  color: #212529;
+  text-align: left;
+  list-style: none;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 0.25rem;
+}
+
+.dropdown-menu a {
+	font-size: 17px;
+  display: block;
+  padding: 0.25rem 105px;
+  clear: both;
+  font-weight: 400;
+  color: #212529;
+  text-align: inherit;
+  white-space: nowrap;
+  background-color: transparent;
+  border: 0;
+}
+
+.dropdown-menu a:hover,
+.dropdown-menu a:focus {
+  background-color: #f8f9fa;
+  color: #16181b;
+  text-decoration: none;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.dropdown-toggle::after {
+    display: inline-block;
+       margin-left: none;
+     vertical-align: none;
+     content: none; 
+     border-top: none; 
+     border-right: none; 
+    border-bottom: none; 
+     border-left: none;
+ 
+}
+
+.btn {
+    --bs-btn-padding-x: 9rem;
+    --bs-btn-padding-y: 1.375rem;
+--bs-btn-font-size: 19px;
+--bs-btn-line-height: 16.5px;
+--bs-btn-disabled-opacity: 1.65;
+    margin: 5px;
+}
+
+.btn.disabled, .btn:disabled, fieldset:disabled .btn {
+	--bs-btn-disabled-color: Black;
+    --bs-btn-disabled-bg: white;
+    --bs-btn-disabled-border-color: white;
+    --bs-btn-active-color: white;
+    
+    
+    
+}
+
+
+.btn-secondary {
+	--bs-btn-color: Black;
+	--bs-btn-hover-color: Black;
+	--bs-btn-hover-bg: white
+	--bs-btn-active-bg: white;
+	--bs-btn-active-color: Black;
+    --bs-btn-bg: white;
+    --bs-btn-active-border-color: white;
+    --bs-btn-border-color: white;
+    border: none;
+    --bs-btn-hover-bg: white --bs-btn-active-bg: none;
+    --bs-btn-hover-bg: none;
+    --bs-btn-hover-border-color: none;
+    --bs-btn-active-bg : white;
+}
+
 </style>
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.2.min.js"></script>
 <script type="text/javascript"> 
   $(function(){
+	  
+	  var id = sessionStorage.getItem("id");
+		if(id != null){
+			$("#login").empty();
+			var a = $("<a></a>").attr("href","/logout")
+			var btn = $("<button></button>").html(id).addClass("f1 gnb_login_btn").attr("id","logout")
+			$(a).append(btn);
+			$("#login").append(a)
+		}
     
-    $(".btn").on('click',function(){
-        var korea_code = $(this).attr("korea_code");       //버튼이 클릭 되었을 시, 개별 버튼의 값이 kind 변수에 담겨집니다.
+    $(".region-btn").click(function(){
+        var korea_code = $(this).attr("korea_code");//버튼이 클릭 되었을 시, 개별 버튼의 값이 kind 변수에 담겨집니다.
       	console.log(korea_code);
+      	
+      	
+        
         $.ajax({
             
             url : "/tripajax",
@@ -34,23 +168,24 @@
                 $("#trip_container").empty(); 
                 $.each(data, function(){
                 	var trip_list = $("<div></div>").addClass("trip_list");
-                	var card= $("<div></div>").addClass("card");
-					/* var card_img = $("<img/>").addClass("card-img-top") */
+                	var card= $("<div></div>").css({'width': '340px', 'height':'300px', 'float': 'left', 'margin-right': '24px', 'margin-bottom': '30px', 'border': '0.75px solid #eaeaea', 'box-shadow': '3px 3px 4px rgba(26, 26, 26, 0.1)','cursor':'pointer'}).addClass("card trip").attr("no",this.trip_no)
+              		
+					var card_img = $("<img/>").addClass("card-img-top").attr({src:"images/"+this.trip_img}) 
                 	var card_body = $("<div></div>").addClass("card-body");
 					var card_title=	$("<h5></h5>").addClass("card title").html(this.trip_title);
-					var card_text=	$("<p></p>").addClass("card-text").html(this.trip_addr);
+					var card_text1=	$("<p></p>").addClass("card-text text-truncate").html(this.trip_detail).css('max-width', '300');
+					var card_text2=	$("<p></p>").addClass("card-text text-truncate").html("지역 : "+this.trip_addr);
 
-					
+					$(card).append(card_img);
 					$(card_body).append(card_title);
-					$(card_body).append(card_text);
+					$(card_body).append(card_text1);
+					$(card_body).append(card_text2)
 					$(card).append(card_body);
 					$(trip_list).append(card);
 					$("#trip_container").append(trip_list);
-
-                	
-                	
+					
                 })
-              //  $("#trip_container").append(data); // 성공 시, body부분에 data라는 html 문장들을 다 적용시킵니다.
+        
             },
             error : function(data){
                 alert('error');
@@ -59,23 +194,26 @@
     });//button click
     
     
-    $(".btn").on('click',function(){
-        var korea_code = $(this).attr("korea_code");       //버튼이 클릭 되었을 시, 개별 버튼의 값이 kind 변수에 담겨집니다.
-      	console.log(korea_code);
+    $(".region-btn").on('click',function(){
+       
+    	var korea_code = $(this).attr("korea_code");       //버튼이 클릭 되었을 시, 개별 버튼의 값이 kind 변수에 담겨집니다.
+        //	console.log(korea_code);
+        
+        
         $.ajax({
             
             url : "/planajax",
             cache : false,
             headers : {"cache-control":"no-cache","pragma":"no-cache"},
             data : {
-                "korea_code":korea_code   // 버튼의 value값에 따라 작동합니다.
+                "korea_code":korea_code 
                 
             },
             success : function(data){
                 console.log(data[0]);
                 $("#plan_container").empty(); 
                 $.each(data, function(){
-                	var list_group = $("<div></div>").addClass("list-group");
+                	var list_group = $("<div></div>").addClass("list-group").attr("no", this.plan_no).addClass("plan");
                 	var action = $("<a></a>").addClass("list-group-item list-group-item-action");
                 	var content = $("<div></div>").addClass("d-flex w-100 justify-content-between");
 					var title =	$("<h5></h5>").addClass("mb-1").html(this.plan_title);
@@ -87,12 +225,12 @@
 					$(action).append(addr);
 					$(list_group).append(action);
 					$("#plan_container").append(list_group);
-					/* $("#plan_list").append(list_group); */
+					
 
                 	
                 	
                 })
-              //  $("#trip_container").append(data); // 성공 시, body부분에 data라는 html 문장들을 다 적용시킵니다.
+             
             },
             error : function(data){
                 alert('error');
@@ -100,48 +238,103 @@
         })//ajax
     });//button click  
     
+    $(".region-btn").click(function(){
+        var korea_code = $(this).attr("korea_code");       //버튼이 클릭 되었을 시, 개별 버튼의 값이 kind 변수에 담겨집니다.
+        var h2;
+ 
+        $(".tit").empty();
+        if($(this).val() != ""){
+        	h2 = $("<h2></h2>").html($(this).val())
+        }else{
+        	h2 = $("<h2></h2>").html($(this).html())
+        }
+        
+        console.log("테스트:"+$(this).val());
+      	console.log("koreaCode:"+korea_code);
+        console.log("h2:"+$(this).html())
+         $(".tit").append(h2)
+
+        $.ajax({
+            
+            url : "/planajax",
+            cache : false,
+            headers : {"cache-control":"no-cache","pragma":"no-cache"},
+            data : {
+                "korea_code":korea_code   // 버튼의 value값에 따라 작동합니다.
+                
+            },
+            success : function(data){
+                console.log(data[0]);
+                $("#trip_container").empty(); 
+                $.each(data, function(){
+                })
+              
+            },
+            error : function(data){
+                alert('error');
+            }//error
+        })//ajax
+    });//button click 
+    $(".zone_wrap .list_zone .swiper-slide").click(function(){
+    	  $(".zone_wrap .list_zone .swiper-slide").removeClass("on"); // 모든 버튼의 active 클래스를 제거합니다.
+    	  $(this).addClass("on"); // 클릭된 버튼에 active 클래스를 추가합니다.
+    	  
+    	  // 이하 코드 생략
+    	});
+    
+    $(document).on("click",".trip",function(){
+    	location.href="/trip/detail/"+$(this).attr("no")
+    });
+    
+    $(document).on("click",".plan",function(){
+    	location.href="/plan/detail/"+$(this).attr("no")
+    });
 }); 
- 
- 
-</script>
 </script>
 </head>
 <body>
-	<div id="header">
-			<div class="wrap">
-				<h1 class="logo fl" alt="전국여행자랑">
-					<a href="#">
-						<img src="/images/전국여행자랑.jpg" alt="전국여행자랑" >
-					</a>
-				</h1>
-			<ul class="gnb fl">
-				<a href="/ko/area" class="fl">
-					<li>홈</li>
-				
+ 	<div id="header">
+		<div class="header2">
+			<h1 class="logo fl" alt="전국여행자랑">
+				<a href="/mainpage">
+					<img src="/images/전국여행자랑.png" alt="전국여행자랑" width="180px" height="50px" >
 				</a>
-				<a href="/ko/plan" class="fl">
-					<li>플래너</li>
-				</a>
-				<a href="/ko/plan" class="fl">
-					<li>여행지</li>
-				</a>
-				<a href="/ko/plan" class="fl">
-					<li>관심목록</li>
-				</a>
-			</ul>
-			<div class="fr gnb_box">
-				<a href="#" class="fr">
-					<div class="f1 gnb_join_btn">회원가입</div>
-				</a>
-				<a href="#" class="fr">
-					<div class ="f1 gnb_login_btn">로그인</div>
-				</a>
-				</div>
-				<div class="clear"></div>
+			</h1>
+<div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle disabled"  data-bs-toggle="dropdown" aria-expanded="false">
+    플래너
+  </button>
+  <ul class="dropdown-menu">
+    <li><a class="dropdown-item" href="/plan/list">플래너 리스트</a></li>
+    <li><a class="dropdown-item" href="/plan/insert">플래너 작성</a></li>
+  </ul>
+</div>
+
+<div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle disabled" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    여행지
+  </button>
+  <ul class="dropdown-menu">
+    <li><a class="dropdown-item" href="/tripsearchpage">여행지 탐색</a></li>
+    <li><a class="dropdown-item" href="/trip/list">여행지 리스트</a></li>
+  </ul>
+</div>
+
+<div class="dropdown">
+  <a><button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="location.href='/liked/likeList'" >
+    관심목록
+  </button></a>
+  
+</div>
+	<div class="fr gnb_box login" id="login">
+			<a href="/login" class="fr">
+				<div class ="f1 gnb_login_btn">로그인</div>
+			</a>
 			</div>
-			
-			
+			</div>
+			<div class="clear"></div>
 		</div>
+
 	<div class="zone_wrap">
 		<div class="list_zone">
 			<div class="tit">
@@ -149,64 +342,67 @@
 			</div>
 			<div class="swiper-container2 type0" id="zoneArr">
 				<div class="swiper-wrapper">
-					<div class="swiper-slide"><button type="button" class="btn" korea_code="1">서울</button></div>
-					<div class="swiper-slide"><button type="button" class="btn" korea_code="2">경기</button></div>
-					<div class="swiper-slide"><button type="button" class="btn" korea_code="3">인천</button></div>
-					<div class="swiper-slide"><button type="button" class="btn" korea_code="4">강원</button></div>
-					<div class="swiper-slide"><button type="button" class="btn" korea_code="5">충남</button></div>
-					<div class="swiper-slide"><button type="button"	class="btn" korea_code="6">세종</button></div>
-					<div class="swiper-slide"><button type="button" class="btn" korea_code="7">대전</button></div>
-					<div class="swiper-slide"><button type="button" class="btn" korea_code="8">충북</button></div>
-					<div class="swiper-slide"><button type="button" class="btn" korea_code="9">경북</button></div>
-					<div class="swiper-slide"><button type="button" class="btn" korea_code="10">대구</button></div>
-					<div class="swiper-slide"><button type="button" class="btn" korea_code="11">울산</button></div>
-					<div class="swiper-slide"><button type="button" class="btn" korea_code="12">경남</button></div>
-					<div class="swiper-slide"><button type="button" class="btn" korea_code="13">부산</button></div>
-					<div class="swiper-slide"><button type="button" class="btn" korea_code="14">전북</button></div>
-					<div class="swiper-slide"><button type="button" class="btn" korea_code="15">전남</button></div>
-					<div class="swiper-slide"><button type="button" class="btn" korea_code="16">광주</button></div>
-					<div class="swiper-slide"><button type="button" class="btn" korea_code="17">제주</button></div>
+					<div class="swiper-slide"><button type="button" class="region-btn" korea_code="1">서울</button></div>
+					<div class="swiper-slide"><button type="button" class="region-btn" korea_code="2" >경기</button></div>
+					<div class="swiper-slide"><button type="button" class="region-btn" korea_code="3" >인천</button></div>
+					<div class="swiper-slide"><button type="button" class="region-btn" korea_code="4" >강원</button></div>
+					<div class="swiper-slide"><button type="button" class="region-btn" korea_code="5" >충남</button></div>
+					<div class="swiper-slide"><button type="button"	class="region-btn" korea_code="6" >세종</button></div>
+					<div class="swiper-slide"><button type="button" class="region-btn" korea_code="7" >대전</button></div>
+					<div class="swiper-slide"><button type="button" class="region-btn" korea_code="8" >충북</button></div>
+					<div class="swiper-slide"><button type="button" class="region-btn" korea_code="9" >경북</button></div>
+					<div class="swiper-slide"><button type="button" class="region-btn" korea_code="10" >대구</button></div>
+					<div class="swiper-slide"><button type="button" class="region-btn" korea_code="11" >울산</button></div>
+					<div class="swiper-slide"><button type="button" class="region-btn" korea_code="12" >경남</button></div>
+					<div class="swiper-slide"><button type="button" class="region-btn" korea_code="13" >부산</button></div>
+					<div class="swiper-slide"><button type="button" class="region-btn" korea_code="14" > 전북</button></div>
+					<div class="swiper-slide"><button type="button" class="region-btn" korea_code="15" >전남</button></div>
+					<div class="swiper-slide"><button type="button" class="region-btn" korea_code="16" >광주</button></div>
+					<div class="swiper-slide"><button type="button" class="region-btn" korea_code="17" >제주</button></div>
 				</div>
 			</div>
-			<div class="zone_box, page white">
-					<div class="area_mid" id="areamid" style=" float: left;">
-						<img src="/images/전국팔도.jpg" style="width: 500px; height: 600px;" alt="전국팔도"></a>
+			<div class="zone_box, page white" style=" height: 700px;">
+					<div class="area_mid" id="areamid" style=" float: left; width: 500px;">
+						<img src="/images/전국팔도.jpg" id="map" style="width: 100%;" alt="전국팔도">
+						<button class="region-btn" type="button" korea_code="1" id="서울"value ="서울"></button>
+						<button class="region-btn" type="button" korea_code="2" id="경기" value ="경기"></button>
+						<button class="region-btn" type="button" korea_code="3" id="인천" value ="인천"></button>
+						<button class="region-btn" type="button" korea_code="4" id="강원" value ="강원"></button>
+						<button class="region-btn" type="button" korea_code="5" id="충남" value ="충남"></button>
+						<button class="region-btn" type="button" korea_code="6" id="세종" value ="세종"></button>
+						<button class="region-btn" type="button" korea_code="7" id="대전" value ="대전"></button>
+						<button class="region-btn" type="button" korea_code="8" id="충북" value ="충북"></button>
+						<button class="region-btn" type="button" korea_code="9" id="경북" value ="경북"></button>
+						<button class="region-btn" type="button" korea_code="10" id="대구" value ="대구"></button>
+						<button class="region-btn" type="button" korea_code="11" id="울산" value ="울산"></button>
+						<button class="region-btn" type="button" korea_code="12" id="경남"value ="경남"></button>
+						<button class="region-btn" type="button" korea_code="13" id="부산"value ="부산"></button>
+						<button class="region-btn" type="button" korea_code="14" id="전북"value ="전북"></button>
+						<button class="region-btn" type="button" korea_code="15" id="전남"value ="전남"></button>
+						<button class="region-btn" type="button" korea_code="16" id="광주"value ="광주"></button>
+						<button class="region-btn" type="button" korea_code="17" id="제주"value ="제주"></button>
+						
 							</div>	
 					<div id="arearight">
+						<div class="page_desc" style="color: black; padding-top: 0px;margin-bottom: 10px;">여행지 플래너</div>
 							<div id="plan_container">
 							<div class="list-group">
-							  <a href="#" class="list-group-item list-group-item-action">
+							  <a th:href="|/plan/detail/${plan.plan_no}|" class="list-group-item list-group-item-action" th:each="plan:${PlanSearch}" >
 							    <div class="d-flex w-100 justify-content-between">
-							      <h5 class="mb-1">List group item heading</h5>
-							      <small>3 days ago</small>
+							      <h5 class="mb-1" th:text="${plan.plan_title}"></h5>
 							    </div>
-							    <p class="mb-1">Some placeholder content in a paragraph.</p>
-							    <small>And some small print.</small>
+							    <p class="mb-1" th:text="${plan.plan_region}"></p>
 							  </a>
-							  <a href="#" class="list-group-item list-group-item-action">
-							    <div class="d-flex w-100 justify-content-between">
-							      <h5 class="mb-1">List group item heading</h5>
-							      <small class="text-muted">3 days ago</small>
-							    </div>
-							    <p class="mb-1">Some placeholder content in a paragraph.</p>
-							    <small class="text-muted">And some muted small print.</small>
-							  </a>
-							  <a href="#" class="list-group-item list-group-item-action">
-							    <div class="d-flex w-100 justify-content-between">
-							      <h5 class="mb-1">List group item heading</h5>
-							      <small class="text-muted">3 days ago</small>
-							    </div>
-							    <p class="mb-1">Some placeholder content in a paragraph.</p>
-							    <small class="text-muted">And some muted small print.</small>
-							  </a>
+							  </div>
 							</div>
 					</div>
-					</div>
+			</div>
+		</div>
 				</div>
 			</div>
 		</div>
 	</div>
-<div class="page silver" style="padding-top: 20px;">
+<div class="page white" style="padding-top: 20px;">
 		<div class="wrap">
 				<div class="clear">
 		</div>
@@ -216,26 +412,22 @@
 				
 				<div class="page_desc">전국여행자랑이 자랑하는 여행지</div>
 					<div id="trip_container">
-						<div class="trip_list">
-							<div class="card" style="width: 340px; height: 300px; float: left; margin-right: 24px; margin-bottom: 30px;"  th:each="trip:${TripSearch}" korea_code="1">
-								<img src="..." class="card-img-top" height="200" alt="...">
+						<div class="trip_list" th:each="trip:${TripSearch}">
+							<div class="card"  th:onclick="|location.href='@{|/trip/detail/${trip.trip_no}|}'|" style="width: 340px; height: 300px; float: left; margin-right: 24px; margin-bottom: 30px; border: 0.75px solid #eaeaea; box-shadow: 3px 3px 4px rgba(26, 26, 26, 0.1); cursor:pointer;">
+								<img src="..." class="card-img-top"  alt="..." th:src="@{|/images/${trip.trip_img}|}">
 								<div class="card-body">
-									
 									<h5 class="card title" th:text="${trip.trip_title}"></h5> 
-									<p class="card-text"th:text="${trip.trip_addr}"></p>
-						
+									<p class="card-text text-truncate" th:text="${trip.trip_detail}" style="max-width: 300px;"></p>
+									<p class="card-text text-truncate" th:text="|지역 : ${trip.trip_addr}|"></p>
 								</div>
-						</div> 
-					</div>		
-		
-	</div>
-			
-
-		</div>
+							</div> 
+						</div>		
+					</div>
+			</div>
 		</div>
 	</div>
-	<div class="more_btn" onclick="location.href='/ko/plan';">추천여행지 모두보기</div>
-</div>
+	<div class="more_btn" onclick="location.href='/plan/list';">여행지 모두보기</div>
+</div> 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -40,15 +40,5 @@ public class LikedDBManager {
 		session.close();
 		return list;
 	}
-	
-	
-	
-	public static int deleteLiked(int like_no) {
-		int re = -1;
-		SqlSession session = sqlSessionFactory.openSession(true);
-		re = session.delete("liked.delete", like_no);
-		session.commit();
-		session.close();
-		return re;
-	}
+
 }

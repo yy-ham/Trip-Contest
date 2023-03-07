@@ -16,4 +16,8 @@ public class KoreaService {
 	public List<Korea> findAll(){
 		return dao.findAll();
 	}
+	
+	public String findRegionByCode(int code) {
+		return dao.findRegionByCode(code);
+	}
 }

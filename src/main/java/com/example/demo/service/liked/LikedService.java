@@ -48,8 +48,11 @@ public class LikedService {
 		return LikedDBManager.findByIdandTrip(member_id);
 	}
 	
-	public int deleteLiked(int like_no) {
-		return LikedDBManager.deleteLiked(like_no);
+	
+	public int deleteLiked(int no, String type, String member_id) {
+		return likedDAO.deleteLiked(no, type ,member_id);
 	}
+	
+
 	
 }

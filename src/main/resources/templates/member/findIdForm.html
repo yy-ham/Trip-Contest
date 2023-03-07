@@ -22,7 +22,7 @@ body {
 	box-shadow: none !important;
 }
 .form-control:focus {
-	border-color: #5cd3b4;
+	border-color: #5DC8CD;
 }
 .form-control, .btn {        
 	border-radius: 3px;
@@ -36,8 +36,8 @@ body {
 	color: #333;
 	margin: 0 0 30px 0;
 	display: inline-block;
-	padding: 0 30px 10px 0;
-	border-bottom: 3px solid #5cd3b4;
+	padding: 0 3px 10px 0;
+	border-bottom: 3px solid #5DC8CD;
 }
 .signup-form form {
 	color: #999;
@@ -59,41 +59,81 @@ body {
 	position: relative;
 	top: 1px;
 }
-.signup-form .btn {        
+/*.signup-form .btn {        
 	font-size: 16px;
 	font-weight: bold;
 	background: #5cd3b4;
 	border: none;
 	margin-top: 20px;
 	min-width: 140px;
-}
+}*/
 .signup-form .btn:hover, .signup-form .btn:focus {
 	background: #41cba9;
 	outline: none !important;
 }
 .signup-form a {
-	color: #5cd3b4;
+	color: #5DC8CD;
 	text-decoration: underline;
 }
 .signup-form a:hover {
 	text-decoration: none;
 }
 .signup-form form a {
-	color: #5cd3b4;
+	color: #5DC8CD;
 	text-decoration: none;
 }	
 .signup-form form a:hover {
 	text-decoration: underline;
 }
 #phone1,#phone2,#phone3{
-	width : 70px;
+	width : 60px;
 	min-height: 41px;
 	border : none;
 	border : 1px solid #eee;
 	border-radius : 3px;
 }
-#phone1:hover,#phone2:hover,#phone3:hover{
-	border : 1px solid #5cd3b4;
+#phone1:hover,#phone2:hover,#phone3:hover,#authCode:hover{
+	border : 1px solid #5DC8CD;
+}
+#btn_phone{
+	position: absolute;
+	top: 0px;
+	left: 236px;
+	height: 39px;
+	width: 60px;
+	border-color: #5DC8CD;
+	color : #5DC8CD;
+}
+#authCode{
+	width : 150px;
+	min-height: 41px;
+	border : none;
+	border : 1px solid #eee;
+	border-radius : 3px;
+}
+#btn_authCode{
+	position: absolute;
+	top: 0px;
+	left:206px;
+	height: 39px;
+	border-color: #5DC8CD;
+	color : #5DC8CD;
+}
+#btn_findId {
+	  display: flex;
+	  justify-content: center;
+	  text-align: center;
+	  margin: auto;
+	  background: #5DC8CD;
+	  margin-top: 20px;
+	  border-color: #5DC8CD;
+	  
+}
+#btn_phone:hover, #btn_authCode:hover{
+	background: #5DC8CD;
+	outline-color: #5DC8CD;
+	color: #FFFFFF;
+	
 }
 </style>
 </head>
@@ -125,40 +165,22 @@ $(function(){
 	// 아이디 있는지 확인
 	
 	$('#btn_phone').click(function(){
-		
-		// 이름과 전화번호로 회원이 있는지를 확인
 		$.ajax({
-			url : "/checkMember",
-			data : {
-				"name" : $("#name").val(),
-				"phone" : $("#phone").val(),
-			},
-			success:function(re){
-				if(re!=1){
-					alert("일치하는 회원 정보가 없습니다.")
-				}else{
-					$.ajax({
-						url : "/sendAuthCode",
-						data : {"phone": $('#phone').val() },
-						success : function(innerCode){
-							if(innerCode != null){
-								alert("코드 전송했습니다.")
-								code = innerCode;
-								console.log(code);
-								// 세션에 코드 저장
-								sessionStorage.setItem("code", code);
-							}
-						}
-					})
+			url : "/sendAuthCode",
+			data : {"phone": $('#phone').val() },
+			success : function(innerCode){
+				if(innerCode != null){
+					alert("코드 전송했습니다.")
+					code = innerCode;
+					console.log(code);
+					// 세션에 코드 저장
+					sessionStorage.setItem("code", code);
 				}
 			}
 		})
-		
-		
 	})
 	
 	$('#btn_authCode').click(function(){
-		
 		var inputCode = $('#authCode').val();
 		// 세션에서 코드 값을 가져옴
 		var sessionCode = sessionStorage.getItem("code");
@@ -177,12 +199,19 @@ $(function(){
 		}
 	});
 	
-	$("#searchBtn").click(function(e){
-		if($("input[name=result]").val() != 'success'){
-			e.preventDefault();
-			alert("회원인증을 먼저 진행해주세요.")
-		}
-	});
+	$("#btn_findId").click(function(e){
+		e.preventDefault();
+		$.ajax({
+			url : "/findIdResult",
+			data : {"name": $("#name").val(),
+					"phone" : $("#phone").val()	
+			},
+			success : function(data){
+				alert("아이디는 "+data+"입니다.")
+				location.href = "/login"
+			}
+		});
+	})
 })
 
 </script>
@@ -205,24 +234,24 @@ $(function(){
         <div class="form-group row">
 			<label class="col-form-label col-4">연락처</label>
 			<div class="col-8">
-                <input type="tel" class="phone1"  id="phone1" maxlength="3" required="required">-
-                <input type="tel" class="phone2"  id="phone2" maxlength="4" required="required">-
-                <input type="tel" class="phone3"  id="phone3" maxlength="4" required="required">
+                <input type="tel" class="phone1" name="phone1" id="phone1" maxlength="3" required="required">-
+                <input type="tel" class="phone2" name="phone2" id="phone2" maxlength="4" required="required">-
+                <input type="tel" class="phone3" name="phone3"  id="phone3" maxlength="4" required="required">
                 <input type="hidden" name="phone" id="phone">
-                <input type="button" value="휴대폰 인증" id='btn_phone'>
+                <button type="button" class="btn btn-outline-success" id='btn_phone'>인증</button>
             </div>        	
         </div>   
         <div class="form-group row">
 			<label class="col-form-label col-4">인증번호</label>
 			<div class="col-8">
 			<input type="text" class="form-control" id="authCode" name="authCode" required="required"><br>
-        	<input type="button" value="인증" id='btn_authCode'>
+        	<button type="button" class="btn btn-outline-success" id='btn_authCode'>인증확인</button>
         	<span id="authResult"></span>
             </div>        	
         </div>
-        <input type="submit" value="아이디 찾기" id="searchBtn">
+        <button type="submit" class="btn btn-success"id="btn_findId">아이디 찾기</button>
     </form>
-	<div class="text-center">Already have an account? <a href="/login">Login here</a></div>
+	<div class="text-center">계정이 있으신가요? <a href="/login">Login here</a></div>
 </div>
 </body>
 </html>

@@ -28,11 +28,11 @@ public class Plan {
 	@Column(name = "plan_title")
 	private String planTitle;
 	@Column(name = "plan_date")
-	private Date planDate; //작성일
+	private String planDate; //작성일
 	@Column(name = "plan_start")
-	private Date planStart;
+	private String planStart;
 	@Column(name = "plan_end")
-	private Date planEnd;
+	private String planEnd;
 	@Column(name = "plan_hit")
 	private int planHit;
 	@Column(name = "plan_liked")

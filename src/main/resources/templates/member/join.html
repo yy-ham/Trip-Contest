@@ -22,7 +22,7 @@ body {
 	box-shadow: none !important;
 }
 .form-control:focus {
-	border-color: #5cd3b4;
+	border-color: #5DC8CD;
 }
 .form-control, .btn {        
 	border-radius: 3px;
@@ -36,8 +36,8 @@ body {
 	color: #333;
 	margin: 0 0 30px 0;
 	display: inline-block;
-	padding: 0 30px 10px 0;
-	border-bottom: 3px solid #5cd3b4;
+	padding: 0 3px 10px 0;
+	border-bottom: 3px solid #5DC8CD;
 }
 .signup-form form {
 	color: #999;
@@ -59,27 +59,28 @@ body {
 	position: relative;
 	top: 1px;
 }
-.signup-form .btn {        
+#btn_insertMember {        
 	font-size: 16px;
 	font-weight: bold;
-	background: #5cd3b4;
+	background: #5DC8CD;
 	border: none;
 	margin-top: 20px;
 	min-width: 140px;
 }
+
 .signup-form .btn:hover, .signup-form .btn:focus {
-	background: #41cba9;
+	background: #5DC8CD;
 	outline: none !important;
 }
 .signup-form a {
-	color: #5cd3b4;
+	color: #5DC8CD;
 	text-decoration: underline;
 }
 .signup-form a:hover {
 	text-decoration: none;
 }
 .signup-form form a {
-	color: #5cd3b4;
+	color: #5DC8CD;
 	text-decoration: none;
 }	
 .signup-form form a:hover {
@@ -97,15 +98,63 @@ body {
 	border-radius : 3px;
 }
 #phone1,#phone2,#phone3{
-	width : 70px;
+	width : 50px;
 	min-height: 41px;
 	border : none;
 	border : 1px solid #eee;
 	border-radius : 3px;
 }
 
-#jumin1:hover, #jumin2:hover,#phone1:hover,#phone2:hover,#phone3:hover{
-	border : 1px solid #5cd3b4;
+#jumin1:hover, #jumin2:hover,#phone1:hover,#phone2:hover,#phone3:hover,#authCode:hover {
+	border : 1px solid #5DC8CD;
+	outline-color: #5DC8CD;
+}
+#id{
+	width : 130px;
+	min-height: 41px;
+	border : none;
+	border : 1px solid #eee;
+	border-radius : 3px;
+}
+#check-duplicate{
+	position: absolute;
+	top: 2px;
+	left:157px;
+	color: #5DC8CD;
+	border-color: #5DC8CD;
+}
+#check-duplicate:focus, #btn_phone:focus, #btn_authCode:focus{
+	background-color: #5DC8CD;
+	color: #ffffff;
+	border: none;
+	outline:none;
+}
+#check-duplicate:hover ,#btn_phone:hover, #btn_authCode:hover{
+	color: #ffffff;
+}
+#btn_phone{
+	position: absolute;
+	top: 0px;
+	left: 204px;
+	height: 39px;
+	width: 90px;
+	color: #5DC8CD;
+	border-color: #5DC8CD;
+}
+#btn_authCode{
+	position: absolute;
+	top: 0px;
+	left:204px;
+	height: 39px;
+	color: #5DC8CD;
+	border-color: #5DC8CD;
+}
+#authCode{
+	width : 130px;
+	min-height: 41px;
+	border : none;
+	border : 1px solid #eee;
+	border-radius : 3px;
 }
 </style>
 </head>
@@ -115,13 +164,13 @@ body {
 <script> 
 $(function(){
 	$(document).ready(function(){
-		  $("form").submit(function(){
+		  $("form").submit(function(event){
 		    if($("#id").val == " "){
 		      alert("아이디를 입력해주세요");
 		      $("#id").focus();
 		      return false;
-		       
-		     if($("#pwd").val == " "){
+		    }
+		    if($("#pwd").val == " "){
 		      alert("비밀번호를 입력해주세요");
 		      $("#pwd").focus();
 		      return false;
@@ -166,10 +215,13 @@ $(function(){
 		      $("#mail").focus();
 		      return false;
 		    }
-		      
-		      }
-		    $("#jumin").val($("#jumin1").val()+"-"+$("#jumin2").val())
+		     
+		    $('#jumin').val($('#jumin1').val()+"-"+$('#jumin2').val());
+		    $('#addr').val($('#addr1').val()+" "+$('#addr2').val());
+		    
 		  });
+		  
+		  
 		});
 	$(document).ready(function() {
     	//휴대폰번호 입력시 다음으로 넘어감
@@ -191,10 +243,9 @@ $(function(){
     	});
     $(document).ready(function() {
         // 각 필드에서 값이 변경될 때마다 hidden 요소의 value 속성에 전화번호를 할당합니다.
-          var jumin1 = $("#jumin1").val();
-      	  var jumin2 = $("#jumin2").val();
-          var jumin = jumin1+ "-"+ jumin2;
-          console.log(jumin)
+          var jumin1 = $('#jumin1').val();
+          var jumin2 = $('#jumin2').val();
+          var jumin = jumin1+"-"+ jumin2;
           $('#jumin').val(jumin);
       });
     $(document).ready(function() {
@@ -204,54 +255,89 @@ $(function(){
           var phone2 = $('#phone2').val();
           var phone3 = $('#phone3').val();
           var phone = phone1+"-"+ phone2+"-"+ phone3;
-          console.log(phone)
           $('#phone').val(phone);
         });
       });
 	
-    $(document).ready(function() {
-        $("#check-duplicate").on("click", function() {
-            var id = $("#id").val();
-            $.ajax({
-                url: "/checkId",
-                data: {id: id},
-                success: function(data) {
-                    if (data == true) {
-                        alert("중복된 ID입니다.");
-                        $("#newId").val("duplication")
-                    }
-                    else if(id ==null || id == ""){
-                    	alert("잘못된 입력입니다.");
-                    	$("#newId").val("fault")
-                    }
-                    else {
-                        alert("사용 가능한 아이디입니다.");
-                        $("#newId").val("able")
-                    }
-                }
-            });
-        });
-    });
-	    
-	    
 	    $(document).ready(function() {
-	        $("#pwd-confirm").on("keyup", function() {
-	            var pwd = $("#pwd").val();
-	            var pwdConfirm = $("#pwd-confirm").val();
-	
-	            if (pwd === pwdConfirm) {
-	                $("#pwd-confirm-message").text("비밀번호가 일치합니다.").css("color", "green");
-	            } else {
-	                $("#pwd-confirm-message").text("비밀번호가 일치하지 않습니다.").css("color", "red");
-	            }
+	        $("#check-duplicate").on("click", function() {
+	            var id = $("#id").val();
+	            $.ajax({
+	                url: "/checkId",
+	                data: {id: id},
+	                success: function(data) {
+	                    if (data == true) {
+	                        alert("중복된 ID입니다.");
+	                    }
+	                    else if(id ==null){
+	                    	alert("잘못된 입력입니다.");
+	                    }
+	                    else {
+	                        alert("사용 가능한 아이디입니다.");
+	                    }
+	                }
+	            });
 	        });
 	    });
+	    
+	    
+	    //비밀번호 유효성검사
+	    $(document).ready(function() {
+	    	  $("#pwd-confirm").on("keyup", function() {
+	    	    var pwd = $("#pwd").val();
+	    	    var pwdConfirm = $("#pwd-confirm").val();
+	    	    var regex = /^(?=.*?[A-Za-z])(?=.*?[0-9])(?=.*?[^\w\s]).{8,}$/;
+
+	    	    if (pwd === pwdConfirm) {
+	    	      if (regex.test(pwd)) {
+	    	        $("#pwd-confirm-message").text("비밀번호가 일치하며, 유효합니다.").css("color", "green");
+	    	      } else {
+	    	        $("#pwd-confirm-message").text("비밀번호는 영문자,숫자를 포함한8자리 이상이어야 하며, 특수문자는 최소 2개를 포함해야 합니다.").css("color", "red");
+	    	      }
+	    	    } else {
+	    	      $("#pwd-confirm-message").text("비밀번호가 일치하지 않습니다.").css("color", "red");
+	    	    }
+	    	  });
+	    	  $("#name").on("keyup", function() {
+	  	        var name = $(this).val();
+	  	        if (name.length >= 2) {
+	  	            $("#name-message").text("올바른 이름입니다.").css("color", "green");
+	  	        } else {
+	  	            $("#name-message").text("이름은 2글자 이상이어야 합니다.").css("color", "red");
+	  	        }
+	  	        
+	  	    });
+	  	    
+	  	    $("#mail").on("keyup", function() {
+	  	        var email = $(this).val();
+	  	        var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+	  	        if (emailRegex.test(email)) {
+	  	            $("#email-message").text("유효한 이메일 주소입니다.").css("color", "green");
+	  	        } else {
+	  	            $("#email-message").text("유효하지 않은 이메일 주소입니다.").css("color", "red");
+	  	        }
+	  	    });
+	  	    
+	  	  $("#id").on("keyup", function() {
+	          var id = $(this).val();
+	          var idRegex = /^[a-zA-Z0-9]{6,}$/; // id 정규식: 6자 이상, 영문자/숫자 포함
+	          
+	          if (idRegex.test(id)) {
+	              $("#id-message").text("사용 가능한 아이디입니다.").css("color", "green");
+	          } else {
+	              $("#id-message").text("아이디는 6자 이상이어야 하며, 영문자와 숫자로만 구성되어야 합니다.").css("color", "red");
+	          }
+	      });
+	  	    
+	    });
 		// 주소 가져오기
-		$("#addr").on("click",function(){
+		$("#addr1").on("click",function(){
 			new daum.Postcode({
 				oncomplete: function(data){
 					var roadAddr = data.roadAddress; // 도로명주소
-					document.getElementById("addr").value = roadAddr;
+					document.getElementById("addr1").value = roadAddr;
+					document.querySelector("input[name=addr2]").focus(); //상세입력 포커싱
 				}
 			}).open();
 		});
@@ -259,21 +345,21 @@ $(function(){
 			var code;
 			// 아이디 있는지 확인
 			
-			$('#btn_phone').click(function(){
-				$.ajax({
-					url : "/sendAuthCode",
-					data : {"phone": $('#phone').val() },
-					success : function(innerCode){
-						if(innerCode != null){
-							alert("코드 전송했습니다.")
-							code = innerCode;
-							console.log(code);
-							// 세션에 코드 저장
-							sessionStorage.setItem("code", code);
-						}
+		$('#btn_phone').click(function(){
+			$.ajax({
+				url : "/sendAuthCode",
+				data : {"phone": $('#phone').val() },
+				success : function(innerCode){
+					if(innerCode != null){
+						alert("코드 전송했습니다.")
+						code = innerCode;
+						console.log(code);
+						// 세션에 코드 저장
+						sessionStorage.setItem("code", code);
 					}
-				})
+				}
 			})
+		})
 			
 			$('#btn_authCode').click(function(){
 				var inputCode = $('#authCode').val();
@@ -294,25 +380,24 @@ $(function(){
 				}
 			});
 		})
-		$("#btn_insertMember").click(function(e){
-			if($("#newId").val() != "able"){
-				e.preventDefault();
-				if($("#newId").val() == "duplication"){
-					alert("중복된 아이디입니다.")
-				}else if($("#newId").val() == "fault" ){
-					alert("아이디를 입력해주세요.");					
-				}else{
-					alert("id 중복확인을 먼저 진행해 주세요.")					
-				}
-			}else if($("#pwd").val() != $("#pwd-confirm").val()){
-				e.preventDefault();
-				alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.")
-			}else if($('#authResult').text() != '인증 성공'){
-				e.preventDefault();
-				alert("본인인증을 먼저 진행해주세요.")
-			}
-		})
 });
+$('#jumin').val(jumin);
+
+$(document).ready(function() {
+    $("#member_img").change(function() {
+      readURL(this);
+    });
+  });
+
+  function readURL(input) {
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        $("#preview").attr("src", e.target.result);
+      }
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
     </script>
 <body>
 <div class="signup-form">
@@ -325,9 +410,10 @@ $(function(){
 		<div class="form-group row">
 			<label class="col-form-label col-4">ID</label>
 			<div class="col-8">
-                <input type="text" class="form-control" name="id" id="id" th:value="${id}" th:readonly="${id != null}" required>
-                <!--  <input type="text" name="id" id="id" required th:value="${id}" th:readonly="${id != null}"><br>-->
-				<button type="button" id="check-duplicate">ID 중복 체크</button><br>
+                <input type="text" name="id" id="id" th:value="${id}" th:readonly="${id != null}" required>
+				
+            	<button type="button" class="btn btn-outline-success" id="check-duplicate">중복확인</button><br>
+            	<span id="id-message" style="font-size: 12px;"></span>
             </div>        	
         </div>
 		<div class="form-group row">
@@ -347,13 +433,14 @@ $(function(){
 			<label class="col-form-label col-4">이름</label>
 			<div class="col-8">
                 <input type="text" class="form-control" name="name" id="name" required="required">
+            	<span id="name-message"></span>
             </div>        	
         </div>
         <div class="form-group row">
 			<label class="col-form-label col-4">주민번호</label>
 			<span class="col-8">
-                <input type="text" class="jumin"  id="jumin1" maxlength="6" required="required"> - 
-                <input type="text" class="jumin"  id="jumin2" maxlength="7" required="required">
+                <input type="text" class="jumin" name="jumin1" id="jumin1" maxlength="6" required="required"> - 
+                <input type="text" class="jumin" name="jumin2" id="jumin2" maxlength="7" required="required">
                 <input type="hidden" name="jumin" id="jumin">
             </span>        	
         </div>
@@ -364,64 +451,67 @@ $(function(){
                 <input type="tel" class="phone" name="phone2" id="phone2" maxlength="4" required="required">-
                 <input type="tel" class="phone" name="phone3"  id="phone3" maxlength="4" required="required">
                 <input type="hidden" name="phone" id="phone">
-                <input type="button" value="휴대폰 인증" id='btn_phone'>
+                <button type="button" class="btn btn-outline-success" id="btn_phone">문자인증</button>
             </div>        	
         </div>
         <div class="form-group row">
 			<label class="col-form-label col-4">인증번호</label>
 			<div class="col-8">
-			<input type="text" id="authCode" name="authCode" required="required"><br>
-        	<input type="button" value="인증" id='btn_authCode'>
+			<input type="text" class="form-control" id="authCode" name="authCode" required="required"><br>
+        	<button type="button" class="btn btn-outline-success" id="btn_authCode">인증확인</button>
         	<span id="authResult"></span>
             </div>        	
         </div>
         <div class="form-group row">
 			<label class="col-form-label col-4">주소</label>
 			<div class="col-8">
-                <input type="text" class="form-control" name="addr" id="addr" readonly="readonly">
+                <input type="text" class="form-control" name="addr1" id="addr1" readonly="readonly">
+            </div>        	
+        </div>
+        <div class="form-group row">
+			<label class="col-form-label col-4">상세주소</label>
+			<div class="col-8">
+                <input type="text" class="form-control" name="addr2" id="addr2" required="required">
+                <input type="hidden" name="addr" id="addr">
             </div>        	
         </div>
         <div class="form-group row">
 			<label class="col-form-label col-4">이메일</label>
 			<div class="col-8">
                 <input type="email" class="form-control" name="mail" id="mail" required="required">
+          	 	<span id="email-message"></span>
             </div>        	
         </div>
         <div class="form-group row">
 			<label class="col-form-label col-4">성별</label>
 			<div class="col-8">
-                남성<input type="radio"  name="gender" id="male" value="M" required="required"/><br>
-                
-                여성<input type="radio" name="gender" id="female" value="F" required="required"/>
-                
-            </div>        	
-        </div>
-        <div class="form-group row">
-			<label class="col-form-label col-4">등급</label>
-			<div class="col-8">
-			<select name="grade" id="grade" required>
-				<option value="bronze">일반회원</option>
-			</select>
+                남성&nbsp;&nbsp;<input type="radio"  name="gender" id="male" value="M" required="required"/><br>
+                여성&nbsp;&nbsp;<input type="radio" name="gender" id="female" value="F" required="required"/>
+                <select name="grade" id="grade" required hidden selected>
+				<option value="member">일반회원</option>
+				</select>
             </div>        	
         </div>
         <div class="form-group row">
 			<label class="col-form-label col-4">사진</label>
 			<div class="col-8">
-                <input type="file" class="form-control" name="member_img" id="member_img">
+                <input type="file" class="form-control" th:value="@{|/images/profile.png|}" name="member_img" id="member_img">
+                
             </div>        	
         </div>
         
         
 		<div class="form-group row">
 			<div class="col-8 offset-4">
-				<p><label class="form-check-label"><input type="checkbox" required="required"> I accept the <a href="#">Terms of Use</a> &amp; <a href="#">Privacy Policy</a>.</label></p>
-				<button type="submit" class="btn btn-primary btn-lg" id="btn_insertMember">Sign Up</button>
+				<p><label class="form-check-label"><input type="checkbox" required="required"> 회원가입에 동의합니다</label></p>
+				<button type="submit" class="btn btn-primary btn-lg" id="btn_insertMember">회원가입</button>
 				<!-- <input type="submit" value="create" id="btn_insertMember">-->
 			</div>  
 		</div>		      
     </form>
-	<div class="text-center">Already have an account? <a href="/login">Login here</a></div>
-	<input type="hidden" id="newId">
+	<div class="text-center">계정이 있으신가요? <a href="/login">Login here</a></div>
+	<div id="preview"></div>
+	
 </div>
 </body>
 </html>

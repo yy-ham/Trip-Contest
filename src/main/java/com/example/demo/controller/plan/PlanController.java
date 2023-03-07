@@ -1,7 +1,6 @@
 package com.example.demo.controller.plan;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -13,24 +12,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.entity.liked.Liked;
-import com.example.demo.entity.plan.Plan;
-import com.example.demo.entity.plandetail.PlanDetail;
-import com.example.demo.entity.trip.Trip;
 import com.example.demo.service.korea.KoreaService;
 import com.example.demo.service.liked.LikedService;
 import com.example.demo.service.plan.PlanService;
 import com.example.demo.service.plandetail.PlanDetailService;
-import com.example.demo.service.recoment.RecomentService;
 import com.example.demo.vo.plan.PlanVO;
-import com.example.demo.vo.plandetail.PlanDetailVO;
 import com.example.demo.vo.trip.TripVO;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import lombok.Setter;
 
 @Controller
@@ -38,19 +30,12 @@ import lombok.Setter;
 public class PlanController {
 	@Autowired
 	private PlanService planService;
-	
 	@Autowired
 	private PlanDetailService planDetailService;
-	
-	@Autowired
-	private RecomentService recomentService;
-	
 	@Autowired
 	private KoreaService koreaService;
-	
 	@Autowired
 	private LikedService likedService;
-	
 	
 	public int pageSIZE = 8;
 	public int totalRecord = 0;
@@ -64,16 +49,13 @@ public class PlanController {
 			@RequestParam(defaultValue = "0") int region) {
 		
 		System.out.println("pageNUM:" + pageNUM);
-		
 		System.out.println("keyword:" + keyword);
 		System.out.println("region:" + region);
-		
+		System.out.println("orderColumn:" + orderColumn);
 		
 		HashMap<String , Object> map = new HashMap<String, Object>();
-		
 		map.put("keyword", keyword);
 		map.put("region", region);
-		System.out.println("controller map:" + map);
 		
 		totalRecord = planService.getTotalRecord(map);
 		totalPage = (int) Math.ceil(totalRecord / (double)pageSIZE);
@@ -91,19 +73,24 @@ public class PlanController {
 //		map.put("totalRecord", totalRecord);
 //		map.put("pageNum", pageNUM);
 		
-		model.addAttribute("totalPage", totalPage);
 		
 		int startPage = (pageNUM-1)/pageGROUP*pageGROUP+1;
 		int endPage = startPage+pageGROUP-1;
-		if(totalPage < endPage) {
+		if(endPage > totalPage) {
 			endPage = totalPage;
+		}else if(endPage == 0) {
+			endPage = 1; 
 		}
 		
-		model.addAttribute("list", planService.findAll(map));
 		
+		System.out.println("controller map:" + map);
+
+		model.addAttribute("list", planService.findAll(map));
+		System.out.println("result:" + planService.findAll(map));
+		model.addAttribute("totalPage", totalPage);
 		model.addAttribute("startPage", startPage);
 		model.addAttribute("endPage", endPage);
-		
+		System.out.println(map.get("orderColumn"));
 		System.out.println("start:" + startPage);
 		System.out.println("end:" + endPage);
 		
@@ -111,11 +98,12 @@ public class PlanController {
 		
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("orderColumn", orderColumn);
-		model.addAttribute("region",region);
+		model.addAttribute("region", region); //페이징 처리할 때 필요
 		model.addAttribute("pageNUM", pageNUM);
 		model.addAttribute("totalPage", totalPage);
 
 //		session.setAttribute("keyword", keyword);
+		//model.addAttribute("plan_region", planService.getRegion(plan_no));
 		
 		return "/plan/list";
 	}
@@ -124,10 +112,13 @@ public class PlanController {
 	//여행계획 상세 불러오기
 	@GetMapping("/plan/detail/{plan_no}")
 	public String detail(Model model, @PathVariable int plan_no) {
+		int cnt = planService.countDaysByPlanNo(plan_no);
 		planService.updateHit(plan_no);
+
+		
+		System.out.println("check:" + planService.findByPlanNo(plan_no));
 		model.addAttribute("plan", planService.findByPlanNo(plan_no));
 		model.addAttribute("region", planService.getRegion(plan_no));
-		int cnt = planService.countDaysByPlanNo(plan_no);
 		model.addAttribute("cnt", cnt);
 	
 		HashMap<String, Object> map = new HashMap<String, Object>();
@@ -201,7 +192,7 @@ public class PlanController {
 	@PostMapping("/plan/insert")
 	public ModelAndView insertSubmmit(PlanVO p, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView("redirect:/plan/list");	
-		
+		System.out.println("plan member id "+p.getMember_id());
 		//insert plan
 		int re = -1;
 		re = planService.insert(p);
@@ -272,7 +263,7 @@ public class PlanController {
 				
 				if(request.getParameter(name) != null && !request.getParameter(name).equals("")) {
 					int trip_no = Integer.parseInt(request.getParameter(name));
-					System.out.println("trip_no:" + trip_no);
+					//System.out.println("trip_no:" + trip_no);
 					planDetailService.insertPlanDetail(p.getPlan_no(), i, trip_no);
 				}else {
 					break;
@@ -283,11 +274,13 @@ public class PlanController {
 	}
 	
 	//여행계획 삭제
-	@GetMapping("/plan/delete/{plan_no}")
-	public ModelAndView delete(@PathVariable int plan_no) {
+	@GetMapping("/plan/delete/{plan_no}/{member_id}")
+	public ModelAndView delete(@PathVariable int plan_no, @PathVariable String member_id, String type) {
 		ModelAndView mav = new ModelAndView("redirect:/plan/list");
 		int re = planDetailService.deleteByPlanNo(plan_no);
 		System.out.println("re:" + re);
+		type = "plan";
+		likedService.deleteLiked(plan_no, type, member_id);
 		planService.deleteByPlanNo(plan_no);
 		return mav;
 	}
@@ -319,4 +312,10 @@ public class PlanController {
     	System.out.println("planLikedNoList" + planLikedNoList);
     	return planLikedNoList;
     }
+	
+	@ResponseBody
+	@GetMapping("/plan/list/region/{code}")
+	public String findRegionByCode(@PathVariable int code) {
+		return koreaService.findRegionByCode(code);
+	}
 }

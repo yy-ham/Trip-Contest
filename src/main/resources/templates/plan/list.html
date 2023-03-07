@@ -3,11 +3,236 @@
 <head>
 <meta charset="UTF-8">
 <title>여행계획 목록</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+<style type="text/css">
+	* {
+		padding: 0;
+		margin: 0;
+	}
+	header{
+		width: 100%;
+		margin: auto;
+		margin-bottom: 30px;
+	}
+	
+	#header_container{
+		width: 80%;
+		margin: auto;
+		height: 60px;
+		margin-bottom: 50px;
+	}
+	
+	/*헤더 이미지 컨테이너*/
+	#header_img{
+ 		width: 80%;
+		margin: auto;
+		height: 400px;
+		position: relative;
+		/*
+		border: 2px solid grey;
+		margin-top: 20px; */
+		
+		/* background-image: url("/images/main.png"); */
+	}
+	
+	/*h1 전국*/
+	#header_title{
+		width: 87px;
+		/* height: 100%;
+		margin-left: 30px;
+		 */cursor: pointer;
+		
+		position: absolute;
+	    top: 75%;
+	    left: 5%;
+	    /* transform: translate( -50%, -50% ); */
+	    color: white;
+	    
+	    z-index: 99;
+	    font-weight: bold;
+		
+		/*마진 패딩 위 오 아 왼*/
+	}
+	
+	
+	#search_order_container{
+		width: 80%;
+		margin: auto;
+		margin-top: 20px;
+		/* border: 2px solid black; */
+		
+	}
+	
+	/*검색창*/
+	#search_contariner{
+		width: 75%;
+		height: 60px;
+		/* border: 2px solid grey; */
+		margin-top: 20px;
+		margin-bottom: 20px;
+		float: left;
+		/* border: 2px solid grey; */
+		padding-top: 3px;
+	}
+	
+	#region{
+		width: 150px;
+		float: left;
+	}
+	
+	#keyword{
+		width: 300px;
+	}
+	
+	#order_container{
+		width: 280px;
+		height: 60px;
+		margin-top: 20px;
+		margin-bottom: 20px;
+		/* border: 2px solid grey; */
+		padding-top: 14px;
+		padding-left: 10px;
+		float: right;
+	}
+	
+
+	
+	section{
+		width: 80%;
+		margin: auto;
+		clear: both;
+		/* border: 2px solid grey; */
+		margin-bottom: 20px;
+	}
+	
+	/* #content{
+		width: 80%;
+	} */
+	
+ 	.row{
+		/* border: 2px solid blue; */
+		padding-right: 30px;
+	}
+
+	
+	.card{
+		width: 17rem;
+		float: none;
+		border: 0.75px solid #eaeaea;
+		box-shadow: 3px 3px 4px rgba(26, 26, 26, 0.1);
+		margin: auto;
+		margin-bottom: 20px;
+		margin-top: 20px;
+		max-height: 350px;
+	}
+	
+	.card-img-top{
+		height: 200px;
+	}
+	
+	
+	#info_container{
+		/* border: 2px solid pink; */
+		width: 70%;
+		float: left;
+	}
+	
+	#liked_container{
+		/* border: 2px solid grey; */
+		width: 15%;
+		float: right;
+		margin-top: 15px;
+	}
+	
+
+	/*페이징*/	
+	#page_container{
+		width: 80%;
+		margin: auto;
+		margin-bottom: 20px;
+	}
+	
+	#page{
+		width: 15%;
+		margin: auto;
+		padding-top: 10px;
+		padding-bottom: 10px;
+	}
+	
+	a{
+		text-decoration: none;
+		color: black;
+		font-size: large;
+	}
+
+	/* 찜 */
+	input[type=checkbox] {
+   		display:none;
+	}
+	
+	label {
+		width: 10px;
+	    height: 30px;
+		cursor: pointer;
+	}
+	
+	input[type=checkbox] + label { 
+	    
+	    padding-left: 35px; 
+	    background-repeat: no-repeat;
+	    background-image: url('/images/heart_default.png');
+
+	}
+	
+	input[type=checkbox]:checked + label {
+	    background-image: url('/images/heart_liked.png');
+	}
+	
+	
+	
+	
+
+	.card_link{
+		text-decoration: none;
+		color: black;
+	}
+	
+	.button{
+		border: 2px solid grey;
+		width: 140px;
+		margin-left: 20px;
+		margin-bottom: 20px;
+		height: 40px;
+	}
+	
+	#btnInsert{
+		float: right;
+		margin-top: 40px;
+	}
+	
+	.highlight{
+		font-weight: bold;
+		color: #5CD1E5;
+	}
+	
+	
+</style>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
 <script type="text/javascript">
 	$(function(){
-		var login = $("#login_user").val();
 		
+		 var id = sessionStorage.getItem("id");
+		 
+		 $("#login_user").val(id);
+		 
+		if(id != null){
+			var login = $("#login_user").val();			
+		}
+		
+		/* $("#header_title").click(function(){
+			location.href = "/plan/list";
+		}); */
+			
 		//로그인한 아이디가 찜한 게시물 표시
 		function getUserLiked(login){
 			var planLikedNoList = new Array();
@@ -67,129 +292,304 @@
 		
 		
 		// 찜 기능
-		$(".planLiked").click(function(){
-			if($(this).is(":checked")){
-				$.ajax({
-					url:"/plan/detail/liked/insert",
-					data: {
-						member_id: login,
-						no: $(this).attr("LikedPlanNo"),
-						plan_img: $(this).attr("likedImg"),
-						liked_title: $(this).attr("likedTitle")
-					},
-					success: function(re){
-						if(re == 1){
-							console.log("찜!!");
+		$(".planLiked_label").click(function(){
+			var attr = $(this).attr("likedPlanNo");
+			var state = $("input[likedPlanNo="+attr+"]").prop("checked");
+			console.log("State: " + state);
+			if(login == null||login == ""){
+				alert("로그인하세요");
+				//로그인 페이지 링크 연결
+			}else{
+				//찜 해제
+				if(state == true){
+					$("input[likedPlanNo="+attr+"]").prop("checked", false);
+					
+					$.ajax({
+						url: "/plan/detail/liked/delete",
+						data: {
+							no: $(this).attr("likedPlanNo")
+						},
+						success: function(re){
+							console.log("insert re:" + re);
+							if(re == 1){
+								console.log("찜취소!!");
+							}
 						}
-					}
-				});
-			}
-
-			if($(this).is(":checked") == false){
-				$.ajax({
-					url: "/plan/detail/liked/delete",
-					data: {
-						no: $(this).attr("LikedPlanNo")
-					},
-					success: function(re){
-						if(re == 1){
-							console.log("찜취소!!");
+					});
+				}
+				if(state == false){
+					$("input[likedPlanNo="+attr+"]").prop("checked", true);
+					console.log("g");
+					console.log($(this).attr("likedPlanNo"));
+					console.log($(this).attr("likedImg"));
+					console.log($(this).attr("likedTitle"));
+					$.ajax({
+						url:"/plan/detail/liked/insert",
+						data: {
+							member_id: login,
+							no: $(this).attr("likedPlanNo"),
+							plan_img: $(this).attr("likedImg"),
+							liked_title: $(this).attr("likedTitle")
+						},
+						success: function(re){
+							console.log("insert re:" + re);
+							if(re == 1){
+								console.log("찜!!");
+							}
 						}
-					}
-				});
+					});
+				}
 			}
 		});
+		
+		
+		//korea_code로 region 가져오기
+		$(".korea_code").each(function(){
+			var korea_code = $(this).html();
+			var region = "";
+			//console.log("korea_code:" + korea_code);
+			switch(korea_code){
+				case "1": region = "서울"; $(this).html("여행지역 : "+ region); break;
+				case "2": region = "경기"; $(this).html("여행지역 : "+ region); break;
+				case "3": region = "인천"; $(this).html("여행지역 : "+ region); break;
+				case "4": region = "강원"; $(this).html("여행지역 : "+ region); break;
+				case "5": region = "충남"; $(this).html("여행지역 : "+ region); break;
+				case "6": region = "세종"; $(this).html("여행지역 : "+ region); break;
+				case "7": region = "대전"; $(this).html("여행지역 : "+ region); break;
+				case "8": region = "충복"; $(this).html("여행지역 : "+ region); break;
+				case "9": region = "경북"; $(this).html("여행지역 : "+ region); break;
+				case "10": region = "대구"; $(this).html("여행지역 : "+ region); break;
+				case "11": region = "울산"; $(this).html("여행지역 : "+ region); break;
+				case "12": region = "경남"; $(this).html("여행지역 : "+ region); break;
+				case "13": region = "부산"; $(this).html("여행지역 : "+ region); break;
+				case "14": region = "전북"; $(this).html("여행지역 : "+ region); break;
+				case "15": region = "전남"; $(this).html("여행지역 : "+ region); break;
+				case "16": region = "광주"; $(this).html("여행지역 : "+ region); break;
+				case "17": region = "제주"; $(this).html("여행지역 : "+ region); break;
+			}
+		});
+		
+		
+		$("#planInsert").click(function(e){
+			e.preventDefault();
+			if(login == null || login ==""){
+				alert("로그인하세요.");
+			}else{
+				$("#planInsert").unbind('click').click();
+			}
+		});
+		
+		//페이징 상태유지
+		var num = $("#num").val();
+		$("li[num="+num+"]").addClass("active");
+				
+		/* var page_item = $(".page-item");
+		$(page_item).each(function(){
+			console.log(this);
+			console.log($(this).attr("num"));
+		}); */
+		//orderColumn 상태유지
+		var order = $("#order").val();
+		$("#"+order).addClass("highlight");
+		
+		//
+		$("#region").change(function(){
+			var korea_code = $("#region").val();
+			var src ="/images/main.png";
+			var region = "";
+			switch(korea_code){
+				case "1": region = "서울"; src = "/images/main.png"; break;
+				case "2": region = "경기"; src = "/images/main_gyeonggi.jpeg"; break;
+				case "3": region = "인천"; src = "/images/main_incheon.jpeg"; break;
+				case "4": region = "강원"; src = "/images/main_gangwon.jpeg"; break;
+				case "5": region = "충남"; src = "/images/main_chungnam.jpeg"; break;
+				case "6": region = "세종"; src = "/images/main_sejong.jpeg"; break;
+				case "7": region = "대전"; src = "/images/main_daejeon.jpeg"; break;
+				case "8": region = "충복"; src = "/images/main_chungbuk.jpeg"; break;
+				case "9": region = "경북"; src = "/images/main_gyeongbuk.jpeg"; break;
+				case "10": region = "대구"; src = "/images/main_daegu.jpeg"; break;
+				case "11": region = "울산"; src = "/images/main_ulsan.jpeg"; break;
+				case "12": region = "경남"; src = "/images/main_gyeongnam.jpg"; break;
+				case "13": region = "부산"; src = "/images/main_busan.jpeg"; break;
+				case "14": region = "전북"; src = "/images/main_jeonbuk.jpeg"; break;
+				case "15": region = "전남"; src = "/images/main_jeonnam.jpg"; break;
+				case "16": region = "광주"; src = "/images/main_gwangju.jpeg"; break;
+				case "17": region = "제주"; src = "/images/main_jeju.jpg"; break;
+				default: region = "전국"; src = "/images/main.png"; break;
+			}
+			console.log("지역:" + region);
+			$("#header_title").html(region);
+			$("#banner").attr("src", src);
+		});
+		
+		var region_state = $("#region_state").val();
+		var src ="/images/main.png";
+		var region = "";
+		switch(region_state){
+			case "1": region = "서울"; src = "/images/main.png"; break;
+			case "2": region = "경기"; src = "/images/main_gyeonggi.jpeg"; break;
+			case "3": region = "인천"; src = "/images/main_incheon.jpeg"; break;
+			case "4": region = "강원"; src = "/images/main_gangwon.jpeg"; break;
+			case "5": region = "충남"; src = "/images/main_chungnam.jpeg"; break;
+			case "6": region = "세종"; src = "/images/main_sejong.jpeg"; break;
+			case "7": region = "대전"; src = "/images/main_daejeon.jpeg"; break;
+			case "8": region = "충복"; src = "/images/main_chungbuk.jpeg"; break;
+			case "9": region = "경북"; src = "/images/main_gyeongbuk.jpeg"; break;
+			case "10": region = "대구"; src = "/images/main_daegu.jpeg"; break;
+			case "11": region = "울산"; src = "/images/main_ulsan.jpeg"; break;
+			case "12": region = "경남"; src = "/images/main_gyeongnam.jpg"; break;
+			case "13": region = "부산"; src = "/images/main_busan.jpeg"; break;
+			case "14": region = "전북"; src = "/images/main_jeonbuk.jpeg"; break;
+			case "15": region = "전남"; src = "/images/main_jeonnam.jpg"; break;
+			case "16": region = "광주"; src = "/images/main_gwangju.jpeg"; break;
+			case "17": region = "제주"; src = "/images/main_jeju.jpg"; break;
+			default: region = "전국"; src = "/images/main.png"; break;
+		}
+		$("#header_title").html(region);
+		$("#banner").attr("src", src);
 		
 	});
 </script>
 </head>
 <body>
-	<h2>여행계획 목록</h2>
-	로그인한 유저 : <input type="text" name="login_user" id="login_user" value="hong">
-	<hr>
-	<a href="/plan/insert">여행계획 작성</a>
 	
-	<hr>
-	<form action="/plan/list" method="get">
-		<select id="region" name="region">
-				<option value="" selected>지역선택</option>
-				<option th:each="r:${regionlist}" th:text="${r.region}" th:value="${r.code}"></option>
-		</select>
-		<input type="search" id="keyword" name="keyword">
-		<input type="submit" value="검색">
-	</form>
-	<hr>
-	<a th:href="@{|/plan/list?orderColumn=plan_date&pageNUM=${pageNUM}|}" th:text="업데이트순"></a>&nbsp;&nbsp;
- 	<a th:href="@{|/plan/list?orderColumn=plan_hit&pageNUM=${pageNUM}|}" th:text="조회순"></a>&nbsp;&nbsp;
-	<a th:href="@{|/plan/list?orderColumn=plan_liked&pageNUM=${pageNUM}|}" th:text="좋아요순"></a>
-	<hr>
-
-	<table border="1" width="80%">
-		<tr>
-			<th>번호</th>
-			<th>사진</th>
-			<th>제목</th>
-			<th>작성자</th>
-		</tr>
-			
-		<tr th:each="p:${list}">
-			<td th:text="${p.plan_no}"></td>
-			<td th:text="${p.plan_img}"></td>
-			<td>
-				<a th:text="${p.plan_title}" th:href="@{'/plan/detail/'+${p.plan_no}}"></a>
-			</td>
-			<td th:text="${p.member_id}"></td>
-		</tr>
-	</table>
+	<!-- <h2>여행계획 목록</h2> -->
+	<input type="hidden" name="login_user" id="login_user">
 	
-	<hr>
 	
-	<!-- 여행계획 목록 -->
-	<div id="content">
-		<div class="card" style="width: 18rem;" th:each="p:${list}">
-		  <img th:src="@{|/images/${p.plan_img}|}" class="card-img-top" alt="...">
-		  <div class="card-body">
-		    <h5 class="card-title" th:text="${p.plan_title}">Card title</h5>
-		    <input type="text" th:text="${p.plan_no}" id="plan_no">
-		    <p class="card-text" th:text="${p.member_id}">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-		    <p class="card-text" th:text="지역">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-		    <a href="#" class="btn btn-primary">Go somewhere</a>
-		    
-		    <input type="checkbox" class="planLiked" th:value="${p.plan_no}" th:attr="likedTitle=${p.plan_title},likedImg=${p.plan_img},LikedPlanNo=${p.plan_no}">
-			<label for="liked">찜</label>
-		  </div>
+	<!-- 헤더 -->
+	
+	
+	<div id="header_container">
+		<button id="btnInsert" class="btn" onclick="location.href='/plan/insert'">여행계획 작성</button>
+	</div>
+	
+	<!-- 헤더 이미지 박스 -->
+	<div id="header_img">
+		<h1 id="header_title">전국</h1>
+		<a href="/plan/list">
+		<img id="banner" alt="" src="/images/main.png" style="width: 100%; height: 100%; z-index: 1; margin: auto;">
+		</a>
+	</div>
+	
+	<div id="search_order_container">
+		<div id="search_contariner">
+			<form action="/plan/list" method="get">
+				<!-- <select id="region" name="region">
+						<option value="" selected>지역선택</option>
+						<option th:each="r:${regionlist}" th:text="${r.region}" th:value="${r.code}"></option>
+				</select> -->
+				
+				<select id="region" name="region" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+					<option value="" selected>지역선택</option>
+					<option th:each="r:${regionlist}" th:text="${r.region}" th:value="${r.code}"></option>
+				</select>
+				<!-- <input type="search" id="keyword" name="keyword">
+				<input type="submit" value="검색"> -->
+				
+				<input type="text" name="keyword" class="form-control" style="float: left; width: 72%; height: 48px" required="required" placeholder="검색어를 입력하세요...">
+				<button type="submit" class="w-20 btn btn-secondary btn-lg button" style="float: left; margin: 0px; height: 48px; width: 10%" >검색</button>
+					
+			</form>
+		</div>
+		<input type="hidden" id="order" th:value=${orderColumn}>
+		<div id="order_container" th:if="${keyword == null}">
+			<a class="order" id="plan_date" th:href="@{|/plan/list?orderColumn=plan_date&pageNUM=${pageNUM}&amp;region=${region}|}" th:text="업데이트순"></a>&nbsp;&nbsp;
+		 	<a class="order" id="plan_hit" th:href="@{|/plan/list?orderColumn=plan_hit&pageNUM=${pageNUM}&amp;region=${region}|}" th:text="조회순"></a>&nbsp;&nbsp;
+			<a class="order" id="plan_liked" th:href="@{|/plan/list?orderColumn=plan_liked&pageNUM=${pageNUM}&amp;region=${region}|}" th:text="좋아요순"></a>
+		</div>
+		
+		<div id="order_container" th:if="${keyword != null}">
+			<a class="order" id="plan_date" th:href="@{|/plan/list?orderColumn=plan_date&pageNUM=${pageNUM}&keyword=${keyword}&amp;region=${region}|}" th:text="업데이트순"></a>&nbsp;&nbsp;
+		 	<a class="order" id="plan_hit" th:href="@{|/plan/list?orderColumn=plan_hit&pageNUM=${pageNUM}&keyword=${keyword}&amp;region=${region}|}" th:text="조회순"></a>&nbsp;&nbsp;
+			<a class="order" id="plan_liked" th:href="@{|/plan/list?orderColumn=plan_liked&pageNUM=${pageNUM}&keyword=${keyword}&amp;region=${region}|}" th:text="좋아요순"></a>
 		</div>
 	
 	</div>
 
-
-	<!-- <span th:if="${startPage} > 1 ">
-		<a th:href="@{'/plan/list/'+${startPage-1}}" th:text="<"></a>
-	</span>
-	&nbsp;
-	<span th:each="i:${#numbers.sequence(startPage, endPage)}">
-		<a th:href="@{'/plan/list/'+${i}}" th:text="${i}"></a>&nbsp;
-	</span>
-	&nbsp;
-	<span th:if="${endPage} < ${totalPage }">
-		<a th:href="@{'/plan/list/'+${endPage+1}}" th:text=">"></a>
-	</span> -->
+	<!-- 본문 -->
+	<section>
+		<!-- 여행계획 목록 -->
+		<div id="content" class="container">
+			<div class="row row-cols-md-4 row-cols-2 g-4" style="">
+				<div class="col-3" th:each="p:${list}" style="width: 17rem; margin-right: 20px; margin-left: 28px;">
+					<div class="card" style="width: 17rem; height: 21rem;">
+						<a th:href="@{'/plan/detail/'+${p.plan_no}}" class="card_link" style="height: 200px;">
+							<img th:src="@{|/images/${p.plan_img}|}" class="card-img-top" alt="...">
+						</a>
+						<div class="card-body">
+							<a th:href="@{'/plan/detail/'+${p.plan_no}}" class="card_link">
+								<h3 style="font-size: 16pt; font-weight: bold; margin-bottom: 15px;" class="card-title" th:text="${p.plan_title}"></h3>
+							</a>
+							<input type="hidden" th:value="${p.plan_no}" id="plan_no">
+							<div id="info_container">
+								<a style="font-size: 13pt;" class="card-text" th:text="|작성자 : ${p.member_id}|"></a><br>
+								<a style="font-size: 13pt;" class="card-text korea_code" th:text="${p.korea_code}"></a>
+							</div>
+							<div id="liked_container">
+								<input type="checkbox" class="planLiked" th:attr="likedTitle=${p.plan_title},likedImg=${p.plan_img},likedPlanNo=${p.plan_no}">
+								<label for="liked" class="planLiked_label" th:attr="likedTitle=${p.plan_title},likedImg=${p.plan_img},likedPlanNo=${p.plan_no}"></label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div> <!-- end #content -->
+	</section>	
 	
- 	<div id="page">
-	 	<span th:if="${startPage} > 1 ">
-			<a th:href="@{'/plan/list/'+${startPage-1}}" th:text="<"></a>
-		</span>
-		<span th:each="page : ${#numbers.sequence(startPage,endPage)}" th:if="${keyword != null } ">
-			<a th:text="${page}" th:href="@{|/plan/list?keyword=${keyword}&amp;region=${region}&orderColumn=${orderColumn}&pageNUM=${page}|}"></a>
-		</span>
-		<span th:each="page : ${#numbers.sequence(startPage,endPage)}" th:if="${keyword == null} ">
-			<a th:text="${page}" th:href="@{|/plan/list?region=${region}&orderColumn=${orderColumn}&pageNUM=${page}|}"></a>
-		</span>
-		<span th:if="${endPage} < ${totalPage }">
-			<a th:href="@{'/plan/list/'+${endPage+1}}" th:text=">"></a>
-		</span>
+
+
+	
+	
+ 	<div id="page_container">
+ 		<div id="page">
+		 	<!-- <span th:if="${startPage} > 1">
+				<a th:href="@{|/plan/list?region=${region}&orderColumn=${orderColumn}&pageNUM=${startPage-1}|}" th:text="|<|"></a>&nbsp;&nbsp;
+			</span>
+	
+			<span th:each="page : ${#numbers.sequence(startPage,endPage)}" th:if="${keyword != null}">
+				<a id="page_num" th:text="${page}" th:href="@{|/plan/list?keyword=${keyword}&amp;region=${region}&orderColumn=${orderColumn}&pageNUM=${page}|}"></a>&nbsp;&nbsp;
+			</span>
+			<span th:each="page : ${#numbers.sequence(startPage,endPage)}" th:if="${keyword == null}">
+				<a id="page_num" th:text="${page}" th:href="@{|/plan/list?region=${region}&orderColumn=${orderColumn}&pageNUM=${page}|}"></a>&nbsp;&nbsp;
+			</span>
+			<span th:if="${endPage} < ${totalPage}">
+				<a id="page_num" th:href="@{|/plan/list?region=${region}&orderColumn=${orderColumn}&pageNUM=${endPage+1}|}" th:text="|>|"></a>&nbsp;&nbsp;
+			</span> -->
+			
+			
+			
+			<nav aria-label="Page navigation example" th:if="${endPage} != 0">
+				<input type="hidden" id="num" th:value="${pageNUM}">
+				
+			  <ul class="pagination">
+			    <li class="page-item" th:if="${startPage} > 1">
+			      <a class="page-link" th:href="@{|/plan/list?region=${region}&orderColumn=${orderColumn}&pageNUM=${startPage-1}|}" aria-label="Previous">
+			        <span aria-hidden="true">&laquo;</span>
+			      </a>
+			    </li>
+			    <li th:num="${page}" class="page-item" th:each="page : ${#numbers.sequence(startPage,endPage)}" th:if="${keyword != null}">
+			    	<a id="page_num" th:text="${page}" class="page-link" th:href="@{|/plan/list?keyword=${keyword}&amp;region=${region}&orderColumn=${orderColumn}&pageNUM=${page}|}"></a>
+			    </li>
+			    <li th:num="${page}" class="page-item" th:each="page : ${#numbers.sequence(startPage,endPage)}" th:if="${keyword == null}">
+			    	<a id="page_num" th:text="${page}" class="page-link" th:href="@{|/plan/list?region=${region}&orderColumn=${orderColumn}&pageNUM=${page}|}"></a>
+			    </li>
+
+			    <li class="page-item" th:if="${endPage} < ${totalPage}">
+			      <a id="page_num" th:href="@{|/plan/list?region=${region}&orderColumn=${orderColumn}&pageNUM=${endPage+1}|}" class="page-link" href="#" aria-label="Next">
+			        <span aria-hidden="true">&raquo;</span>
+			      </a>
+			    </li>
+			  </ul>
+			</nav>
+ 		</div>
+ 		<p th:if="${endPage} == 0" style="text-align: center; font-weight: bold; font-size: 14pt;">검색결과가 없습니다.</p>
 	</div> 
 	
+	<footer>
 	
+	</footer>
+	
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>
 </html>
