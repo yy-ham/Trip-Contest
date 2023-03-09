@@ -35,4 +35,3 @@ public class Liked {
 	@Column(name = "liked_title")
 	private String likedTitle;
 }
-

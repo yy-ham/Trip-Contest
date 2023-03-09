@@ -53,8 +53,5 @@ public class LikedService {
 	public int deleteLiked(int no, String type, String member_id) {
 		return likedDAO.deleteLiked(no, type ,member_id);
 	}
-	
 
-	
 }
-

@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-<<<<<<< HEAD
+
 		<version>3.0.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
@@ -81,112 +81,6 @@
 				</configuration>
 			</plugin>
 		</plugins>
-
-=======
-		<version>3.0.2</version>
-		<relativePath/> <!-- lookup parent from repository -->
-	</parent>
-	<groupId>project</groupId>
-	<artifactId>final</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>final</name>
-	<description>Demo project for Spring Boot</description>
-	<properties>
-		<java.version>17</java.version>
-	</properties>
-	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-
-<!--		<dependency>-->
-<!--			<groupId>com.h2database</groupId>-->
-<!--			<artifactId>h2</artifactId>-->
-<!--			<scope>runtime</scope>-->
-<!--		</dependency>-->
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-thymeleaf</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.mybatis.spring.boot</groupId>
-			<artifactId>mybatis-spring-boot-starter</artifactId>
-			<version>3.0.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.oracle.database.jdbc</groupId>
-			<artifactId>ojdbc8</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<!-- 파일 업로드객체를 생성하기 위한 설정 -->
-		<dependency>
-			<groupId>commons-fileupload</groupId>
-			<artifactId>commons-fileupload</artifactId>
-			<version>1.4</version>
-		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>2.11.0</version>
-		</dependency>
-	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
-		</plugins>
-		<!-- Intellij - Maven Project 사용시 .xml등 파일 찾지 못할때 해결방법		-->
-<!--		<resources>-->
-<!--			<resource>-->
-<!--				&lt;!&ndash; src/main/java 폴더의 xml파일들을 빌드에 포함 &ndash;&gt;-->
-<!--				<directory>src/main/java</directory>-->
-<!--				<includes>-->
-<!--					<include>**/*.xml</include>-->
-<!--					<include>**/*.properties</include>-->
-<!--				</includes>-->
-<!--			</resource>-->
-<!--			<resource>-->
-<!--				&lt;!&ndash;/main/resources 폴더의 xml, properties, yml, setting파일들을 빌드에 포함&ndash;&gt;-->
-<!--				<directory>src/main/resources</directory>-->
-<!--				<includes>-->
-<!--					<include>**/*.xml</include>-->
-<!--					<include>**/*.properties</include>-->
-<!--					<include>**/*.yml</include>-->
-<!--					&lt;!&ndash; <include>**/*.setting</include>&ndash;&gt;-->
-<!--				</includes>-->
-<!--			</resource>-->
-<!--		</resources>-->
->>>>>>> refs/remotes/origin/SoorinL
 	</build>
 
 </project>
