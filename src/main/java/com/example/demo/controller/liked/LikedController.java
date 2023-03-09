@@ -42,8 +42,10 @@ public class LikedController {
 	@GetMapping("/liked/likeList")
 	public ModelAndView list(HttpSession session) {
 		ModelAndView mav = new ModelAndView("/liked/likeList");
-		//임시 id 
-		String member_id = (String)session.getAttribute("id");
+		String member_id = "";
+		if(session.getAttribute("id")!= null) {
+			member_id = (String)session.getAttribute("id");
+		}
 		mav.addObject("likedListPlan", likedService.findByIdandPlan(member_id));
 		mav.addObject("likedListTrip", likedService.findByIdandTrip(member_id));
 		return mav;
