@@ -3,6 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="recoment">
+
 	<insert id="insertRecoment" parameterType="recomentVO">
 		insert into recoment(rec_no, member_id, rec_content, no, type, rec_date) 
 		values(seq_recoment.nextval, #{member_id}, #{rec_content}, #{no}, #{type}, sysdate)

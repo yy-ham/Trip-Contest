@@ -33,4 +33,5 @@ public class Recoment {
 	private String type;
 	@Column(name = "rec_date")
 	private String recDate;
+
 }

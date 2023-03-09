@@ -23,6 +23,7 @@ public class Plan {
 	@Id
 	@Column(name = "plan_no")
 	private int planNo;
+
 	@Column(name = "member_id")
 	private String memberId;
 	@Column(name = "plan_title")
@@ -41,5 +42,5 @@ public class Plan {
 	private String planImg;
 	@Column(name = "korea_code")
 	private int koreaCode;
-	
+
 }

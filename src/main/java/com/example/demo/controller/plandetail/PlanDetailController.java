@@ -94,6 +94,7 @@ public class PlanDetailController {
 		return re;
 	}
 	
+
 	@GetMapping("plan/detail/getImg")
 	public String getImg(int trip_no) {
 		String img = "";

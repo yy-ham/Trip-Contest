@@ -1,7 +1,5 @@
 package com.example.demo.vo.plan;
 
-
-
 import lombok.Data;
 
 @Data

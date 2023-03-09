@@ -111,6 +111,4 @@ public class PlanService {
 	public TripVO findByTripNoInUpdate(int trip_no) {
 		return PlanDBManager.findByTripNoInUpdate(trip_no);
 	}
-	
-	
 }

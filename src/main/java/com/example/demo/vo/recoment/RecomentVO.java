@@ -12,4 +12,3 @@ public class RecomentVO {
 	private String rec_date;
 
 }
-

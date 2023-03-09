@@ -28,5 +28,5 @@ public interface RecomentDAO extends JpaRepository<Recoment, Integer> {
 	@Transactional
 	@Query(value = "delete recoment where rec_no = ?", nativeQuery = true)
 	public int deleteRecoment(int recNo);
-	
+
 }

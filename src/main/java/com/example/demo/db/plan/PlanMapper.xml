@@ -4,6 +4,7 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="plan"> 
   <!-- 여행계획 목록 페이지 -->
+
 	<select id="findAll" resultType="planVO">
         select * from(select rownum n, a.* from(select * from plan p where p.plan_hit >=0
         <if test="keyword != null and keyword != ''">
@@ -99,4 +100,5 @@
   <select id="findMyPlanByMemberId" resultType="planVO">
      select * from plan where member_id=#{id}
   </select>
+
 </mapper>
