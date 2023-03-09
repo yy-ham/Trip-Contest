@@ -22,14 +22,10 @@ public class MemberAjaxController {
 	
 	@RequestMapping("/checkMember")
 	public int checkMember(String name, String phone, HttpSession session) {
-		
-//		System.out.println("NAME : "+name);
-//		System.out.println("phone : "+phone);
+
 	    HashMap<String, Object> map = new HashMap<>();
 	    map.put("name", name);
 	    map.put("phone", phone);
-	    System.out.println(map.get("phone"));
-	    System.out.println(map.get("name"));
 	    MemberVO member = null;
 	    int res = 0;
 	    if(memberService.findByNameAndPhone(map) != null) {
@@ -46,9 +42,7 @@ public class MemberAjaxController {
 
 	@RequestMapping("/checkMemberPwd")
 	public int checkMemberPwd(String id,String name, String phone, HttpSession session) {
-//		System.out.println("ID : "+id);
-//		System.out.println("NAME : "+name);
-//		System.out.println("phone : "+phone);
+
 	    HashMap<String, Object> map = new HashMap<>();
 	    map.put("id", id);
 	    map.put("name", name);

@@ -20,3 +20,4 @@ public class PlanVO {
 	private String region;
 
 }
+
