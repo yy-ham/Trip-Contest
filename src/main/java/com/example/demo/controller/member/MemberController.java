@@ -213,7 +213,8 @@ public class MemberController {
 	 // 회원 정보 열람하기 위해 패스워드 입력하는 mapping
 	    @GetMapping("/beforeEditMyInfo")
 	    public String beforeEditMyInfo(HttpSession session, org.springframework.ui.Model model) {
-	        model.addAttribute("id", session.getAttribute("id"));
+	    	
+	    	model.addAttribute("id", session.getAttribute("id"));
 	        String id = (String) session.getAttribute("id");
 	        if (id!=null) {
 	    		return "member/beforeEditMyInfo";
@@ -350,6 +351,7 @@ public class MemberController {
 	    @RequestMapping(value = "/findMyPlan", method = RequestMethod.GET)
 	    public String findMyPlan(org.springframework.ui.Model model,HttpSession session) {
 	    	String id =(String)session.getAttribute("id");
+	    	System.out.println(id);
 	    	if(id ==null) {
 	    		return "redirect:/login";
 	    	}else {
