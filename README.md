@@ -38,4 +38,62 @@
       <li>관리자 페이지, 여행지 정보 임시 저장</li>
     </ul>
 </ul>
+<br>
+<br>
+
+<h2>사용자 흐름도</h2>
+<p>
+  <img src="https://github.com/yy-ham/Trip-Contest/assets/118264054/35973d15-69cf-4577-97b9-31eb1ddbbee9" width="800">
+</p>
+<br>
+<br>
+
+<h2>DB 설계</h2>
+<p>
+  <img src="https://github.com/yy-ham/Trip-Contest/assets/118264054/7e365f35-d943-420b-a481-0c4d1577a867">
+</p>
+<br>
+<br>
+
+<h2>담당 기능</h2>
+<details>
+  <summary>여행계획 CRUD 기능</summary>
+  <br>
+  1. 여행 계획 목록 페이지
+  <p>
+    <img src="https://github.com/yy-ham/Trip-Contest/assets/118264054/cac5286a-6e07-469e-a15b-08ba31851c5b">
+  </p>
+  <br>
+  
+  2. 여행 계획 상세 페이지
+  <p>
+    <img src="https://github.com/yy-ham/Trip-Contest/assets/118264054/1df9d5d1-8f58-4a65-87ab-3d9f96d595ed">
+  </p>
+  <br>
+  
+  3. 여행 계획 작성 페이지
+  <p>
+    <img src="https://github.com/yy-ham/Trip-Contest/assets/118264054/deeccd8f-999c-46ed-9221-a91f9585eea4">
+  </p>
+  <br>
+
+  
+  4. 여행 계획 수정 페이지
+  <p>
+  
+  </p>
+  <br>
+</details>
+<details>
+  <summary>댓글 CRUD 기능</summary>
+  댓글
+</details>
+<details>
+  <summary>상세 페이지 좋아요 CRUD 기능</summary>
+  여행계획
+</details>
+<br>
+<br>
+
+<h2>회고</h2>
 
