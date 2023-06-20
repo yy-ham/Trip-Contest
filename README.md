@@ -41,7 +41,7 @@
 <br>
 <br>
 
-<h2>사용자 흐름도</h2>
+<h2>서비스 흐름도</h2>
 <p>
   <img src="https://github.com/yy-ham/Trip-Contest/assets/118264054/35973d15-69cf-4577-97b9-31eb1ddbbee9" width="800">
 </p>
