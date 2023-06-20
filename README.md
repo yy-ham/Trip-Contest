@@ -56,41 +56,78 @@
 <br>
 
 <h2>담당 기능</h2>
+▶를 누르면 상세 내용을 볼 수 있습니다.
+<br>
+<br>
 <details>
   <summary>여행계획 CRUD 기능</summary>
   <br>
-  1. 여행 계획 목록 페이지
+  <b>1. 여행 계획 목록 페이지</b>
   <p>
     <img src="https://github.com/yy-ham/Trip-Contest/assets/118264054/cac5286a-6e07-469e-a15b-08ba31851c5b">
   </p>
   <br>
+  <br>
   
-  2. 여행 계획 상세 페이지
+  <b>2. 여행 계획 상세 페이지</b>
   <p>
     <img src="https://github.com/yy-ham/Trip-Contest/assets/118264054/1df9d5d1-8f58-4a65-87ab-3d9f96d595ed">
   </p>
   <br>
+  <br>
   
-  3. 여행 계획 작성 페이지
+  <b>3. 여행 계획 작성 페이지</b>
+  <ul>
+    <li>데이터베이스에 있는 여행지 목록을 전국 또는 지역별로 조회</li>
+    <li>여행지를 선택하면 화면 좌측 날짜 탭에 여행지 정보 추가</li>
+    <li>여행일수 최대 4일까지 선택 가능</li>
+    <li>여행 계획 작성 시 여행지별, 날짜별 또는 전체 초기화 가능</li>
+  </ul>
+  <br>
   <p>
     <img src="https://github.com/yy-ham/Trip-Contest/assets/118264054/deeccd8f-999c-46ed-9221-a91f9585eea4">
   </p>
   <br>
-
-  
-  4. 여행 계획 수정 페이지
   <p>
+    <img src="https://github.com/yy-ham/Trip-Contest/assets/118264054/28d56563-7a0f-4365-93af-16a049c86437"><br>
+    ▲ 여행 계획 작성
+  </p>
+  <br>
+  <p>
+    <img src="https://github.com/yy-ham/Trip-Contest/assets/118264054/8586cf13-aec2-494a-b824-58e8cbe31fe0"><br>
+    ▲ 여행일수 선택
+  </p>
+  <br>
+  <p>
+    <img src="https://github.com/yy-ham/Trip-Contest/assets/118264054/6569cf19-e4ec-4ea1-b1c4-c6e05058e1cf"><br>
+    ▲ 여행지별, 날짜별 또는 전체 초기화
+  </p>
+  <br>
+  <br>
   
+  <b>4. 여행 계획 수정 페이지</b>
+  <p>
+    <img src="https://github.com/yy-ham/Trip-Contest/assets/118264054/8a38a09b-ff34-46bb-93ed-e1783afaab5e">
+  </p>
+  <p>
+    <img src="https://github.com/yy-ham/Trip-Contest/assets/118264054/03e1e17f-a2b1-463d-81a3-8a5e3d3d885d"><br>
+    ▲ 여행 계획 수정
   </p>
   <br>
 </details>
 <details>
   <summary>댓글 CRUD 기능</summary>
-  댓글
+  <p>
+    <img src="https://github.com/yy-ham/Trip-Contest/assets/118264054/387ac490-db7c-402e-bf54-9e25910ec7d3"><br>
+    ▲ 댓글 작성, 수정 및 삭제
+  </p>
 </details>
 <details>
   <summary>상세 페이지 좋아요 CRUD 기능</summary>
-  여행계획
+  <p>
+    <img src="https://github.com/yy-ham/Trip-Contest/assets/118264054/8f5cbe69-6910-4201-a6ef-56ddec1b47b2"><br>
+    ▲ 좋아요 및 좋아요 취소
+  </p>
 </details>
 <br>
 <br>
