@@ -24,7 +24,7 @@
     </li>
     <li>Front-end
       <ul>
-        <li>JavaScript, JQuery, Ajax</li>
+        <li>JavaScript, JQuery</li>
         <li>Framework: Bootstrap</li>
         <li>View: HTML5, CSS3, Thymeleaf</li>
       </ul>
