@@ -1,6 +1,7 @@
 <p align="center">
   <img src="https://github.com/yy-ham/Trip-Contest/assets/118264054/bca2943a-fd50-40d9-b868-f1dae67182e0" width="300">
 </p>
+<br>
 
 # 🗺 전국 여행자랑
 여행지 정보를 소개하고, 여행 계획을 작성할 수 있는 웹 페이지
